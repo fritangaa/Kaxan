@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_historial"
+        android:icon="@drawable/ic_historial"
+        android:title="@string/titulo_historial" />
+
+    <item
+        android:id="@+id/navigation_calendario"
+        android:icon="@drawable/ic_calendario"
+        android:title="@string/titulo_calendario" />
+
+    <item
+        android:id="@+id/navigation_alerta"
+        android:icon="@drawable/ic_alerta"
+        android:title="@string/titulo_inicio"
+        android:checked="true"
+
+        />
+    <item
+        android:id="@+id/navigation_grupo"
+        android:icon="@drawable/ic_grupo"
+        android:title="@string/titulo_grupo" />
+    <item
+        android:id="@+id/navigation_perfil"
+        android:icon="@drawable/ic_perfil"
+        android:title="@string/titulo_perfil" />
+
+</menu>

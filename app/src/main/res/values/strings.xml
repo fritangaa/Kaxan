@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">KAXAN</string>
+    <string name="titulo_inicio">Alerta</string>
+    <string name="titulo_calendario">Calendario</string>
+    <string name="titulo_historial">Historial</string>
+    <string name="titulo_perfil">Perfil</string>
+    <string name="titulo_grupo">Grupo</string>
+
+
+    <string name="title_activity_login">login</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+</resources>
