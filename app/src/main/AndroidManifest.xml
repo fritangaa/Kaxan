@@ -46,7 +46,9 @@
         <activity
             android:name=".historial_mapa"
             android:label="@string/title_activity_historial_mapa" />
-        <activity android:name=".Perfil"></activity>
+        <activity
+            android:name=".Perfil"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
     </application>
 
 </manifest>
