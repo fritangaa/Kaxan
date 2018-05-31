@@ -22,13 +22,13 @@ public class menu extends AppCompatActivity {
                 case R.id.navigation_alerta:
                     return true;
                 case R.id.navigation_historial:
-                    loadHistorial();
+                    loadHistorialCalendario();
                     return true;
                 case R.id.navigation_calendario:
                     loadCalendario();
                     return true;
                 case R.id.navigation_grupo:
-                    loadHistorialCalendario();
+
                     return true;
                 case R.id.navigation_perfil:
                     return true;
