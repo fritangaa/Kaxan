@@ -1,6 +1,7 @@
 package esteticaapp.co.kaxan;
 
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -19,7 +20,6 @@ public class menu extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_alerta:
-                    mTextMessage.setText(R.string.titulo_inicio);
                     return true;
                 case R.id.navigation_historial:
                     loadHistorial();
@@ -28,10 +28,9 @@ public class menu extends AppCompatActivity {
                     loadCalendario();
                     return true;
                 case R.id.navigation_grupo:
-                    mTextMessage.setText(R.string.titulo_grupo);
+                    loadHistorialCalendario();
                     return true;
                 case R.id.navigation_perfil:
-                    mTextMessage.setText(R.string.titulo_perfil);
                     return true;
             }
             return false;
@@ -64,4 +63,10 @@ public class menu extends AppCompatActivity {
         ft.commit();
     }
 
+    private void loadHistorialCalendario() {
+
+        Intent intent = new Intent(menu.this, historial_mapa.class);
+        startActivity(intent);
+        finish();
+    }
 }
