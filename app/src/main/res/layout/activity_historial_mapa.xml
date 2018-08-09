@@ -25,8 +25,8 @@
         android:layout_height="31dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="19dp"
-        android:src="@drawable/ic_historial_reloj" />
+        android:layout_marginTop="19dp"/>
+        <!--android:src="@drawable/ic_historial_reloj"-->
 
     <TextView
         android:id="@+id/textView"
@@ -60,8 +60,8 @@
         android:layout_height="62dp"
         android:layout_alignParentBottom="true"
         android:layout_alignStart="@+id/map"
-        android:layout_marginBottom="90dp"
-        android:src="@drawable/ic_persona" />
+        android:layout_marginBottom="90dp"/>
+       <!-- android:src="@drawable/ic_persona" -->
 
     <TextView
         android:id="@+id/textView3"
