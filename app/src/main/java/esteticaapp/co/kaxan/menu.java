@@ -63,10 +63,13 @@ public class menu extends AppCompatActivity {
         ft.commit();
     }
 
+
+
     private void loadHistorialCalendario() {
 
         Intent intent = new Intent(menu.this, historial_mapa.class);
         startActivity(intent);
         finish();
     }
+    
 }
