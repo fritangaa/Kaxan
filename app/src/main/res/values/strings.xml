@@ -1,14 +1,20 @@
 <resources>
-    <string name="app_name">KAXAN</string>
-    <string name="titulo_inicio">Alerta</string>
-    <string name="titulo_calendario">Calendario</string>
+    <string name="app_name">Locubip</string>
+    <string name="titulo_principal">Principal</string>
+    <string name="titulo_ubicacion">Ubicación</string>
     <string name="titulo_historial">Historial</string>
     <string name="titulo_perfil">Perfil</string>
-    <string name="titulo_grupo">Grupo</string>
+    <string name="titulo_evento">Evento</string>
 
 
     <string name="title_activity_login">login</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="title_activity_historial_mapa">Map</string>
+
+
+    <string name="notif_title">¿Te encentras bien?</string>
+    <string name="notif_body">Haz click</string>
+    <string name="notif_body_intent">Hey! esta es una notificacion enviada desde ECTNotificacion App</string>
+    <string name="title_activity_ubicacion">Map</string>
 </resources>

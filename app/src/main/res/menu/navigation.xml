@@ -2,26 +2,27 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/navigation_ubicacion"
+        android:icon="@drawable/ic_mapa"
+        android:title="@string/titulo_ubicacion" />
+
+    <item
         android:id="@+id/navigation_historial"
-        android:icon="@drawable/ic_historial"
+        android:icon="@drawable/ic_historial_menu"
         android:title="@string/titulo_historial" />
 
     <item
-        android:id="@+id/navigation_calendario"
-        android:icon="@drawable/ic_calendario"
-        android:title="@string/titulo_calendario" />
-
-    <item
-        android:id="@+id/navigation_alerta"
+        android:id="@+id/navigation_principal"
         android:icon="@drawable/ic_alerta"
-        android:title="@string/titulo_inicio"
+        android:title="@string/titulo_principal"
         android:checked="true"
 
         />
     <item
-        android:id="@+id/navigation_grupo"
-        android:icon="@drawable/ic_grupo"
-        android:title="@string/titulo_grupo" />
+        android:id="@+id/navigation_evento"
+        android:icon="@drawable/ic_evento_calendario"
+        android:title="@string/titulo_evento" />
+
     <item
         android:id="@+id/navigation_perfil"
         android:icon="@drawable/ic_perfil"

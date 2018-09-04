@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/bg_principal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".inicio">
+
+    <ImageView
+        android:id="@+id/um_imagen"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_alignStart="@+id/imageView2"
+        android:layout_below="@+id/button3"
+        app:srcCompat="@drawable/ic_persona_h" />
+
+    <TextView
+        android:id="@+id/um_nombre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_alignTop="@+id/um_imagen"
+        android:layout_toEndOf="@+id/um_imagen"
+        android:hint="Maximiliano"
+        android:textAppearance="?attr/textAppearanceListItem"
+        android:textColor="@color/colorBlanco"
+        android:textColorHint="@color/colorBlanco"
+        tools:text="Max" />
+
+    <TextView
+        android:id="@+id/um_lugar_ubicacion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_alignBottom="@+id/um_imagen"
+        android:layout_toEndOf="@+id/um_imagen"
+        android:text="Cerca de Privada 211, Metepec"
+        android:textColor="@color/colorBlanco"
+        tools:text="Cerca de Privada 211, Metepec" />
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="match_parent"
+        android:layout_height="34dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:background="@android:color/transparent"
+        android:text="Proximo eveto"
+        android:textAllCaps="false"
+        android:textColor="@color/colorBlanco" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="wrap_content"
+        android:layout_height="358dp"
+        android:layout_below="@+id/um_lugar_ubicacion"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:src="@drawable/demo_mapa" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_alignTop="@+id/um_imagen"
+        android:layout_toEndOf="@+id/um_nombre"
+        android:drawableLeft="@drawable/ic_bateria"
+        android:text="90%" />
+
+</RelativeLayout>
