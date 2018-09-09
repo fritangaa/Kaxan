@@ -8,60 +8,145 @@
     tools:context=".evento">
 
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="300dp"
-        android:layout_marginTop="20dp"
-        android:layout_below="@+id/editText2"
-        android:layout_centerHorizontal="true"
-        android:src="@drawable/demo_mapa" />
-
-    <EditText
-        android:id="@+id/editText2"
+    <ImageButton
+        android:id="@+id/boton_eventos"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:hint="Hora de inicio"
-        android:layout_alignTop="@+id/editText3"
-        android:layout_toStartOf="@+id/editText3"
-        android:ems="10"
-        android:inputType="time" />
-
-    <EditText
-        android:id="@+id/editText3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="20dp"
+        android:layout_margin="10dp"
         android:layout_alignParentEnd="true"
-        android:layout_below="@+id/editText4"
-        android:hint="Hora de fin"
-        android:ems="10"
-        android:inputType="time" />
+        android:layout_alignParentTop="true"
+        android:background="@drawable/bg_verde_redondo"
+        android:src="@drawable/ic_lista" />
 
-    <EditText
-        android:id="@+id/editText4"
-        android:layout_width="match_parent"
+    <ImageButton
+        android:id="@+id/boton_aceptar"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
+        android:layout_alignStart="@+id/boton_eventos"
+        android:layout_below="@+id/mapaUbicacionEvento"
+        android:layout_marginTop="-20dp"
+        android:background="@drawable/bg_verde_redondo"
+        android:src="@drawable/ic_palomita" />
+
+    <ImageButton
+        android:id="@+id/boton_dia"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_verde_redondo"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:hint="Fecha"
-        android:ems="10"
-        android:inputType="date" />
+        android:src="@drawable/ic_dia" />
 
-    <Button
-        android:id="@+id/button4"
+    <TextView
+        android:id="@+id/texto_dia"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@id/editText2"
-        android:layout_alignEnd="@id/editText3"
-        android:layout_below="@+id/imageView"
-        android:layout_centerHorizontal="true"
+        android:layout_alignBottom="@+id/boton_dia"
+        android:layout_toEndOf="@+id/boton_dia"
+        android:textColor="@color/colorBlanco"
+        android:text="" />
+
+    <ImageButton
+        android:id="@+id/boton_hora_inicio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
         android:layout_marginTop="20dp"
         android:background="@drawable/bg_verde_redondo"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/boton_dia"
+        android:src="@drawable/ic_hora" />
+
+    <TextView
+        android:id="@+id/texto_hora_inicio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:textColor="@color/colorBlanco"
-        android:text="Agregar" />
+        android:layout_alignBottom="@+id/boton_hora_inicio"
+        android:layout_toEndOf="@+id/boton_dia"
+        android:text="00:00" />
+
+    <ImageButton
+        android:id="@+id/boton_hora_fin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="50dp"
+        android:layout_alignBottom="@+id/texto_hora_inicio"
+        android:layout_toEndOf="@+id/texto_hora_inicio"
+        android:background="@drawable/bg_verde_redondo"
+        android:src="@drawable/ic_hora" />
+
+    <TextView
+        android:id="@+id/texto_hora_fin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/texto_hora_inicio"
+        android:layout_toEndOf="@+id/boton_hora_fin"
+        android:textColor="@color/colorBlanco"
+        android:text="00:00" />
+
+    <ImageButton
+        android:id="@+id/boton_lugar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/bg_verde_redondo"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/boton_hora_fin"
+        android:src="@drawable/ic_mapa" />
+
+    <EditText
+        android:id="@+id/texto_lugar"
+        android:layout_width="147dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/boton_lugar"
+        android:layout_toEndOf="@+id/boton_dia"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:hint="Lugar" />
+
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/mapaUbicacionEvento"
+        android:layout_width="match_parent"
+        android:layout_margin="30dp"
+        android:layout_height="200dp"
+        android:layout_below="@+id/boton_lugar"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/boton_dia"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="-30dp"
+        android:textColor="@color/colorBlanco"
+        android:textSize="18dp"
+        android:text="Día" />
+
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/texto_lugar"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/colorBlanco"
+        android:textSize="18dp"
+        android:text="Lugar" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/boton_dia"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/colorBlanco"
+        android:textSize="18dp"
+        android:text="Hora" />
+
+
 </RelativeLayout>

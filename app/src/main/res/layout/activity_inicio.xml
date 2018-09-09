@@ -52,14 +52,15 @@
         android:textAllCaps="false"
         android:textColor="@color/colorBlanco" />
 
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="wrap_content"
-        android:layout_height="358dp"
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/mapaUbicacionAdmin"
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:layout_below="@+id/um_lugar_ubicacion"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
-        android:src="@drawable/demo_mapa" />
+        android:layout_marginTop="30dp"/>
 
     <TextView
         android:id="@+id/textView7"

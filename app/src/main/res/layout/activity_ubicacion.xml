@@ -10,6 +10,21 @@
     <com.google.android.gms.maps.MapView
         android:id="@+id/mapaUbicacion"
         android:layout_width="match_parent"
+        android:layout_margin="20dp"
         android:layout_height="400dp" />
+
+    <Button
+        android:id="@+id/botonAuxilio"
+        android:layout_width="336dp"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/mapaUbicacion"
+        android:layout_alignEnd="@id/mapaUbicacion"
+        android:layout_below="@+id/mapaUbicacion"
+        android:layout_marginTop="-10dp"
+        android:background="@drawable/bg_rojo_redondo"
+        android:textAllCaps="false"
+        android:textColor="@color/colorBlanco"
+        android:text="Auxilio" />
+
 
 </RelativeLayout>

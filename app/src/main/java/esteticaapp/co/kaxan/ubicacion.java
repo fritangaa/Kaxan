@@ -1,14 +1,25 @@
 package esteticaapp.co.kaxan;
 
+import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -24,8 +35,11 @@ public class ubicacion extends Fragment implements OnMapReadyCallback {
     private MapView mMapView;
     private View view;
 
+    private Button auxilio;
 
-    public static ubicacion newInstance(){
+    private static final int LOCATION_REQUEST_CODE = 1;
+
+    public static ubicacion newInstance() {
         return new ubicacion();
     }
 
@@ -43,11 +57,59 @@ public class ubicacion extends Fragment implements OnMapReadyCallback {
 
 
         mMapView = (MapView) view.findViewById(R.id.mapaUbicacion);
-        if (mMapView != null){
+        if (mMapView != null) {
             mMapView.onCreate(null);
             mMapView.onResume();
             mMapView.getMapAsync(this);
         }
+
+
+        Intent intent = getActivity().getIntent();
+        if (intent != null){
+            final AlertDialog.Builder mDialog = new AlertDialog.Builder(view.getContext());
+            mDialog.setMessage("¿Todo en orden?");
+            mDialog.setTitle("Alerta");
+            mDialog.setPositiveButton("Necesito ayuda", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+
+                }
+            });
+
+            mDialog.setNegativeButton("Todo bien", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+
+                }
+            });
+
+            AlertDialog dialog = mDialog.create();
+            dialog.show();
+
+        }
+
+
+
+
+
+
+        auxilio = (Button) view.findViewById(R.id.botonAuxilio);
+        if(ActivityCompat.checkSelfPermission(
+                getActivity(), Manifest.permission.SEND_SMS)
+                != PackageManager.PERMISSION_GRANTED&& ActivityCompat.checkSelfPermission(
+                view.getContext(),Manifest
+                        .permission.SEND_SMS)!= PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(getActivity(),new String[]
+                    { Manifest.permission.SEND_SMS,},1000);
+        }else{
+        };
+        auxilio.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                enviarMensaje("+527221164007","Necesito ayuda, utiliza mi ubicación");
+            }
+        });
+
+
 
     }
 
@@ -69,7 +131,7 @@ public class ubicacion extends Fragment implements OnMapReadyCallback {
             // in a raw resource file.
             boolean success = googleMap.setMapStyle(
                     MapStyleOptions.loadRawResourceStyle(
-                            view.getContext(), R.raw.mapstyle_azul));
+                            view.getContext(), R.raw.mapstyle));
 
             if (!success) {
                 Log.e("ubicacion", "Style parsing failed.");
@@ -78,16 +140,73 @@ public class ubicacion extends Fragment implements OnMapReadyCallback {
             Log.e("ubicacion", "Can't find style. Error: ", e);
         }
 
+        // Controles UI
+        if (ContextCompat.checkSelfPermission(view.getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            mMap.setMyLocationEnabled(true);
+        } else {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
+                    Manifest.permission.ACCESS_FINE_LOCATION)) {
+                // Mostrar diálogo explicativo
+            } else {
+                // Solicitar permiso
+                ActivityCompat.requestPermissions(
+                        getActivity(),
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        LOCATION_REQUEST_CODE);
+            }
+        }
+
+        mMap.getUiSettings().setZoomControlsEnabled(true);
+
         // Add a marker in Sydney and move the camera
         LatLng tec = new LatLng(19.256953, -99.577957);
         mMap.addMarker(new MarkerOptions().position(tec).title("Mi ubicación"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(tec));
-
+        float zoomLevel = 16.0f; //This goes up to 21
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(tec, zoomLevel));
 
 
     }
 
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        if (requestCode == LOCATION_REQUEST_CODE) {
+            // ¿Permisos asignados?
+            if (permissions.length > 0 &&
+                    permissions[0].equals(Manifest.permission.ACCESS_FINE_LOCATION) &&
+                    grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.checkSelfPermission(view.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(view.getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    // TODO: Consider calling
+                    //    ActivityCompat#requestPermissions
+                    // here to request the missing permissions, and then overriding
+                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                    //                                          int[] grantResults)
+                    // to handle the case where the user grants the permission. See the documentation
+                    // for ActivityCompat#requestPermissions for more details.
+                    return;
+                }
+                mMap.setMyLocationEnabled(true);
+            } else {
+                Toast.makeText(getActivity(), "Error de permisos", Toast.LENGTH_LONG).show();
+            }
+
+        }
+    }
+
+
+    private void enviarMensaje (String numero, String mensaje){
+        try {
+            SmsManager sms = SmsManager.getDefault();
+            sms.sendTextMessage(numero,null,mensaje,null,null);
+            Toast.makeText(view.getContext(), "Mensaje Enviado.", Toast.LENGTH_LONG).show();
+        }
+        catch (Exception e) {
+            Toast.makeText(view.getContext(), "Mensaje no enviado, datos incorrectos.", Toast.LENGTH_LONG).show();
+            e.printStackTrace();
+        }
+    }
 
 
 
