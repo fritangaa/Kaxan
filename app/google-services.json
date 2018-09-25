@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "273605274904",
+    "firebase_url": "https://kaxan-um.firebaseio.com",
+    "project_id": "kaxan-um",
+    "storage_bucket": "kaxan-um.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:273605274904:android:6d554d80d9c8f56a",
+        "android_client_info": {
+          "package_name": "esteticaapp.co.kaxan"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "273605274904-5kqvv6qm7kr9cjtgsusbr3rsq9obkfa0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "esteticaapp.co.kaxan",
+            "certificate_hash": "d4cb0a37d06f9ca5bce2744c607ef9b307546cef"
+          }
+        },
+        {
+          "client_id": "273605274904-d2amcjam1hng05b92pb6hreegce875a1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAE_Y80d5V4J4jKH2-VZ_PIJrIsTPxOf58"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "273605274904-d2amcjam1hng05b92pb6hreegce875a1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

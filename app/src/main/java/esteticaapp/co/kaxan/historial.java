@@ -2,15 +2,17 @@ package esteticaapp.co.kaxan;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 
-import java.util.ArrayList;
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class historial extends Fragment {
 
@@ -18,9 +20,11 @@ public class historial extends Fragment {
         return new historial();
     }
 
-    private ListView lista_historial = null;
-    private ArrayList<itemHistorial> arrayItem = null;
-    private itemHistorialAdaptador adapter = null;
+    RecyclerView listadeHistorial;
+
+    DatabaseReference databaseReference;
+
+    FirebaseRecyclerAdapter<itemHistorial,itemHistorialAdaptador.ViewHolder> adapter;
 
 
     @Nullable
@@ -28,27 +32,36 @@ public class historial extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view  = inflater.inflate(R.layout.activity_historial, container, false);
 
-        lista_historial = view.findViewById(R.id.listaHistorial);
-        arrayItem = new ArrayList<>();
+        //FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        databaseReference= FirebaseDatabase.getInstance().getReference();
 
-        cargarHistorial(view.getContext());
+        listadeHistorial = view.findViewById(R.id.lista_historial);
+
+
+        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(view.getContext());
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        listadeHistorial.setLayoutManager(linearLayoutManager);
+
+        adapter=new FirebaseRecyclerAdapter<itemHistorial, itemHistorialAdaptador.ViewHolder>(
+                itemHistorial.class,
+                R.layout.obj_historial,
+                itemHistorialAdaptador.ViewHolder.class,
+                databaseReference.child("historial")
+        ) {
+            @Override
+            protected void populateViewHolder(itemHistorialAdaptador.ViewHolder viewHolder,
+                                              itemHistorial model, final int position) {
+                viewHolder.lugar.setText(model.gethDesc());
+                viewHolder.hora.setText(model.gethTiempo());
+
+            }
+        };
+
+        listadeHistorial.setAdapter(adapter);
 
         return view;
     }
 
-    private void cargarHistorial(Context context){
-
-        arrayItem.clear();
-
-        arrayItem.add(new itemHistorial("1","Galerias metepec", "2:15 PM", R.drawable.ic_persona_h));
-        arrayItem.add(new itemHistorial("2","Tecnológico de Toluca",  "7:45 PM",R.drawable.ic_persona_h));
-        arrayItem.add(new itemHistorial("3","Casa", "8:00 PM", R.drawable.ic_persona_h));
-
-
-        adapter = new itemHistorialAdaptador(arrayItem, context);
-        lista_historial.setAdapter(adapter);
-
-    }
 
     //El fragment se ha adjuntado al Activity
     @Override

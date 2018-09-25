@@ -6,10 +6,10 @@ import android.app.DatePickerDialog;
 import android.app.Fragment;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.location.Address;
-import android.location.Geocoder;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -25,20 +25,20 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
-import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
-import java.io.IOException;
 import java.util.Calendar;
 import java.util.List;
 
 public class evento extends Fragment implements OnMapReadyCallback {
+
+    DatabaseReference databaseReference;
 
     private View view;
 
@@ -83,13 +83,11 @@ public class evento extends Fragment implements OnMapReadyCallback {
     private String direccion;
     private List<Address> address;
 
+    //Declaramos un objeto firebaseAuth
+    private FirebaseAuth firebaseAuth;
 
 
-
-
-
-
-
+    ImageButton agregarEvento, verEvento;
 
     public static evento newInstance(){
         return new evento();
@@ -99,6 +97,12 @@ public class evento extends Fragment implements OnMapReadyCallback {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.activity_evento, container, false);
+
+        //FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        databaseReference= FirebaseDatabase.getInstance().getReference();
+
+        //inicializamos el objeto firebaseAuth
+        firebaseAuth = FirebaseAuth.getInstance();
 
         etFecha = view.findViewById(R.id.texto_dia);
         //Widget ImageButton del cual usaremos el evento clic para obtener la fecha
@@ -133,7 +137,8 @@ public class evento extends Fragment implements OnMapReadyCallback {
             }
         });
 
-
+        agregarEvento = view.findViewById(R.id.boton_aceptar);
+        verEvento = view.findViewById(R.id.boton_eventos);
 
         btnLugar = view.findViewById(R.id.boton_lugar);
         textoLugar = view.findViewById(R.id.texto_lugar);
@@ -146,20 +151,7 @@ public class evento extends Fragment implements OnMapReadyCallback {
                     toast("No hay dirección para buscar : (");
                 }else{
                     toast("Buscando \""+direccion+"\"");
-                    Geocoder coder = new Geocoder(view.getContext());
 
-                    try {
-                        address = coder.getFromLocationName(direccion, 1);
-                        Address location = address.get(0);
-                        int lat = (int) (location.getLatitude()*1E6);
-                        int lon = (int) (location.getLongitude()*1E6);
-                        LatLng devento = new LatLng(lat, lon);
-                        mMap.addMarker(new MarkerOptions().position(devento).title("Direccion"));
-                        float zoomLevel = 16.0f; //This goes up to 21
-                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(devento, zoomLevel));
-                    } catch (IOException e) {
-                        toast("No se ha encontrado la dirección : (");
-                    }
                 }
 
                 // Ocultar el teclado
@@ -169,6 +161,30 @@ public class evento extends Fragment implements OnMapReadyCallback {
 
         });
 
+         agregarEvento.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                String dia = etFecha.getText().toString();
+                String horaIn = etHora.getText().toString();
+                String horaFin = etHora2.getText().toString();
+                String lugar = textoLugar.getText().toString();
+                String id = databaseReference.push().getKey();
+
+                objEvento nuevoEvento=new objEvento(dia,horaIn,horaFin,lugar,false);
+
+                databaseReference.child(firebaseAuth.getUid()).child("evento").child(id).setValue(nuevoEvento);
+
+                Toast.makeText(view.getContext(), "Evento registrado", Toast.LENGTH_SHORT).show();
+            }
+
+        });
+
+        verEvento.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), listaEventos.class);
+                startActivity(intent);
+            }
+
+        });
 
         mMapView = view.findViewById(R.id.mapaUbicacionEvento);
         if (mMapView != null) {

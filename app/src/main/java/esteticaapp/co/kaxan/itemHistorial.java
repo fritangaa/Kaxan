@@ -7,6 +7,9 @@ public class itemHistorial {
     private String hTiempo;
     private int hImagen;
 
+    public itemHistorial() {
+    }
+
     public itemHistorial(String mId,String hDesc, String hTiempo, int hImagen) {
         this.hId = mId;
         this.hDesc = hDesc;

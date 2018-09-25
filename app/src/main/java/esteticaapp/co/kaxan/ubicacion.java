@@ -65,6 +65,7 @@ public class ubicacion extends Fragment implements OnMapReadyCallback {
 
 
         Intent intent = getActivity().getIntent();
+
         if (intent != null){
             final AlertDialog.Builder mDialog = new AlertDialog.Builder(view.getContext());
             mDialog.setMessage("¿Todo en orden?");
