@@ -41,26 +41,28 @@
         android:textColor="@color/colorBlanco"
         tools:text="Cerca de Privada 211, Metepec" />
 
-    <Button
-        android:id="@+id/button3"
-        android:layout_width="match_parent"
-        android:layout_height="34dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
-        android:background="@android:color/transparent"
-        android:text="Proximo eveto"
-        android:textAllCaps="false"
-        android:textColor="@color/colorBlanco" />
 
     <com.google.android.gms.maps.MapView
         android:id="@+id/mapaUbicacionAdmin"
         android:layout_width="match_parent"
-        android:layout_height="350dp"
+        android:layout_height="310dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_below="@+id/um_lugar_ubicacion"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"/>
+
+    <Button
+        android:id="@+id/botonAuxilio"
+        android:layout_width="343dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/mapaUbicacionAdmin"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/bg_rojo_redondo"
+        android:text="Auxilio"
+        android:textAllCaps="false"
+        android:textColor="@color/colorBlanco" />
 
     <TextView
         android:id="@+id/textView7"

@@ -5,56 +5,57 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cardview"
     android:layout_width="match_parent"
-    android:layout_height="60dp"
+    android:layout_height="80dp"
     android:layout_margin="6dp"
     >
+
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="10dp">
+        android:layout_height="match_parent"
+       >
 
         <TextView
-            android:id="@+id/obj_lugar"
+            android:id="@+id/obj_etiqueta"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
+            android:textSize="40dp"
+            android:textColor="@color/colorNegro"
+            android:layout_marginLeft="10dp"
             android:layout_alignParentTop="true"
-            android:hint="Lugar" />
+            android:hint="Fiesta" />
 
 
         <TextView
             android:id="@+id/obj_dia"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/obj_lugar"
             android:layout_marginLeft="10dp"
-            android:layout_alignParentTop="true"
-            android:layout_toEndOf="@+id/obj_lugar"
-            android:hint="Genero" />
+            android:textColor="@color/colorNegro"
+            android:textSize="20dp"
+            android:hint="LUNES/OCT/20" />
 
         <TextView
-            android:id="@+id/obj_horaI"
+            android:id="@+id/obj_hora"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_alignParentTop="true"
-            android:layout_toEndOf="@+id/obj_dia"
-            android:hint="Inicio" />
-
-        <TextView
-            android:id="@+id/obj_horaF"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_alignParentTop="true"
-            android:layout_toEndOf="@+id/obj_horaI"
-            android:hint="Fin" />
+            android:layout_height="30dp"
+            android:layout_marginRight="10dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:textColor="@color/colorNegro"
+            android:hint="11:30"
+            android:textSize="20dp" />
 
         <Button
-            android:id="@+id/obj_eliminar"
-            android:layout_width="40dp"
-            android:layout_height="32dp"
-            android:drawableLeft="@drawable/ic_eliminar"
+            android:id="@+id/obj_lugar"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginRight="10dp"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentTop="true" />
+            android:layout_alignParentTop="true"
+            android:background="@android:color/transparent"
+            android:drawableLeft="@drawable/ic_mapa_evento" />
 
 
     </RelativeLayout>

@@ -2,40 +2,55 @@ package esteticaapp.co.kaxan;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Fragment;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.graphics.Color;
+import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.maps.android.PolyUtil;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.List;
 
 public class ubicacion extends Fragment implements OnMapReadyCallback {
+
+    Boolean actualPosition = true;
+    JSONObject jso;
+    Double longitudOrigen, latitudOrigen;
 
     private GoogleMap mMap;
     private MapView mMapView;
     private View view;
-
-    private Button auxilio;
 
     private static final int LOCATION_REQUEST_CODE = 1;
 
@@ -62,54 +77,6 @@ public class ubicacion extends Fragment implements OnMapReadyCallback {
             mMapView.onResume();
             mMapView.getMapAsync(this);
         }
-
-
-        Intent intent = getActivity().getIntent();
-
-        if (intent != null){
-            final AlertDialog.Builder mDialog = new AlertDialog.Builder(view.getContext());
-            mDialog.setMessage("¿Todo en orden?");
-            mDialog.setTitle("Alerta");
-            mDialog.setPositiveButton("Necesito ayuda", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-
-                }
-            });
-
-            mDialog.setNegativeButton("Todo bien", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-
-                }
-            });
-
-            AlertDialog dialog = mDialog.create();
-            dialog.show();
-
-        }
-
-
-
-
-
-
-        auxilio = (Button) view.findViewById(R.id.botonAuxilio);
-        if(ActivityCompat.checkSelfPermission(
-                getActivity(), Manifest.permission.SEND_SMS)
-                != PackageManager.PERMISSION_GRANTED&& ActivityCompat.checkSelfPermission(
-                view.getContext(),Manifest
-                        .permission.SEND_SMS)!= PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(getActivity(),new String[]
-                    { Manifest.permission.SEND_SMS,},1000);
-        }else{
-        };
-        auxilio.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                enviarMensaje("+527221164007","Necesito ayuda, utiliza mi ubicación");
-            }
-        });
-
 
 
     }
@@ -141,6 +108,43 @@ public class ubicacion extends Fragment implements OnMapReadyCallback {
             Log.e("ubicacion", "Can't find style. Error: ", e);
         }
 
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
+                    Manifest.permission.ACCESS_COARSE_LOCATION)) {
+                // Show an explanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+            } else {
+                // No explanation needed; request the permission
+                ActivityCompat.requestPermissions(getActivity(),
+                        new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+                        1);
+
+                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+                // app-defined int constant. The callback method gets the
+                // result of the request.
+            }
+
+            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
+                    Manifest.permission.ACCESS_FINE_LOCATION)) {
+                // Show an explanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+            } else {
+                // No explanation needed; request the permission
+                ActivityCompat.requestPermissions(getActivity(),
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        1);
+
+                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+                // app-defined int constant. The callback method gets the
+                // result of the request.
+            }
+
+            return;
+        }
+
         // Controles UI
         if (ContextCompat.checkSelfPermission(view.getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
@@ -160,12 +164,87 @@ public class ubicacion extends Fragment implements OnMapReadyCallback {
 
         mMap.getUiSettings().setZoomControlsEnabled(true);
 
-        // Add a marker in Sydney and move the camera
-        LatLng tec = new LatLng(19.256953, -99.577957);
-        mMap.addMarker(new MarkerOptions().position(tec).title("Mi ubicación"));
-        float zoomLevel = 16.0f; //This goes up to 21
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(tec, zoomLevel));
+        mMap.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
+            @Override
+            public void onMyLocationChange(Location location) {
 
+                if (actualPosition){
+                    latitudOrigen = location.getLatitude();
+                    longitudOrigen = location.getLongitude();
+                    actualPosition=false;
+
+                    LatLng miPosicion = new LatLng(latitudOrigen,longitudOrigen);
+
+                    mMap.addMarker(new MarkerOptions().position(miPosicion).title("Aqui estoy yo"));
+
+                    CameraPosition cameraPosition = new CameraPosition.Builder()
+                            .target(new LatLng(latitudOrigen,longitudOrigen))      // Sets the center of the map to Mountain View
+                            .zoom(17)
+                            .bearing(90)// Sets the zoom
+                            .build();                   // Creates a CameraPosition from the builder
+                    mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
+                    //String url ="https://maps.googleapis.com/maps/api/directions/json?origin="+latitudOrigen+","+longitudOrigen+"&destination=19.256953, -99.577957";
+                    String url ="https://maps.googleapis.com/maps/api/directions/json?origin=Brooklyn&destination=Queens&mode=transit&key=AIzaSyAE_Y80d5V4J4jKH2-VZ_PIJrIsTPxOf58";
+                    RequestQueue queue = Volley.newRequestQueue(getActivity());
+                    StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+
+                            try {
+                                jso = new JSONObject(response);
+                                trazarRuta(jso);
+                                Log.i("jsonRuta: ",""+response);
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+
+                        }
+                    });
+
+                    queue.add(stringRequest);
+                }
+            }
+        });
+
+    }
+
+    private void trazarRuta(JSONObject jso) {
+
+        JSONArray jRoutes;
+        JSONArray jLegs;
+        JSONArray jSteps;
+
+        try {
+            jRoutes = jso.getJSONArray("routes");
+            for (int i=0; i<jRoutes.length();i++){
+
+                jLegs = ((JSONObject)(jRoutes.get(i))).getJSONArray("legs");
+
+                for (int j=0; j<jLegs.length();j++){
+
+                    jSteps = ((JSONObject)jLegs.get(j)).getJSONArray("steps");
+
+                    for (int k = 0; k<jSteps.length();k++){
+
+                        String polyline = ""+((JSONObject)((JSONObject)jSteps.get(k)).get("polyline")).get("points");
+                        Log.i("end",""+polyline);
+                        List<LatLng> list = PolyUtil.decode(polyline);
+                        mMap.addPolyline(new PolylineOptions().addAll(list).color(Color.GRAY).width(5));
+
+                    }
+                }
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -188,27 +267,12 @@ public class ubicacion extends Fragment implements OnMapReadyCallback {
                     // for ActivityCompat#requestPermissions for more details.
                     return;
                 }
-                mMap.setMyLocationEnabled(true);
             } else {
                 Toast.makeText(getActivity(), "Error de permisos", Toast.LENGTH_LONG).show();
             }
 
         }
     }
-
-
-    private void enviarMensaje (String numero, String mensaje){
-        try {
-            SmsManager sms = SmsManager.getDefault();
-            sms.sendTextMessage(numero,null,mensaje,null,null);
-            Toast.makeText(view.getContext(), "Mensaje Enviado.", Toast.LENGTH_LONG).show();
-        }
-        catch (Exception e) {
-            Toast.makeText(view.getContext(), "Mensaje no enviado, datos incorrectos.", Toast.LENGTH_LONG).show();
-            e.printStackTrace();
-        }
-    }
-
 
 
     //El fragment se ha adjuntado al Activity
@@ -224,6 +288,10 @@ public class ubicacion extends Fragment implements OnMapReadyCallback {
 
     }
 
+    public interface OnFragmentInteractionListener {
+        // TODO: Update argument type and name
+        void onFragmentInteraction(Uri uri);
+    }
 
 
     //La vista ha sido creada y cualquier configuración guardada está cargada

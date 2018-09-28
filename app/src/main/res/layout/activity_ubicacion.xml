@@ -11,20 +11,49 @@
         android:id="@+id/mapaUbicacion"
         android:layout_width="match_parent"
         android:layout_margin="20dp"
-        android:layout_height="400dp" />
+        android:layout_height="380dp" />
 
-    <Button
-        android:id="@+id/botonAuxilio"
-        android:layout_width="336dp"
-        android:layout_height="wrap_content"
+    <ImageView
+        android:id="@+id/ua_imagen"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_alignStart="@+id/mapaUbicacion"
-        android:layout_alignEnd="@id/mapaUbicacion"
         android:layout_below="@+id/mapaUbicacion"
-        android:layout_marginTop="-10dp"
-        android:background="@drawable/bg_rojo_redondo"
-        android:textAllCaps="false"
+        app:srcCompat="@drawable/ic_persona_ua" />
+
+    <TextView
+        android:id="@+id/ua_nombre"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_alignTop="@+id/ua_imagen"
+        android:layout_toEndOf="@+id/ua_imagen"
+        android:layout_marginLeft="20dp"
         android:textColor="@color/colorBlanco"
-        android:text="Auxilio" />
+        android:textColorHint="@color/colorBlanco"
+        android:textSize="20dp"
+        android:text="Mauricio" />
+
+    <TextView
+        android:id="@+id/ua_bateria"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_alignTop="@+id/ua_imagen"
+        android:layout_toEndOf="@+id/ua_nombre"
+        android:layout_marginLeft="20dp"
+        android:textColor="@color/colorBlanco"
+        android:drawableLeft="@drawable/ic_bateria"
+        android:text="75%" />
+
+    <TextView
+        android:id="@+id/ua_lugar_ubicacion"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_marginLeft="20sp"
+        android:layout_alignBottom="@+id/ua_imagen"
+        android:layout_toEndOf="@+id/ua_imagen"
+        android:textColor="@color/colorBlanco"
+        android:textSize="15dp"
+        android:text="Cerca de Tecnológico #252, Metepec" />
 
 
 </RelativeLayout>

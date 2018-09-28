@@ -8,11 +8,13 @@ import android.widget.TextView;
 
 public class itemHistorialAdaptador {
 
-    public static class ViewHolder extends RecyclerView.ViewHolder{
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener{
 
         CardView cardView;
         TextView lugar,hora;
         ImageView imagenH;
+
+        ItemLongClickListener itemLongClickListener;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -20,6 +22,20 @@ public class itemHistorialAdaptador {
             lugar=(TextView) itemView.findViewById(R.id.h_desc);
             hora=(TextView) itemView.findViewById(R.id.h_tiempo);
             imagenH=(ImageView) itemView.findViewById(R.id.h_imagen);
+
+            itemView.setOnLongClickListener(this);
+
+        }
+
+        public void setItemLongClickListener(ItemLongClickListener ic)
+        {
+            this.itemLongClickListener=ic;
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            this.itemLongClickListener.onItemLongClick(v,getLayoutPosition());
+            return false;
         }
     }
 }

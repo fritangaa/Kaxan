@@ -8,20 +8,34 @@ import android.widget.TextView;
 
 public class objEventoViewHolder {
 
-    public static class ViewHolder extends RecyclerView.ViewHolder{
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener{
 
         CardView cardView;
-        TextView lugar,dia,horaIni,horaFin;
-        Button eliminar;
+        TextView nombre,dia,horaIni;
+        Button mapa;
+
+        ItemLongClickListener itemLongClickListener;
 
         public ViewHolder(View itemView) {
             super(itemView);
             cardView=(CardView)itemView.findViewById(R.id.cardview);
-            lugar=(TextView) itemView.findViewById(R.id.obj_lugar);
+            nombre=(TextView) itemView.findViewById(R.id.obj_etiqueta);
             dia=(TextView) itemView.findViewById(R.id.obj_dia);
-            horaIni=(TextView) itemView.findViewById(R.id.obj_horaI);
-            horaFin=(TextView) itemView.findViewById(R.id.obj_horaF);
-            eliminar=(Button) itemView.findViewById(R.id.obj_eliminar);
+            horaIni=(TextView) itemView.findViewById(R.id.obj_hora);
+            mapa=(Button) itemView.findViewById(R.id.obj_lugar);
+
+            itemView.setOnLongClickListener(this);
+        }
+
+        public void setItemLongClickListener(ItemLongClickListener ic)
+        {
+            this.itemLongClickListener=ic;
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            this.itemLongClickListener.onItemLongClick(v,getLayoutPosition());
+            return false;
         }
     }
 }

@@ -19,10 +19,13 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.content.ContextCompat;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -39,6 +42,8 @@ public class inicio extends Fragment implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private MapView mMapView;
+
+    private Button auxilio;
 
     private static final int LOCATION_REQUEST_CODE = 1;
 
@@ -86,6 +91,26 @@ public class inicio extends Fragment implements OnMapReadyCallback {
             dialog.show();
 
         }
+
+
+        auxilio = view.findViewById(R.id.botonAuxilio);
+
+        if(ActivityCompat.checkSelfPermission(
+                getActivity(), Manifest.permission.SEND_SMS)
+                != PackageManager.PERMISSION_GRANTED&& ActivityCompat.checkSelfPermission(
+                view.getContext(),Manifest
+                        .permission.SEND_SMS)!= PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(getActivity(),new String[]
+                    { Manifest.permission.SEND_SMS,},1000);
+        }else{
+        };
+        auxilio.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                enviarMensaje("+527221164007","Necesito ayuda, utiliza mi ubicación");
+            }
+        });
+
+
 
         return view;
     }
@@ -177,6 +202,17 @@ public class inicio extends Fragment implements OnMapReadyCallback {
 
     }
 
+    private void enviarMensaje (String numero, String mensaje){
+        try {
+            SmsManager sms = SmsManager.getDefault();
+            sms.sendTextMessage(numero,null,mensaje,null,null);
+            Toast.makeText(view.getContext(), "Mensaje Enviado.", Toast.LENGTH_LONG).show();
+        }
+        catch (Exception e) {
+            Toast.makeText(view.getContext(), "Mensaje no enviado, datos incorrectos.", Toast.LENGTH_LONG).show();
+            e.printStackTrace();
+        }
+    }
 
     //El fragment se ha adjuntado al Activity
     @Override

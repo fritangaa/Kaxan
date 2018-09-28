@@ -21,9 +21,9 @@ public class menu extends AppCompatActivity {
                 case R.id.navigation_ubicacion:
                     loadUbicacion();
                     return true;
-                case R.id.navigation_historial:
+                /*case R.id.navigation_historial:
                     loadHistorial();
-                    return true;
+                    return true;*/
                 case R.id.navigation_principal:
                     loadInicio();
                     return true;
@@ -59,13 +59,13 @@ public class menu extends AppCompatActivity {
         ft.commit();
     }
 
-    private void loadHistorial() {
+    /*private void loadHistorial() {
 
         historial fragment = historial.newInstance();
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.replace(R.id.fragment_frame, fragment);
         ft.commit();
-    }
+    }*/
 
     private void loadInicio() {
 

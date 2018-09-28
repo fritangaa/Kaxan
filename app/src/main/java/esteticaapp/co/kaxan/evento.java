@@ -169,7 +169,7 @@ public class evento extends Fragment implements OnMapReadyCallback {
                 String lugar = textoLugar.getText().toString();
                 String id = databaseReference.push().getKey();
 
-                objEvento nuevoEvento=new objEvento(dia,horaIn,horaFin,lugar,false);
+                objEvento nuevoEvento=new objEvento("Fiesta",dia,horaIn,horaFin,lugar,false);
 
                 databaseReference.child(firebaseAuth.getUid()).child("evento").child(id).setValue(nuevoEvento);
 

@@ -3,13 +3,13 @@
 
     <item
         android:id="@+id/navigation_ubicacion"
-        android:icon="@drawable/ic_mapa"
-        android:title="@string/titulo_ubicacion" />
+        android:icon="@drawable/ic_ua"
+        android:title="Monitor" />
 
-    <item
+    <!--- <item
         android:id="@+id/navigation_historial"
         android:icon="@drawable/ic_historial_menu"
-        android:title="@string/titulo_historial" />
+        android:title="@string/titulo_historial" /> -->
 
     <item
         android:id="@+id/navigation_principal"
