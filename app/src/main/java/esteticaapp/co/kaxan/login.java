@@ -6,9 +6,13 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -64,6 +68,25 @@ public class login extends AppCompatActivity {
             }
         });
 
+        textoContrasena.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                boolean procesado = false;
+
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    // Mostrar mensaje
+                    loguearUsuario();
+                    // Ocultar teclado virtual
+                    InputMethodManager imm =
+                            (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+
+                    procesado = true;
+                }
+                return procesado;
+            }
+        });
+
     }
 
     private void registrarUsuario(){
@@ -102,6 +125,8 @@ public class login extends AppCompatActivity {
                         progressDialog.dismiss();
                     }
                 });
+
+
 
     }
 

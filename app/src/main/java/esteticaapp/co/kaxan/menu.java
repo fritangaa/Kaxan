@@ -53,7 +53,7 @@ public class menu extends AppCompatActivity {
 
     private void loadEvento() {
 
-        evento fragment = evento.newInstance();
+        listaEventos fragment = listaEventos.newInstance();
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.replace(R.id.fragment_frame, fragment);
         ft.commit();

@@ -6,7 +6,6 @@ import android.app.Fragment;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Color;
-import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -19,20 +18,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.PolyUtil;
 
@@ -164,54 +154,6 @@ public class ubicacion extends Fragment implements OnMapReadyCallback {
 
         mMap.getUiSettings().setZoomControlsEnabled(true);
 
-        mMap.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
-            @Override
-            public void onMyLocationChange(Location location) {
-
-                if (actualPosition){
-                    latitudOrigen = location.getLatitude();
-                    longitudOrigen = location.getLongitude();
-                    actualPosition=false;
-
-                    LatLng miPosicion = new LatLng(latitudOrigen,longitudOrigen);
-
-                    mMap.addMarker(new MarkerOptions().position(miPosicion).title("Aqui estoy yo"));
-
-                    CameraPosition cameraPosition = new CameraPosition.Builder()
-                            .target(new LatLng(latitudOrigen,longitudOrigen))      // Sets the center of the map to Mountain View
-                            .zoom(17)
-                            .bearing(90)// Sets the zoom
-                            .build();                   // Creates a CameraPosition from the builder
-                    mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-
-                    //String url ="https://maps.googleapis.com/maps/api/directions/json?origin="+latitudOrigen+","+longitudOrigen+"&destination=19.256953, -99.577957";
-                    String url ="https://maps.googleapis.com/maps/api/directions/json?origin=Brooklyn&destination=Queens&mode=transit&key=AIzaSyAE_Y80d5V4J4jKH2-VZ_PIJrIsTPxOf58";
-                    RequestQueue queue = Volley.newRequestQueue(getActivity());
-                    StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-
-                            try {
-                                jso = new JSONObject(response);
-                                trazarRuta(jso);
-                                Log.i("jsonRuta: ",""+response);
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-
-                        }
-                    }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-
-                        }
-                    });
-
-                    queue.add(stringRequest);
-                }
-            }
-        });
 
     }
 

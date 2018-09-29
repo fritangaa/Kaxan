@@ -7,8 +7,408 @@
     android:background="@drawable/bg_principal"
     tools:context=".evento">
 
+    <TextView
+        android:id="@+id/textomiseventos"
+        android:layout_width="wrap_content"
+        android:layout_height="55dp"
+        android:layout_margin="10dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:text="Mis eventos"
+        android:textColor="@color/colorBlanco"
+        android:textSize="45dp" />
 
-    <ImageButton
+    <RadioGroup
+        android:id="@+id/radioOp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textomiseventos"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="10dp"
+        android:orientation="horizontal">
+
+
+        <RadioButton
+            android:id="@+id/rb_nombre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:button="@drawable/rb_background_opciones2"
+            />
+
+        <RadioButton
+            android:id="@+id/rb_lugar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:button="@drawable/rb_background_opciones3"
+            />
+
+        <RadioButton
+            android:id="@+id/rb_dia"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:button="@drawable/rb_background_opciones"
+            />
+
+        <RadioButton
+            android:id="@+id/rb_hora"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:button="@drawable/rb_background_opciones1"
+             />
+
+
+        <RadioButton
+            android:id="@+id/rb_confirma"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:button="@drawable/rb_background_opciones4"
+            />
+
+    </RadioGroup>
+
+    <RelativeLayout
+        android:id="@+id/relativeNombre"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/radioOp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="40dp"
+        android:visibility="visible"
+        >
+
+
+        <TextView
+            android:id="@+id/txtnombreEvento"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/colorBlanco"
+            android:textSize="25dp"
+            android:text="Nombre del evento" />
+
+        <EditText
+            android:id="@+id/textoNombreEvento"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:hint="Name" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/relativeLugar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/radioOp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="40dp"
+        android:visibility="invisible"
+        >
+        <TextView
+            android:id="@+id/txtlugarEvento"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/colorBlanco"
+            android:textSize="25dp"
+            android:text="Lugar del evento" />
+
+        <EditText
+            android:id="@+id/textoLugar"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/txtlugarEvento"
+            android:layout_alignStart="@+id/mapaUbicacionEvento"
+            android:ems="10"
+            android:hint="Lugar"
+            android:inputType="textPersonName" />
+
+        <ImageButton
+            android:id="@+id/boton_lugar"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="20dp"
+            android:layout_alignEnd="@+id/mapaUbicacionEvento"
+            android:layout_below="@id/txtlugarEvento"
+            android:background="@drawable/bg_rojo_redondo"
+            android:src="@drawable/ic_buscar_lugar" />
+
+        <com.google.android.gms.maps.MapView
+            android:id="@+id/mapaUbicacionEvento"
+            android:layout_width="match_parent"
+            android:layout_margin="30dp"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/boton_lugar"
+            android:layout_centerHorizontal="true" />
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/relativeDia"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/radioOp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="40dp"
+        android:visibility="invisible"
+        >
+
+        <TextView
+            android:id="@+id/txtdiaEvento"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/colorBlanco"
+            android:textSize="25dp"
+            android:text="Día del evento" />
+
+
+        <DatePicker
+            android:id="@+id/diaEvento"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/txtdiaEvento"
+            android:datePickerMode="calendar"
+            android:background="@drawable/bg_verde_redondo"
+            android:dayOfWeekBackground="@color/colorRadioButtonOn"
+            android:headerBackground="@color/colorRadioButtonOff"
+             />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/relativeHora"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/radioOp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="40dp"
+        android:visibility="invisible"
+        >
+
+        <TextView
+            android:id="@+id/txthoraEvento"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/colorBlanco"
+            android:textSize="25dp"
+            android:text="Hora del evento" />
+
+        <TextView
+            android:id="@+id/txthorainiEvento"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/colorBlanco"
+            android:layout_marginTop="10dp"
+            android:textSize="20dp"
+            android:layout_below="@id/txthoraEvento"
+            android:text="Hora de inicio"
+            />
+
+
+        <TimePicker
+            android:id="@+id/horainiEvento"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:timePickerMode="spinner"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bg_verde_redondo"
+            android:headerBackground="@color/colorRadioButtonOff"
+            android:numbersSelectorColor="@color/colorRadioButtonOn"
+            android:visibility="visible"
+            android:layout_below="@id/txthorainiEvento"
+            />
+
+        <TextView
+            android:id="@+id/txthorafinEvento"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/colorBlanco"
+            android:layout_marginTop="10dp"
+            android:textSize="20dp"
+            android:layout_below="@id/horainiEvento"
+            android:text="Hora de fin" />
+
+
+        <TimePicker
+            android:id="@+id/horafinEvento"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:timePickerMode="spinner"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bg_verde_redondo"
+            android:headerBackground="@color/colorRadioButtonOff"
+            android:numbersSelectorColor="@color/colorRadioButtonOn"
+            android:visibility="visible"
+            android:layout_below="@id/txthorafinEvento"
+            />
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/relativeConfirmacion"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/radioOp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="40dp"
+        android:visibility="invisible"
+        >
+
+        <TextView
+            android:id="@+id/textoNormal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tu Evento"
+            android:textColor="@color/colorBlanco"
+            android:textSize="24dp"
+            android:layout_marginLeft="20dp"
+            android:drawablePadding="8dp"
+
+            />
+
+        <TextView
+            android:id="@+id/textView95"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textoNormal"
+            android:text="Nombre:"
+            android:textColor="@color/colorBlanco"
+            android:textSize="18dp"
+            android:layout_marginTop="25dp"
+            android:layout_alignRight="@+id/textoNormal"
+            android:layout_alignEnd="@+id/textoNormal" />
+
+        <TextView
+            android:id="@+id/textView96"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView95"
+            android:text="Lugar:"
+            android:textSize="18dp"
+            android:textColor="@color/colorBlanco"
+            android:layout_marginTop="10dp"
+            android:layout_alignRight="@+id/textView95"
+            android:layout_alignEnd="@+id/textView95"
+            android:layout_alignLeft="@+id/textView95"
+            android:layout_alignStart="@+id/textView95" />
+
+        <TextView
+            android:id="@+id/textView97"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Día:"
+            android:textSize="18dp"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/colorBlanco"
+            android:layout_below="@+id/textView96"
+            android:layout_alignRight="@+id/textView96"
+            android:layout_alignEnd="@+id/textView96"
+            android:layout_alignLeft="@+id/textView96"
+            android:layout_alignStart="@+id/textView96" />
+
+        <TextView
+            android:id="@+id/textView98"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView97"
+            android:text="Hora:"
+            android:textColor="@color/colorBlanco"
+            android:textSize="18dp"
+            android:layout_marginTop="10dp"
+            android:layout_alignRight="@+id/textView97"
+            android:layout_alignEnd="@+id/textView97"
+            android:layout_alignLeft="@+id/textView97"
+            android:layout_alignStart="@+id/textView97" />
+
+        <TextView
+            android:id="@+id/textView85"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_alignBottom="@+id/textView95"
+            android:layout_toEndOf="@+id/textoNormal"
+            android:textColor="@color/colorBlanco"
+            android:textSize="18dp"
+            android:text="Fiesta" />
+
+        <TextView
+            android:id="@+id/textView84"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_alignBottom="@+id/textView96"
+            android:layout_toEndOf="@+id/textoNormal"
+            android:textColor="@color/colorBlanco"
+            android:textSize="18dp"
+            android:text="Pedro Ascencio #211" />
+
+        <TextView
+            android:id="@+id/textView83"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_alignBottom="@+id/textView97"
+            android:layout_toEndOf="@+id/textoNormal"
+            android:textColor="@color/colorBlanco"
+            android:textSize="18dp"
+            android:text="21/Octubre/2018" />
+
+        <TextView
+            android:id="@+id/textView82"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:textColor="@color/colorBlanco"
+            android:textSize="18dp"
+            android:layout_alignBottom="@+id/textView98"
+            android:layout_toEndOf="@+id/textoNormal"
+            android:text="De las 8:30 a las 9:30" />
+
+        <ImageButton
+            android:id="@+id/boton_aceptar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/bg_verde_redondo"
+            android:src="@drawable/ic_palomita" />
+
+
+    </RelativeLayout>
+
+
+
+    <!-- <ImageButton
         android:id="@+id/boton_eventos"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -147,6 +547,6 @@
         android:textColor="@color/colorBlanco"
         android:textSize="18dp"
         android:text="Hora" />
-
+-->!
 
 </RelativeLayout>

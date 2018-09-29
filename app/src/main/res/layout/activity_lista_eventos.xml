@@ -21,7 +21,7 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/lista_eventos"
         android:layout_width="match_parent"
-        android:layout_height="444dp"
+        android:layout_height="300dp"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/texview_eventos"
         android:layout_marginBottom="10dp"
@@ -30,5 +30,18 @@
         android:layout_marginRight="10dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp" />
+
+    <Button
+        android:id="@+id/boton_eventos"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:layout_below="@id/lista_eventos"
+        android:layout_alignParentStart="true"
+        android:background="@drawable/bg_verde_redondo"
+        android:text="Agregar Evento"
+        android:textAllCaps="false"
+        android:textColor="@color/colorBlanco"
+        android:textSize="30dp" />
 
 </RelativeLayout>

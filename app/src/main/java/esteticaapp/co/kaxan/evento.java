@@ -1,26 +1,26 @@
 package esteticaapp.co.kaxan;
 
 import android.Manifest;
-import android.app.Activity;
-import android.app.DatePickerDialog;
-import android.app.Fragment;
-import android.app.TimePickerDialog;
-import android.content.Context;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.location.Address;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.LayoutInflater;
+import android.view.KeyEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
+import android.view.inputmethod.EditorInfo;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -33,12 +33,26 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.Calendar;
 import java.util.List;
 
-public class evento extends Fragment implements OnMapReadyCallback {
+
+public class evento extends AppCompatActivity implements OnMapReadyCallback, View.OnClickListener {
 
     DatabaseReference databaseReference;
+
+    private RadioGroup opcionesC;
+    private DatePicker calendario;
+    private TimePicker relojInicio, relojFin;
+    private RelativeLayout nombreEvento;
+    private RelativeLayout lugarEvento;
+    private RelativeLayout diaEvento;
+    private RelativeLayout horaEvento;
+    private RelativeLayout confirmarEvento;
+
+    private String fecha;
+    private String horaIni, horaFinal;
+
+    String[] mes = {"Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"};
 
     private View view;
 
@@ -46,40 +60,11 @@ public class evento extends Fragment implements OnMapReadyCallback {
     private MapView mMapView;
     private static final int LOCATION_REQUEST_CODE = 1;
 
-    //Dia
-    private static final String CERO = "0";
-    private static final String BARRA = "/";
-    //Hora
-    private static final String DOS_PUNTOS = ":";
-
-
-    //Calendario para obtener fecha & hora
-    public final Calendar c = Calendar.getInstance();
-
-    //Variables para obtener la fecha
-    final int mes = c.get(Calendar.MONTH);
-    final int dia = c.get(Calendar.DAY_OF_MONTH);
-    final int anio = c.get(Calendar.YEAR);
-
-    //Variables para obtener la hora hora
-    final int hora = c.get(Calendar.HOUR_OF_DAY);
-    final int minuto = c.get(Calendar.MINUTE);
 
     //Widgets
-    TextView etFecha;
-    ImageButton ibObtenerFecha;
+    EditText textoNombre, textoLugar;
+    TextView conNombre, conLugar, conDia, conHora;
 
-    //Widgets
-    TextView etHora;
-    ImageButton ibObtenerHora;
-
-    //Widgets
-    TextView etHora2;
-    ImageButton ibObtenerHora2;
-
-    //Widgets lugar
-    TextView textoLugar;
-    ImageButton btnLugar;
     private String direccion;
     private List<Address> address;
 
@@ -87,16 +72,12 @@ public class evento extends Fragment implements OnMapReadyCallback {
     private FirebaseAuth firebaseAuth;
 
 
-    ImageButton agregarEvento, verEvento;
+    ImageButton agregarEvento, btnLugar;
 
-    public static evento newInstance(){
-        return new evento();
-    }
-
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.activity_evento, container, false);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_evento);
 
         //FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         databaseReference= FirebaseDatabase.getInstance().getReference();
@@ -104,44 +85,56 @@ public class evento extends Fragment implements OnMapReadyCallback {
         //inicializamos el objeto firebaseAuth
         firebaseAuth = FirebaseAuth.getInstance();
 
-        etFecha = view.findViewById(R.id.texto_dia);
-        //Widget ImageButton del cual usaremos el evento clic para obtener la fecha
-        ibObtenerFecha = view.findViewById(R.id.boton_dia);
-        //Evento setOnClickListener - clic
-        ibObtenerFecha.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                obtenerFecha();
+
+        opcionesC = (RadioGroup) findViewById(R.id.radioOp);//Grupo de opciones para armar cita
+        final RadioButton opcionI1 = (RadioButton) opcionesC.getChildAt(0);
+        final RadioButton opcionI2 = (RadioButton) opcionesC.getChildAt(1);
+        final RadioButton opcionI3 = (RadioButton) opcionesC.getChildAt(2);
+        final RadioButton opcionI4 = (RadioButton) opcionesC.getChildAt(3);
+        final RadioButton opcionI5 = (RadioButton) opcionesC.getChildAt(4);
+
+        calendario = (DatePicker) findViewById(R.id.diaEvento);
+        relojInicio = (TimePicker) findViewById(R.id.horainiEvento);//Reloj para el tiempo
+        relojFin = (TimePicker) findViewById(R.id.horafinEvento);//Reloj para el tiempo
+
+        nombreEvento = (RelativeLayout) findViewById(R.id.relativeNombre);
+        lugarEvento = (RelativeLayout) findViewById(R.id.relativeLugar);
+        diaEvento = (RelativeLayout) findViewById(R.id.relativeDia);
+        horaEvento = (RelativeLayout) findViewById(R.id.relativeHora);
+        confirmarEvento = (RelativeLayout) findViewById(R.id.relativeConfirmacion);
+
+        //nombre
+        textoNombre = findViewById(R.id.textoNombreEvento);
+        //lugar
+        btnLugar = findViewById(R.id.boton_lugar);
+        textoLugar = findViewById(R.id.textoLugar);
+        //dia
+        fecha = (""+calendario.getYear()+"/"+calendario.getMonth()+"/"+calendario.getDayOfMonth());
+        //hora
+        horaIni = (relojInicio.getCurrentHour()+":"+relojInicio.getCurrentMinute()+":00");
+        horaFinal = (relojFin.getCurrentHour()+":"+relojFin.getCurrentMinute()+":00");
+        //confirmacion
+        conNombre = findViewById(R.id.textView85);
+        conLugar =  findViewById(R.id.textView84);
+        conDia =  findViewById(R.id.textView83);
+        conHora =  findViewById(R.id.textView82);
+        agregarEvento = findViewById(R.id.boton_aceptar);
+        opcionI1.setChecked(true);
+
+
+        textoNombre.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                boolean procesado = false;
+
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    // Mostrar mensaje
+                    opcionI2.setChecked(true);
+                    procesado = true;
+                }
+                return procesado;
             }
         });
-
-
-        //Widget EditText donde se mostrara la hora obtenida
-        etHora = view.findViewById(R.id.texto_hora_inicio);
-        //Widget ImageButton del cual usaremos el evento clic para obtener la hora
-        ibObtenerHora = view.findViewById(R.id.boton_hora_inicio);
-        //Evento setOnClickListener - clic
-        ibObtenerHora.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                obtenerHora(etHora);
-            }
-        });
-
-        //Widget EditText donde se mostrara la hora obtenida
-        etHora2 = view.findViewById(R.id.texto_hora_fin);
-        //Widget ImageButton del cual usaremos el evento clic para obtener la hora
-        ibObtenerHora2 = view.findViewById(R.id.boton_hora_fin);
-        //Evento setOnClickListener - clic
-        ibObtenerHora2.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                obtenerHora(etHora2);
-            }
-        });
-
-        agregarEvento = view.findViewById(R.id.boton_aceptar);
-        verEvento = view.findViewById(R.id.boton_eventos);
-
-        btnLugar = view.findViewById(R.id.boton_lugar);
-        textoLugar = view.findViewById(R.id.texto_lugar);
 
         btnLugar.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -153,108 +146,73 @@ public class evento extends Fragment implements OnMapReadyCallback {
                     toast("Buscando \""+direccion+"\"");
 
                 }
-
                 // Ocultar el teclado
-                InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(textoLugar.getWindowToken(), 0);
             }
 
         });
 
-         agregarEvento.setOnClickListener(new View.OnClickListener() {
+        agregarEvento.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                String dia = etFecha.getText().toString();
-                String horaIn = etHora.getText().toString();
-                String horaFin = etHora2.getText().toString();
-                String lugar = textoLugar.getText().toString();
-                String id = databaseReference.push().getKey();
 
-                objEvento nuevoEvento=new objEvento("Fiesta",dia,horaIn,horaFin,lugar,false);
+                AlertDialog.Builder dialogo1 = new AlertDialog.Builder(evento.this);
+                dialogo1.setTitle("Importante");
+                dialogo1.setIcon(R.drawable.ic_alerta_notificacion);
+                dialogo1.setMessage("¿Quieres agregar el evento?");
+                dialogo1.setCancelable(false);
+                dialogo1.setPositiveButton("Agregar", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialogo1, int id) {
 
-                databaseReference.child(firebaseAuth.getUid()).child("evento").child(id).setValue(nuevoEvento);
+                        String nom = conNombre.getText().toString();
+                        String dia = fecha;
+                        String horaIn = horaIni;
+                        String horaFin = horaFinal;
+                        String lugar = textoLugar.getText().toString();
+                        String idusu = databaseReference.push().getKey();
 
-                Toast.makeText(view.getContext(), "Evento registrado", Toast.LENGTH_SHORT).show();
+                        objEvento nuevoEvento=new objEvento(nom,dia,horaIn,horaFin,lugar,false);
+
+                        databaseReference.child(firebaseAuth.getUid()).child("evento").child(idusu).setValue(nuevoEvento);
+                        
+                        Toast.makeText(evento.this, "Evento registrado", Toast.LENGTH_SHORT).show();
+
+                        Intent intent = new Intent(evento.this, menu.class);
+                        startActivity(intent);
+                        finish();
+
+                    }
+                });
+                dialogo1.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialogo1, int id) {
+                    }
+                });
+                dialogo1.show();
+
+
+
             }
 
         });
 
-        verEvento.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), listaEventos.class);
-                startActivity(intent);
-            }
 
-        });
-
-        mMapView = view.findViewById(R.id.mapaUbicacionEvento);
+        mMapView = findViewById(R.id.mapaUbicacionEvento);
         if (mMapView != null) {
             mMapView.onCreate(null);
             mMapView.onResume();
             mMapView.getMapAsync(this);
         }
 
+        opcionI1.setOnClickListener(this);
+        opcionI2.setOnClickListener(this);
+        opcionI3.setOnClickListener(this);
+        opcionI4.setOnClickListener(this);
+        opcionI5.setOnClickListener(this);
 
-
-        return view;
     }
 
 
 
     public void toast(String mensaje){
-        Toast.makeText(view.getContext(), mensaje, Toast.LENGTH_SHORT).show();
-    }
-
-
-    private void obtenerFecha(){
-        DatePickerDialog recogerFecha = new DatePickerDialog(view.getContext(), new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                //Esta variable lo que realiza es aumentar en uno el mes ya que comienza desde 0 = enero
-                final int mesActual = month + 1;
-                //Formateo el día obtenido: antepone el 0 si son menores de 10
-                String diaFormateado = (dayOfMonth < 10)? CERO + String.valueOf(dayOfMonth):String.valueOf(dayOfMonth);
-                //Formateo el mes obtenido: antepone el 0 si son menores de 10
-                String mesFormateado = (mesActual < 10)? CERO + String.valueOf(mesActual):String.valueOf(mesActual);
-                //Muestro la fecha con el formato deseado
-                etFecha.setText(diaFormateado + BARRA + mesFormateado + BARRA + year);
-
-
-            }
-            //Estos valores deben ir en ese orden, de lo contrario no mostrara la fecha actual
-            /**
-             *También puede cargar los valores que usted desee
-             */
-        },anio, mes, dia);
-        //Muestro el widget
-        recogerFecha.show();
-
-    }
-
-
-    private void obtenerHora(final TextView textView){
-        TimePickerDialog recogerHora = new TimePickerDialog(view.getContext(), new TimePickerDialog.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                //Formateo el hora obtenido: antepone el 0 si son menores de 10
-                String horaFormateada =  (hourOfDay < 10)? String.valueOf(CERO + hourOfDay) : String.valueOf(hourOfDay);
-                //Formateo el minuto obtenido: antepone el 0 si son menores de 10
-                String minutoFormateado = (minute < 10)? String.valueOf(CERO + minute):String.valueOf(minute);
-                //Obtengo el valor a.m. o p.m., dependiendo de la selección del usuario
-                String AM_PM;
-                if(hourOfDay < 12) {
-                    AM_PM = "a.m.";
-                } else {
-                    AM_PM = "p.m.";
-                }
-                //Muestro la hora con el formato deseado
-                textView.setText(horaFormateada + DOS_PUNTOS + minutoFormateado + " " + AM_PM);
-            }
-            //Estos valores deben ir en ese orden
-            //Al colocar en false se muestra en formato 12 horas y true en formato 24 horas
-            //Pero el sistema devuelve la hora en formato 24 horas
-        }, hora, minuto, false);
-
-        recogerHora.show();
+        Toast.makeText(evento.this, mensaje, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -266,7 +224,7 @@ public class evento extends Fragment implements OnMapReadyCallback {
             // in a raw resource file.
             boolean success = googleMap.setMapStyle(
                     MapStyleOptions.loadRawResourceStyle(
-                            view.getContext(), R.raw.mapstyle));
+                            evento.this, R.raw.mapstyle));
 
             if (!success) {
                 Log.e("ubicacion", "Style parsing failed.");
@@ -276,17 +234,17 @@ public class evento extends Fragment implements OnMapReadyCallback {
         }
 
         // Controles UI
-        if (ContextCompat.checkSelfPermission(view.getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+        if (ContextCompat.checkSelfPermission(evento.this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             mMap.setMyLocationEnabled(true);
         } else {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
+            if (ActivityCompat.shouldShowRequestPermissionRationale(evento.this,
                     Manifest.permission.ACCESS_FINE_LOCATION)) {
                 // Mostrar diálogo explicativo
             } else {
                 // Solicitar permiso
                 ActivityCompat.requestPermissions(
-                        getActivity(),
+                        evento.this,
                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                         LOCATION_REQUEST_CODE);
             }
@@ -297,44 +255,59 @@ public class evento extends Fragment implements OnMapReadyCallback {
 
     }
 
-
-    //El fragment se ha adjuntado al Activity
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onClick(View view) {
+
+
+        switch (view.getId()) {
+            case R.id.rb_nombre:
+                nombreEvento.setVisibility(View.VISIBLE);
+                lugarEvento.setVisibility(View.INVISIBLE);
+                diaEvento.setVisibility(View.INVISIBLE);
+                horaEvento.setVisibility(View.INVISIBLE);
+                confirmarEvento.setVisibility(View.INVISIBLE);
+                break;
+
+            case R.id.rb_lugar:
+                nombreEvento.setVisibility(View.INVISIBLE);
+                lugarEvento.setVisibility(View.VISIBLE);
+                diaEvento.setVisibility(View.INVISIBLE);
+                horaEvento.setVisibility(View.INVISIBLE);
+                confirmarEvento.setVisibility(View.INVISIBLE);
+                break;
+
+            case R.id.rb_dia:
+                nombreEvento.setVisibility(View.INVISIBLE);
+                lugarEvento.setVisibility(View.INVISIBLE);
+                diaEvento.setVisibility(View.VISIBLE);
+                horaEvento.setVisibility(View.INVISIBLE);
+                confirmarEvento.setVisibility(View.INVISIBLE);
+                break;
+
+            case R.id.rb_hora:
+                nombreEvento.setVisibility(View.INVISIBLE);
+                lugarEvento.setVisibility(View.INVISIBLE);
+                diaEvento.setVisibility(View.INVISIBLE);
+                horaEvento.setVisibility(View.VISIBLE);
+                confirmarEvento.setVisibility(View.INVISIBLE);
+                break;
+
+            case R.id.rb_confirma:
+                nombreEvento.setVisibility(View.INVISIBLE);
+                lugarEvento.setVisibility(View.INVISIBLE);
+                diaEvento.setVisibility(View.INVISIBLE);
+                horaEvento.setVisibility(View.INVISIBLE);
+                confirmarEvento.setVisibility(View.VISIBLE);
+
+                conNombre.setText(textoNombre.getText().toString());
+                conLugar.setText(textoLugar.getText().toString());
+                conDia.setText(calendario.getDayOfMonth()+" de "+mes[calendario.getMonth()]);
+                conHora.setText("De las "+ relojInicio.getCurrentHour()+":"+relojInicio.getCurrentMinute()+" a las "+ relojFin.getCurrentHour()+":"+relojFin.getCurrentMinute());
+
+
+                break;
+
+        }
+
     }
-
-    //El Fragment ha sido creado
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }
-
-
-    //La vista de layout ha sido creada y ya está disponible
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-    }
-
-    //La vista ha sido creada y cualquier configuración guardada está cargada
-    @Override
-    public void onViewStateRestored(Bundle savedInstanceState) {
-        super.onViewStateRestored(savedInstanceState);
-    }
-
-    //El Activity que contiene el Fragment ha terminado su creación
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
-
-    //El Fragment ha sido quitado de su Activity y ya no está disponible
-    @Override
-    public void onDetach() {
-        super.onDetach();
-    }
-
-
 }

@@ -1,12 +1,18 @@
 package esteticaapp.co.kaxan;
 
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Fragment;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -15,7 +21,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 
-public class listaEventos extends AppCompatActivity {
+public class listaEventos extends Fragment{
+
+    private View view;
+
+    Button verEvento;
 
     RecyclerView listadeEventos;
 
@@ -26,10 +36,15 @@ public class listaEventos extends AppCompatActivity {
 
     FirebaseRecyclerAdapter<objEvento,objEventoViewHolder.ViewHolder> adapter;
 
+    public static listaEventos newInstance(){
+        return new listaEventos();
+    }
+
+
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_lista_eventos);
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.activity_lista_eventos, container, false);
 
         //FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         databaseReference= FirebaseDatabase.getInstance().getReference();
@@ -38,10 +53,11 @@ public class listaEventos extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
 
 
-        listadeEventos = findViewById(R.id.lista_eventos);
+        verEvento = view.findViewById(R.id.boton_eventos);
+        listadeEventos = view.findViewById(R.id.lista_eventos);
 
 
-        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(this);
+        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(view.getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         listadeEventos.setLayoutManager(linearLayoutManager);
 
@@ -55,32 +71,35 @@ public class listaEventos extends AppCompatActivity {
             protected void populateViewHolder(objEventoViewHolder.ViewHolder viewHolder,
                                               objEvento model, final int position) {
                 viewHolder.nombre.setText(model.getNombre());
+                //------------------------------------------------------
+
+                //------------------------------------------------------
                 viewHolder.dia.setText(model.getDia());
                 viewHolder.horaIni.setText(model.getHoraInicio());
                 viewHolder.mapa.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Toast.makeText(getApplicationContext(), "Muestra mapa", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(view.getContext(), "Muestra mapa", Toast.LENGTH_SHORT).show();
                         //adapter.getRef(position).removeValue();
                     }
                 });
                 viewHolder.setItemLongClickListener(new ItemLongClickListener() {
                     @Override
                     public void onItemLongClick(View v, int pos) {
-                        AlertDialog.Builder dialogo1 = new AlertDialog.Builder(listaEventos.this);
+                        AlertDialog.Builder dialogo1 = new AlertDialog.Builder(view.getContext());
                         dialogo1.setTitle("¡Aviso!");
                         dialogo1.setIcon(R.drawable.ic_alerta_notificacion);
                         dialogo1.setMessage("El evento que seleccionaste se eliminara");
                         dialogo1.setCancelable(false);
                         dialogo1.setPositiveButton("Eliminar", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialogo1, int id) {
-                                Toast.makeText(getApplicationContext(), "Evento eliminado", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(view.getContext(), "Evento eliminado", Toast.LENGTH_SHORT).show();
                                 adapter.getRef(position).removeValue();
                             }
                         });
                         dialogo1.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialogo1, int id) {
-                                Toast.makeText(getApplicationContext(), "El evento no se elimino", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(view.getContext(), "El evento no se elimino", Toast.LENGTH_SHORT).show();
                             }
                         });
                         dialogo1.show();
@@ -93,6 +112,54 @@ public class listaEventos extends AppCompatActivity {
 
         listadeEventos.setAdapter(adapter);
 
+        verEvento.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), evento.class);
+                startActivity(intent);
+            }
+
+        });
+
+
+        return view;
+    }
+
+    //El fragment se ha adjuntado al Activity
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+    }
+
+    //El Fragment ha sido creado
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
     }
+
+
+    //La vista de layout ha sido creada y ya está disponible
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+    }
+
+    //La vista ha sido creada y cualquier configuración guardada está cargada
+    @Override
+    public void onViewStateRestored(Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+    }
+
+    //El Activity que contiene el Fragment ha terminado su creación
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+    }
+
+    //El Fragment ha sido quitado de su Activity y ya no está disponible
+    @Override
+    public void onDetach() {
+        super.onDetach();
+    }
+
 }

@@ -6,4 +6,9 @@
     <color name="colorBlanco">#FFF</color>
     <color name="colorNegro">#000</color>
     <color name="black_overlay">#66000000</color>
+
+    <color name="colorRadioButtonOn">#3DC2B1</color>
+    <color name="colorRadioButtonOff">#24BCAB</color>
+    <color name="itemselec">#5dafe6</color>
+
 </resources>
