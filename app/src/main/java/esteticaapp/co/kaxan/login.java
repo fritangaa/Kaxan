@@ -1,6 +1,5 @@
 package esteticaapp.co.kaxan;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -15,18 +14,24 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 
+import esteticaapp.co.kaxan.UM.menu;
+
 public class login extends AppCompatActivity {
 
-    private ProgressDialog progressDialog;
+    private MaterialDialog dialog;
 
     private Button botonEntrar;
     private Button botonRegistrar;
+    private Button botonOlvidar;
+    private Button boronRecupera;
+    private TextView textoRecupera;
 
     private EditText textoUsuario;
     private EditText textoContrasena;
@@ -42,6 +47,7 @@ public class login extends AppCompatActivity {
         //inicializamos el objeto firebaseAuth
         firebaseAuth = FirebaseAuth.getInstance();
 
+
         //Referenciamos los views
         textoContrasena = findViewById(R.id.textoContrasena);
         textoUsuario = findViewById(R.id.textoUsuario);
@@ -49,9 +55,17 @@ public class login extends AppCompatActivity {
         //Referenciamos los botones
         botonEntrar = findViewById(R.id.botonEntrar);
         botonRegistrar = findViewById(R.id.botonRegistrar);
+        botonOlvidar = findViewById(R.id.botonOlvidar);
+        boronRecupera = findViewById(R.id.botonRecupera);
+        textoRecupera = findViewById(R.id.textoRecupera);
 
-        //progreso
-        progressDialog = new ProgressDialog(this);
+
+        MaterialDialog.Builder builder = new MaterialDialog.Builder(this)
+                .title("Iniciando Sesión")
+                .content("Espere...")
+                .cancelable(false)
+                .progress(true, 0);
+        dialog = builder.build();
 
 
         botonEntrar.setOnClickListener(new View.OnClickListener() {
@@ -65,6 +79,20 @@ public class login extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 registrarUsuario();
+            }
+        });
+
+        botonOlvidar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                olvidaContra();
+            }
+        });
+
+        botonOlvidar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                recuperaContra();
             }
         });
 
@@ -107,8 +135,7 @@ public class login extends AppCompatActivity {
         }
 
 
-        progressDialog.setMessage("Realizando registro en linea...");
-        progressDialog.show();
+        dialog.show();
         //creating a new user
         firebaseAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -122,7 +149,8 @@ public class login extends AppCompatActivity {
 
                             Toast.makeText(login.this,"No se pudo registrar el usuario ",Toast.LENGTH_LONG).show();
                         }
-                        progressDialog.dismiss();
+                        //progressDialog.dismiss();
+                        dialog.dismiss();
                     }
                 });
 
@@ -147,8 +175,9 @@ public class login extends AppCompatActivity {
         }
 
 
-        progressDialog.setMessage("Realizando consulta en linea...");
-        progressDialog.show();
+
+
+        dialog.show();
 
         //loguear usuario
         firebaseAuth.signInWithEmailAndPassword(email, password)
@@ -171,10 +200,22 @@ public class login extends AppCompatActivity {
                                 Toast.makeText(login.this, "No se pudo registrar el usuario ", Toast.LENGTH_LONG).show();
                             }
                         }
-                        progressDialog.dismiss();
+                        dialog.dismiss();
                     }
                 });
 
+
+    }
+
+    private void olvidaContra(){
+        textoContrasena.setVisibility(View.INVISIBLE);
+        textoRecupera.setVisibility(View.VISIBLE);
+        botonRegistrar.setVisibility(View.INVISIBLE);
+        botonEntrar.setVisibility(View.INVISIBLE);
+    }
+
+    private void recuperaContra(){
+        String emailRecupera = textoUsuario.getText().toString().trim();
 
     }
 

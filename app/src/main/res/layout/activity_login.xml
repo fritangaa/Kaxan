@@ -24,19 +24,25 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="216dp"
+        android:textSize="20dp"
+        android:textColor="@color/colorBlanco"
+        android:textColorHint="@color/colorBlanco"
         android:background="@drawable/bg_verde_redondo"
         android:drawableLeft="@drawable/ic_usuario"
         android:drawablePadding="10dp"
         android:ems="10"
         android:hint="Usuario"
         android:inputType="textPersonName"
-        android:padding="10dp"
-        android:textColorHint="@color/colorBlanco" />
+        android:padding="10dp" />
 
     <EditText
         android:id="@+id/textoContrasena"
         android:layout_width="233dp"
         android:layout_height="43dp"
+        android:visibility="visible"
+        android:textSize="20dp"
+        android:textColor="@color/colorBlanco"
+        android:textColorHint="@color/colorBlanco"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="230dp"
@@ -47,8 +53,7 @@
         android:hint="Contraseña"
         android:imeOptions="actionDone"
         android:inputType="textPassword"
-        android:padding="10dp"
-        android:textColorHint="@color/colorBlanco" />
+        android:padding="10dp" />
 
 
 
@@ -56,6 +61,7 @@
         android:id="@+id/botonRegistrar"
         android:layout_width="109dp"
         android:layout_height="wrap_content"
+        android:visibility="visible"
         android:layout_alignParentBottom="true"
         android:layout_alignStart="@+id/textoContrasena"
         android:layout_marginBottom="130dp"
@@ -63,19 +69,45 @@
         android:textColor="@color/colorNegro"
         android:background="@drawable/bg_blanco_redondo"
         android:textAllCaps="false"
+        android:textSize="16dp"
         android:text="Registrase" />
 
     <Button
         android:id="@+id/botonEntrar"
         android:layout_width="110dp"
         android:layout_height="wrap_content"
+        android:visibility="visible"
         android:layout_alignEnd="@+id/textoContrasena"
         android:layout_alignTop="@+id/botonRegistrar"
         android:textColor="@color/colorNegro"
         android:layout_marginEnd="-2dp"
+        android:textSize="16dp"
         android:background="@drawable/bg_blanco_redondo"
         android:textAllCaps="false"
         android:text="Entrar" />
+
+    <Button
+        android:id="@+id/botonRecupera"
+        android:layout_width="188dp"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:layout_alignTop="@+id/botonRegistrar"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/bg_blanco_redondo"
+        android:text="Recupera tu contraseña"
+        android:textAllCaps="false"
+        android:textColor="@color/colorNegro" />
+
+    <TextView
+        android:id="@+id/textoRecupera"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:layout_alignBaseline="@+id/textoContrasena"
+        android:layout_centerHorizontal="true"
+        android:text="Ingresa tu correo"
+        android:textColor="@color/colorBlanco"
+        android:textSize="18dp" />
 
     <Button
         android:id="@+id/botonOlvidar"
@@ -84,10 +116,10 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:text="¿Olvidaste tu contraseña?"
+        android:textSize="16dp"
         android:textColor="@color/colorBlanco"
         android:background="@android:color/transparent"
         android:textAllCaps="false"
-        android:textSize="16dp"
         />
 
 

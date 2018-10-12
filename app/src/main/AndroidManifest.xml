@@ -25,20 +25,20 @@
         android:theme="@style/AppTheme"
         >
         <activity
-            android:name=".menu"
+            android:name=".UM.menu"
             android:label="@string/app_name"
-            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:screenOrientation="portrait"
             />
-        <activity android:name=".calendario"
+        <activity android:name=".UM.Menu.calendario"
             android:screenOrientation="portrait"
             />
-        <activity android:name=".historial"
+        <activity android:name=".UM.Menu.historial"
             android:screenOrientation="portrait"
             />
         <activity
             android:name=".login"
-            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:screenOrientation="portrait"
             >
             <intent-filter>
@@ -48,20 +48,20 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".inicio"
-            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:name=".UM.Menu.inicio"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:screenOrientation="portrait"
             />
         <activity
-            android:name=".evento"
-            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:name=".UM.Menu.evento"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:screenOrientation="portrait"
             />
-        <activity android:name=".perfil"
+        <activity android:name=".UM.Menu.perfil"
             android:screenOrientation="portrait"
             />
         <activity
-            android:name=".ubicacion"
+            android:name=".UM.Menu.ubicacion"
             android:label="@string/title_activity_ubicacion"
             android:screenOrientation="portrait"
             />
@@ -78,9 +78,8 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".listaEventos"
+            android:name=".UM.Menu.listaEventos"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             ></activity>
     </application>
 

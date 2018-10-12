@@ -5,7 +5,7 @@
     android:background="@drawable/bg_principal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ubicacion">
+    tools:context=".UM.Menu.ubicacion">
 
     <com.google.android.gms.maps.MapView
         android:id="@+id/mapaUbicacion"
@@ -37,6 +37,7 @@
         android:id="@+id/ua_bateria"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
+        android:textSize="20dp"
         android:layout_alignTop="@+id/ua_imagen"
         android:layout_toEndOf="@+id/ua_nombre"
         android:layout_marginLeft="20dp"

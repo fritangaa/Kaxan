@@ -15,7 +15,6 @@
         android:id="@+id/navigation_principal"
         android:icon="@drawable/ic_alerta"
         android:title="@string/titulo_principal"
-        android:checked="true"
 
         />
     <item

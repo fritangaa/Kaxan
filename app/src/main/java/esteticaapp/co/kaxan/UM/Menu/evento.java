@@ -1,4 +1,4 @@
-package esteticaapp.co.kaxan;
+package esteticaapp.co.kaxan.UM.Menu;
 
 import android.Manifest;
 import android.app.AlertDialog;
@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -34,6 +35,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.List;
+
+import esteticaapp.co.kaxan.R;
+import esteticaapp.co.kaxan.UM.menu;
 
 
 public class evento extends AppCompatActivity implements OnMapReadyCallback, View.OnClickListener {
@@ -74,6 +78,7 @@ public class evento extends AppCompatActivity implements OnMapReadyCallback, Vie
 
     ImageButton agregarEvento, btnLugar;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,8 +116,10 @@ public class evento extends AppCompatActivity implements OnMapReadyCallback, Vie
         //dia
         fecha = (""+calendario.getYear()+"/"+calendario.getMonth()+"/"+calendario.getDayOfMonth());
         //hora
-        horaIni = (relojInicio.getCurrentHour()+":"+relojInicio.getCurrentMinute()+":00");
-        horaFinal = (relojFin.getCurrentHour()+":"+relojFin.getCurrentMinute()+":00");
+        relojFin.setIs24HourView(false);
+        relojInicio.setIs24HourView(false);
+        horaIni = (relojInicio.getHour()+":"+relojInicio.getMinute());
+        horaFinal = (relojFin.getHour()+":"+relojFin.getMinute());
         //confirmacion
         conNombre = findViewById(R.id.textView85);
         conLugar =  findViewById(R.id.textView84);
@@ -130,8 +137,39 @@ public class evento extends AppCompatActivity implements OnMapReadyCallback, Vie
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     // Mostrar mensaje
                     opcionI2.setChecked(true);
+                    nombreEvento.setVisibility(View.INVISIBLE);
+                    lugarEvento.setVisibility(View.VISIBLE);
+                    diaEvento.setVisibility(View.INVISIBLE);
+                    horaEvento.setVisibility(View.INVISIBLE);
+                    confirmarEvento.setVisibility(View.INVISIBLE);
+
+                    InputMethodManager imm =
+                            (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+
+
                     procesado = true;
                 }
+                return procesado;
+            }
+        });
+
+        textoLugar.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                boolean procesado = false;
+                direccion = textoLugar.getText().toString();
+
+                if(direccion.equals("")){
+                    toast("No hay dirección para buscar : (");
+                }else{
+                    toast("Buscando \""+direccion+"\"");
+                }
+
+                InputMethodManager imm =
+                        (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+
                 return procesado;
             }
         });
@@ -154,38 +192,45 @@ public class evento extends AppCompatActivity implements OnMapReadyCallback, Vie
         agregarEvento.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-                AlertDialog.Builder dialogo1 = new AlertDialog.Builder(evento.this);
-                dialogo1.setTitle("Importante");
-                dialogo1.setIcon(R.drawable.ic_alerta_notificacion);
-                dialogo1.setMessage("¿Quieres agregar el evento?");
-                dialogo1.setCancelable(false);
-                dialogo1.setPositiveButton("Agregar", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialogo1, int id) {
 
-                        String nom = conNombre.getText().toString();
-                        String dia = fecha;
-                        String horaIn = horaIni;
-                        String horaFin = horaFinal;
-                        String lugar = textoLugar.getText().toString();
-                        String idusu = databaseReference.push().getKey();
+                if (!conNombre.getText().toString().isEmpty() && !fecha.isEmpty() && !horaIni.toString().isEmpty() && !horaFinal.toString().isEmpty() && !textoLugar.getText().toString().isEmpty()) {
 
-                        objEvento nuevoEvento=new objEvento(nom,dia,horaIn,horaFin,lugar,false);
+                    AlertDialog.Builder dialogo1 = new AlertDialog.Builder(evento.this);
+                    dialogo1.setTitle("Importante");
+                    dialogo1.setIcon(R.drawable.ic_alerta_notificacion);
+                    dialogo1.setMessage("¿Quieres agregar el evento?");
+                    dialogo1.setCancelable(false);
+                    dialogo1.setPositiveButton("Agregar", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialogo1, int id) {
 
-                        databaseReference.child(firebaseAuth.getUid()).child("evento").child(idusu).setValue(nuevoEvento);
+                            String nom = conNombre.getText().toString();
+                            String dia = fecha;
+                            String horaIn = horaIni;
+                            String horaFin = horaFinal;
+                            String lugar = textoLugar.getText().toString();
+                            String idusu = databaseReference.push().getKey();
 
-                        Toast.makeText(evento.this, "Evento registrado", Toast.LENGTH_SHORT).show();
+                            objEvento nuevoEvento=new objEvento(nom,dia,horaIn,horaFin,lugar,false);
 
-                        Intent intent = new Intent(evento.this, menu.class);
-                        startActivity(intent);
-                        finish();
+                            databaseReference.child(firebaseAuth.getUid()).child("evento").child(idusu).setValue(nuevoEvento);
 
-                    }
-                });
-                dialogo1.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialogo1, int id) {
-                    }
-                });
-                dialogo1.show();
+                            Toast.makeText(evento.this, "Evento registrado", Toast.LENGTH_SHORT).show();
+
+                            Intent intent = new Intent(evento.this, menu.class);
+                            startActivity(intent);
+                            finish();
+
+                        }
+                    });
+                    dialogo1.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialogo1, int id) {
+                        }
+                    });
+                    dialogo1.show();
+
+                } else {
+                    Toast.makeText(evento.this, "Aun no completas el evento", Toast.LENGTH_SHORT).show();
+                }
 
 
 
@@ -206,6 +251,9 @@ public class evento extends AppCompatActivity implements OnMapReadyCallback, Vie
         opcionI3.setOnClickListener(this);
         opcionI4.setOnClickListener(this);
         opcionI5.setOnClickListener(this);
+
+
+
 
     }
 
@@ -251,6 +299,8 @@ public class evento extends AppCompatActivity implements OnMapReadyCallback, Vie
         }
 
         mMap.getUiSettings().setZoomControlsEnabled(true);
+
+
 
 
     }
@@ -304,10 +354,16 @@ public class evento extends AppCompatActivity implements OnMapReadyCallback, Vie
                 conDia.setText(calendario.getDayOfMonth()+" de "+mes[calendario.getMonth()]);
                 conHora.setText("De las "+ relojInicio.getCurrentHour()+":"+relojInicio.getCurrentMinute()+" a las "+ relojFin.getCurrentHour()+":"+relojFin.getCurrentMinute());
 
-
                 break;
 
         }
 
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
+
 }

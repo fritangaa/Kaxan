@@ -1,4 +1,4 @@
-package esteticaapp.co.kaxan;
+package esteticaapp.co.kaxan.UM.Menu;
 
 import android.Manifest;
 import android.app.Activity;
@@ -31,6 +31,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
+
+import esteticaapp.co.kaxan.R;
 
 public class ubicacion extends Fragment implements OnMapReadyCallback {
 

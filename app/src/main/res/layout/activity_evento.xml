@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_principal"
-    tools:context=".evento">
+    tools:context=".UM.Menu.evento">
 
     <TextView
         android:id="@+id/textomiseventos"
@@ -34,6 +34,7 @@
             android:layout_height="wrap_content"
             android:background="@null"
             android:button="@drawable/rb_background_opciones2"
+            android:gravity="center"
             />
 
         <RadioButton
@@ -42,6 +43,7 @@
             android:layout_height="wrap_content"
             android:background="@null"
             android:button="@drawable/rb_background_opciones3"
+            android:gravity="center"
             />
 
         <RadioButton
@@ -50,6 +52,7 @@
             android:layout_height="wrap_content"
             android:background="@null"
             android:button="@drawable/rb_background_opciones"
+            android:gravity="center"
             />
 
         <RadioButton
@@ -58,6 +61,7 @@
             android:layout_height="wrap_content"
             android:background="@null"
             android:button="@drawable/rb_background_opciones1"
+            android:gravity="center"
              />
 
 
@@ -67,7 +71,10 @@
             android:layout_height="wrap_content"
             android:background="@null"
             android:button="@drawable/rb_background_opciones4"
+            android:gravity="center"
             />
+
+
 
     </RadioGroup>
 
@@ -98,10 +105,17 @@
             android:id="@+id/textoNombreEvento"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:textColor="@color/colorBlanco"
+            android:textColorHint="@color/colorBlanco"
+            android:background="@drawable/bg_verde_redondo"
+            android:drawableLeft="@drawable/ic_evento_calendario"
+            android:padding="10dp"
+            android:drawablePadding="10dp"
             android:layout_centerInParent="true"
             android:ems="10"
             android:inputType="textPersonName"
-            android:hint="Name" />
+            android:hint="Nombre" />
 
     </RelativeLayout>
 
@@ -132,6 +146,11 @@
             android:layout_marginTop="10dp"
             android:layout_below="@id/txtlugarEvento"
             android:layout_alignStart="@+id/mapaUbicacionEvento"
+            android:textSize="20dp"
+            android:textColor="@color/colorBlanco"
+            android:textColorHint="@color/colorBlanco"
+            android:background="@drawable/bg_verde_redondo"
+            android:padding="10dp"
             android:ems="10"
             android:hint="Lugar"
             android:inputType="textPersonName" />
@@ -149,7 +168,7 @@
         <com.google.android.gms.maps.MapView
             android:id="@+id/mapaUbicacionEvento"
             android:layout_width="match_parent"
-            android:layout_margin="30dp"
+            android:layout_marginTop="25dp"
             android:layout_height="match_parent"
             android:layout_below="@+id/boton_lugar"
             android:layout_centerHorizontal="true" />
@@ -186,7 +205,7 @@
             android:layout_marginTop="10dp"
             android:layout_below="@id/txtdiaEvento"
             android:datePickerMode="calendar"
-            android:background="@drawable/bg_verde_redondo"
+            android:background="@drawable/bg_blanco_redondo_card"
             android:dayOfWeekBackground="@color/colorRadioButtonOn"
             android:headerBackground="@color/colorRadioButtonOff"
              />
@@ -230,12 +249,13 @@
         <TimePicker
             android:id="@+id/horainiEvento"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="110dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:timePickerMode="spinner"
             android:layout_marginTop="10dp"
-            android:background="@drawable/bg_verde_redondo"
+            android:background="@drawable/bg_blanco_redondo_card"
+            android:numbersTextColor="@color/colorBlanco"
             android:headerBackground="@color/colorRadioButtonOff"
             android:numbersSelectorColor="@color/colorRadioButtonOn"
             android:visibility="visible"
@@ -257,12 +277,13 @@
         <TimePicker
             android:id="@+id/horafinEvento"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="110dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:timePickerMode="spinner"
             android:layout_marginTop="10dp"
-            android:background="@drawable/bg_verde_redondo"
+            android:background="@drawable/bg_blanco_redondo_card"
+            android:numbersTextColor="@color/colorBlanco"
             android:headerBackground="@color/colorRadioButtonOff"
             android:numbersSelectorColor="@color/colorRadioButtonOn"
             android:visibility="visible"

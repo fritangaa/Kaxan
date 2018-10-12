@@ -1,4 +1,4 @@
-package esteticaapp.co.kaxan;
+package esteticaapp.co.kaxan.UM.Menu;
 
 import android.app.Fragment;
 import android.os.Bundle;
@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.firebase.auth.FirebaseAuth;
+
+import esteticaapp.co.kaxan.R;
 
 public class perfil extends Fragment {
 

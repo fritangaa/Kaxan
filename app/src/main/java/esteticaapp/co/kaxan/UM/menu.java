@@ -1,4 +1,4 @@
-package esteticaapp.co.kaxan;
+package esteticaapp.co.kaxan.UM;
 
 import android.app.FragmentTransaction;
 import android.os.Bundle;
@@ -7,6 +7,12 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.TextView;
+
+import esteticaapp.co.kaxan.R;
+import esteticaapp.co.kaxan.UM.Menu.inicio;
+import esteticaapp.co.kaxan.UM.Menu.listaEventos;
+import esteticaapp.co.kaxan.UM.Menu.perfil;
+import esteticaapp.co.kaxan.UM.Menu.ubicacion;
 
 public class menu extends AppCompatActivity {
 
@@ -47,7 +53,8 @@ public class menu extends AppCompatActivity {
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        loadUbicacion();
+        navigation.getMenu().getItem(1).setChecked(true);
+        loadInicio();
 
     }
 

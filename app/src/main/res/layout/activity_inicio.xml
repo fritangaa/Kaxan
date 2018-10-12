@@ -5,7 +5,7 @@
     android:background="@drawable/bg_principal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".inicio">
+    tools:context=".UM.Menu.inicio">
 
     <ImageView
         android:id="@+id/um_imagen"
@@ -25,9 +25,9 @@
         android:layout_alignTop="@+id/um_imagen"
         android:layout_toEndOf="@+id/um_imagen"
         android:hint="Maximiliano"
-        android:textAppearance="?attr/textAppearanceListItem"
         android:textColor="@color/colorBlanco"
         android:textColorHint="@color/colorBlanco"
+        android:textSize="18dp"
         tools:text="Max" />
 
     <TextView
@@ -65,13 +65,15 @@
         android:textColor="@color/colorBlanco" />
 
     <TextView
-        android:id="@+id/textView7"
+        android:id="@+id/textBateriaUM"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_alignTop="@+id/um_imagen"
         android:layout_toEndOf="@+id/um_nombre"
+        android:textColor="@color/colorBlanco"
+        android:textSize="18dp"
         android:drawableLeft="@drawable/ic_bateria"
-        android:text="90%" />
+        android:hint="90%" />
 
 </RelativeLayout>

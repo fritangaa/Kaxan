@@ -1,4 +1,4 @@
-package esteticaapp.co.kaxan;
+package esteticaapp.co.kaxan.UM.Menu;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -19,6 +19,8 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import esteticaapp.co.kaxan.R;
 
 
 public class listaEventos extends Fragment{

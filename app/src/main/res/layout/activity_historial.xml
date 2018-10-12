@@ -5,7 +5,7 @@
     android:background="@drawable/bg_principal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".historial">
+    tools:context=".UM.Menu.historial">
 
     <RelativeLayout
         android:id="@+id/relativeHistorial"

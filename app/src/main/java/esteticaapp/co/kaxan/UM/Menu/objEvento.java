@@ -1,4 +1,4 @@
-package esteticaapp.co.kaxan;
+package esteticaapp.co.kaxan.UM.Menu;
 
 public class objEvento {
     private String dia;

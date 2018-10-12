@@ -1,30 +1,32 @@
-package esteticaapp.co.kaxan;
+package esteticaapp.co.kaxan.UM.Menu;
 
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ImageView;
+import android.widget.Button;
 import android.widget.TextView;
 
-public class itemHistorialAdaptador {
+import esteticaapp.co.kaxan.R;
+
+public class objEventoViewHolder {
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener{
 
         CardView cardView;
-        TextView lugar,hora;
-        ImageView imagenH;
+        TextView nombre,dia,horaIni;
+        Button mapa;
 
         ItemLongClickListener itemLongClickListener;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            cardView=(CardView)itemView.findViewById(R.id.cardviewHistorial);
-            lugar=(TextView) itemView.findViewById(R.id.h_desc);
-            hora=(TextView) itemView.findViewById(R.id.h_tiempo);
-            imagenH=(ImageView) itemView.findViewById(R.id.h_imagen);
+            cardView=(CardView)itemView.findViewById(R.id.cardview);
+            nombre=(TextView) itemView.findViewById(R.id.obj_etiqueta);
+            dia=(TextView) itemView.findViewById(R.id.obj_dia);
+            horaIni=(TextView) itemView.findViewById(R.id.obj_hora);
+            mapa=(Button) itemView.findViewById(R.id.obj_lugar);
 
             itemView.setOnLongClickListener(this);
-
         }
 
         public void setItemLongClickListener(ItemLongClickListener ic)

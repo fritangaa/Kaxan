@@ -1,23 +1,18 @@
-package esteticaapp.co.kaxan;
+package esteticaapp.co.kaxan.UM.Menu;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Fragment;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
-import android.graphics.Color;
-import android.media.RingtoneManager;
+import android.os.BatteryManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.content.ContextCompat;
 import android.telephony.SmsManager;
 import android.util.Log;
@@ -25,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -34,6 +30,8 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import esteticaapp.co.kaxan.R;
 
 public class inicio extends Fragment implements OnMapReadyCallback {
 
@@ -49,6 +47,8 @@ public class inicio extends Fragment implements OnMapReadyCallback {
 
     private View view;
 
+    private TextView bateria;
+
     public static inicio newInstance(){
         return new inicio();
     }
@@ -58,7 +58,27 @@ public class inicio extends Fragment implements OnMapReadyCallback {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.activity_inicio, container, false);
 
-        sendNotification(view.getContext());
+        bateria = (TextView) view.findViewById(R.id.textBateriaUM);
+
+        BroadcastReceiver bateriaReciever = new BroadcastReceiver() {
+
+            @Override
+            public void onReceive(Context context, Intent intent) {
+
+                context.unregisterReceiver(this);
+                int currentLevel = intent.getIntExtra(BatteryManager.EXTRA_LEVEL,-1);
+                int scale = intent.getIntExtra(BatteryManager.EXTRA_SCALE,-1);
+                int level = -1;
+                if (currentLevel >=0 && scale > 0){
+                    level= (currentLevel * 100)/scale;
+                }
+                bateria.setText(level+"%");
+
+            }
+        };
+        IntentFilter batteryFilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+        getActivity().registerReceiver(bateriaReciever,batteryFilter);
+
 
         mMapView = view.findViewById(R.id.mapaUbicacionAdmin);
         if (mMapView != null) {
@@ -66,32 +86,6 @@ public class inicio extends Fragment implements OnMapReadyCallback {
             mMapView.onResume();
             mMapView.getMapAsync(this);
         }
-
-
-        Intent intent = getActivity().getIntent();
-        if (intent != null){
-            final AlertDialog.Builder mDialog = new AlertDialog.Builder(view.getContext());
-            mDialog.setMessage("¿Todo en orden?");
-            mDialog.setTitle("Alerta");
-            mDialog.setPositiveButton("Necesito ayuda", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-
-                }
-            });
-
-            mDialog.setNegativeButton("Todo bien", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-
-                }
-            });
-
-            AlertDialog dialog = mDialog.create();
-            dialog.show();
-
-        }
-
 
         auxilio = view.findViewById(R.id.botonAuxilio);
 
@@ -111,48 +105,7 @@ public class inicio extends Fragment implements OnMapReadyCallback {
         });
 
 
-
         return view;
-    }
-
-    private void sendNotification(Context context) {
-        //Preparamos la Notificación com un icono, titulo, texto, prioridad, color led, sonido y persistencia
-        NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(context)
-                        .setSmallIcon(R.drawable.ic_alerta_persona)
-                        .setContentTitle(getString(R.string.notif_title))
-                        .setContentText(getString(R.string.notif_body))
-                        .setPriority(NotificationCompat.PRIORITY_MAX)
-                        .setLights(Color.CYAN, 1, 0)
-                        .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
-                        .setOngoing(true);
-
-        // Creamos un Intent explicito el cual disparará el OtherActivity de nuestra app
-        Intent resultIntent = new Intent(view.getContext(), menu.class);
-        //Agreamos un Extra con un mensaje
-        resultIntent.putExtra(NOTIF_MESSAGE, getString(R.string.notif_body_intent));
-
-        // Creamos un Stack ficticio para la Actividad que iniciaremos, de manear que cuando el
-        // usuario haga click sobre la notificación, con esto nos aseguramos que una vez que el
-        // usuario navegue a la actividad desde la Notificacion y presione el boton back, la app
-        // navegue a la pantalla de la app, en vez de salirse de la misma.
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
-
-        // Agregamos el  back stack para el Intent, pero no el Intent como tal
-        stackBuilder.addParentStack(menu.class);
-
-        // Agregamos el  Intent que inicia el Activity al inicio del stack
-        stackBuilder.addNextIntent(resultIntent);
-
-        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT );
-        mBuilder.setContentIntent(resultPendingIntent);
-
-        //Obtenemos una instancia del NotificationManager
-        NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-
-        //Usando el método notify del NotificationManager, enviamos la notificacion asociandola
-        // a un ID con elCual podamos actualizarla en caso de que sea necesario
-        mNotificationManager.notify(NOTIF_ID, mBuilder.build());
     }
 
 
