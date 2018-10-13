@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/bg_principal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UM.Menu.perfil">
+
+
+    <ImageView
+        android:id="@+id/imagenRPerfil"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="20dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/ic_persona_h" />
+
+    <EditText
+        android:id="@+id/textoRNombre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_usuario"
+        android:drawablePadding="10dp"
+        android:layout_marginTop="20dp"
+        android:textSize="20dp"
+        android:textColor="@color/colorBlanco"
+        android:textColorHint="@color/colorBlancoHint"
+        android:background="@drawable/bg_verde_redondo"
+        android:padding="10dp"
+        android:layout_below="@+id/imagenRPerfil"
+        android:layout_centerHorizontal="true"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:hint="Maximiliano"
+        />
+
+    <EditText
+        android:id="@+id/textoRTelefono"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_telefono"
+        android:drawablePadding="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/textoRNombre"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/bg_verde_redondo"
+        android:ems="10"
+        android:hint="722 397 7435"
+        android:inputType="number"
+        android:padding="10dp"
+        android:textColor="@color/colorBlanco"
+        android:textColorHint="@color/colorBlancoHint"
+        android:textSize="20dp" />
+
+    <EditText
+        android:id="@+id/textoREdad"
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_calendario"
+        android:drawablePadding="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_alignStart="@+id/textoRNombre"
+        android:layout_below="@+id/textoRTelefono"
+        android:background="@drawable/bg_verde_redondo"
+        android:ems="10"
+        android:hint="26/05/1997"
+        android:inputType="date"
+        android:padding="10dp"
+        android:textColor="@color/colorBlanco"
+        android:textColorHint="@color/colorBlancoHint"
+        android:textSize="20dp" />
+
+    <Button
+        android:id="@+id/botonREdad"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_alignEnd="@+id/textoRNombre"
+        android:layout_below="@+id/textoRTelefono"
+        android:background="@drawable/bg_blanco_redondo"
+        android:textAllCaps="false"
+        android:text="Edad"
+        android:textColor="@color/colorNegro" />
+
+
+    <EditText
+        android:id="@+id/textoRCorreo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_correo"
+        android:drawablePadding="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/textoREdad"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/bg_verde_redondo"
+        android:ems="10"
+        android:hint="locubip@gmail.com"
+        android:inputType="textWebEmailAddress"
+        android:padding="10dp"
+        android:textColor="@color/colorBlanco"
+        android:textColorHint="@color/colorBlancoHint"
+        android:textSize="20dp" />
+
+    <EditText
+        android:id="@+id/textoRContrasena"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_contrasena"
+        android:drawablePadding="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/textoRCorreo"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/bg_verde_redondo"
+        android:ems="10"
+        android:hint="***********"
+        android:inputType="textPassword"
+        android:padding="10dp"
+        android:textColor="@color/colorBlanco"
+        android:textColorHint="@color/colorBlancoHint"
+        android:textSize="20dp" />
+
+
+    <Button
+        android:id="@+id/botonRGuardar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/textoRContrasena"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/bg_blanco_redondo"
+        android:text="Guardar"
+        android:textColor="@color/colorNegro" />
+</RelativeLayout>

@@ -1,0 +1,68 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="6dp">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_blanco_redondo"
+        >
+
+        <TextView
+            android:id="@+id/textolog"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:text="Tipo de cuenta"
+            android:textColor="@color/colorNegro"
+            android:textSize="20dp" />
+
+        <ImageButton
+            android:id="@+id/img_ua"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="40dp"
+            android:layout_below="@id/textolog"
+            android:src="@drawable/ic_ua_login"
+            android:layout_alignParentStart="true"
+            android:background="@android:color/transparent" />
+
+
+        <TextView
+            android:id="@+id/textoua"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/img_ua"
+            android:layout_marginLeft="10dp"
+            android:textColor="@color/colorNegro"
+            android:textSize="20dp"
+            android:text="Administrador" />
+
+        <TextView
+            android:id="@+id/textoum"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginRight="10dp"
+            android:layout_below="@id/img_um"
+            android:layout_alignParentEnd="true"
+            android:textColor="@color/colorNegro"
+            android:text="Monitoreado"
+            android:textSize="20dp" />
+
+        <ImageButton
+            android:id="@+id/img_um"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_um_login"
+            android:layout_marginRight="40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@id/textolog"
+            android:background="@android:color/transparent" />
+
+
+    </RelativeLayout>
+</RelativeLayout>

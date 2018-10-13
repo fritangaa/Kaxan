@@ -5,12 +5,17 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.PopupWindow;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,6 +43,12 @@ public class login extends AppCompatActivity {
 
     //Declaramos un objeto firebaseAuth
     private FirebaseAuth firebaseAuth;
+
+    private LayoutInflater layoutInflater;
+    private View popupView;
+    private PopupWindow popupWindow;
+    private ImageButton btn_um;
+    private ImageButton btn_ua;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +82,7 @@ public class login extends AppCompatActivity {
         botonEntrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 loguearUsuario();
             }
         });
@@ -78,7 +90,36 @@ public class login extends AppCompatActivity {
         botonRegistrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                registrarUsuario();
+
+                layoutInflater =(LayoutInflater)getBaseContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+                popupView = layoutInflater.inflate(R.layout.dialog_login, null);
+                popupWindow = new PopupWindow(popupView, RadioGroup.LayoutParams.WRAP_CONTENT,
+                        RadioGroup.LayoutParams.WRAP_CONTENT);
+
+                btn_ua= (ImageButton)popupView.findViewById(R.id.img_ua);
+                btn_um= (ImageButton)popupView.findViewById(R.id.img_um);
+
+                btn_ua.setOnClickListener(new Button.OnClickListener(){
+
+                    @Override
+                    public void onClick(View v) {
+                        popupWindow.dismiss();
+                        Intent intencion = new Intent(getApplication(), signup.class);
+                        startActivity(intencion);
+
+                    }});
+                btn_um.setOnClickListener(new Button.OnClickListener(){
+
+                    @Override
+                    public void onClick(View v) {
+                        popupWindow.dismiss();
+                        Intent intencion = new Intent(getApplication(), signupUM.class);
+                        startActivity(intencion);
+                    }});
+
+                popupWindow.showAtLocation(textoUsuario, Gravity.CENTER,0, 0);
+
+
             }
         });
 
@@ -117,46 +158,7 @@ public class login extends AppCompatActivity {
 
     }
 
-    private void registrarUsuario(){
-
-        //Obtenemos el email y la contraseña desde las cajas de texto
-        String email = textoUsuario.getText().toString().trim();
-        String password  = textoContrasena.getText().toString().trim();
-
-        //Verificamos que las cajas de texto no esten vacías
-        if(TextUtils.isEmpty(email)){
-            Toast.makeText(this,"Se debe ingresar un email",Toast.LENGTH_LONG).show();
-            return;
-        }
-
-        if(TextUtils.isEmpty(password)){
-            Toast.makeText(this,"Falta ingresar la contraseña",Toast.LENGTH_LONG).show();
-            return;
-        }
-
-
-        dialog.show();
-        //creating a new user
-        firebaseAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        //checking if success
-                        if(task.isSuccessful()){
-
-                            Toast.makeText(login.this,"Se ha registrado el usuario con el email: "+ textoUsuario.getText(),Toast.LENGTH_LONG).show();
-                        }else{
-
-                            Toast.makeText(login.this,"No se pudo registrar el usuario ",Toast.LENGTH_LONG).show();
-                        }
-                        //progressDialog.dismiss();
-                        dialog.dismiss();
-                    }
-                });
-
-
-
-    }
+    
 
     private void loguearUsuario() {
         //Obtenemos el email y la contraseña desde las cajas de texto
@@ -218,5 +220,7 @@ public class login extends AppCompatActivity {
         String emailRecupera = textoUsuario.getText().toString().trim();
 
     }
+
+
 
 }

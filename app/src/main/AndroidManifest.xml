@@ -10,11 +10,12 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.SEND_SMS" />
-    <uses-permission android:name="android.permission.READ_LOGS"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES"/>
+    <uses-permission android:name="android.permission.READ_LOGS" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
 
     <application
         android:allowBackup="true"
@@ -22,25 +23,22 @@
         android:label="@string/app_name"
         android:roundIcon="@drawable/ic_logo_app"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        >
+        android:theme="@style/AppTheme">
         <activity
             android:name=".UM.menu"
             android:label="@string/app_name"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:screenOrientation="portrait"
-            />
-        <activity android:name=".UM.Menu.calendario"
-            android:screenOrientation="portrait"
-            />
-        <activity android:name=".UM.Menu.historial"
-            android:screenOrientation="portrait"
-            />
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".UM.Menu.calendario"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".UM.Menu.historial"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".login"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:screenOrientation="portrait"
-            >
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -49,22 +47,19 @@
         </activity>
         <activity
             android:name=".UM.Menu.inicio"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:screenOrientation="portrait"
-            />
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".UM.Menu.evento"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:screenOrientation="portrait"
-            />
-        <activity android:name=".UM.Menu.perfil"
-            android:screenOrientation="portrait"
-            />
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".UM.Menu.perfil"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".UM.Menu.ubicacion"
             android:label="@string/title_activity_ubicacion"
-            android:screenOrientation="portrait"
-            />
+            android:screenOrientation="portrait" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -79,7 +74,12 @@
 
         <activity
             android:name=".UM.Menu.listaEventos"
-            android:screenOrientation="portrait"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".signup"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".signupUM"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             ></activity>
     </application>
 
