@@ -78,7 +78,13 @@
         <activity
             android:name=".signup"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".signupUM"
+        <activity
+            android:name=".signupUM"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".UA.leerQR"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            />
+        <activity android:name=".signupUMqr"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             ></activity>
     </application>

@@ -82,7 +82,10 @@ import java.util.Calendar;
         botonAgregarUsuUM.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                registrarUsuario();
+                Intent siguiente = new Intent(signupUM.this, signupUMqr.class);//vamos a la ventana de la confirmacion
+                siguiente.putExtra("telefono",textoRTelefonoUM.getText().toString());
+                startActivity(siguiente);
+                finish();
             }
         });
 
