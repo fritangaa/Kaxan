@@ -106,6 +106,7 @@ public class login extends AppCompatActivity {
                         popupWindow.dismiss();
                         Intent intencion = new Intent(getApplication(), signup.class);
                         startActivity(intencion);
+                        finish();
 
                     }});
                 btn_um.setOnClickListener(new Button.OnClickListener(){
@@ -115,6 +116,7 @@ public class login extends AppCompatActivity {
                         popupWindow.dismiss();
                         Intent intencion = new Intent(getApplication(), signupUM.class);
                         startActivity(intencion);
+                        finish();
                     }});
 
                 popupWindow.showAtLocation(textoUsuario, Gravity.CENTER,0, 0);

@@ -3,6 +3,7 @@
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
@@ -13,7 +14,12 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -42,6 +48,7 @@ import java.util.Calendar;
      private EditText textoREdadUM;
      private EditText textoRTelefonoUM;
      private EditText textoRContrasenaUM;
+     private EditText textoRCorreoUM;
 
      private ImageView imagenRPerfilUM;
 
@@ -64,6 +71,7 @@ import java.util.Calendar;
         textoRContrasenaUM = (EditText) findViewById(R.id.textoUMRContrasena);
         textoREdadUM = (EditText) findViewById(R.id.textoUMREdad);
         textoRTelefonoUM = (EditText) findViewById(R.id.textoUMRTelefono);
+        textoRCorreoUM = (EditText) findViewById(R.id.textoUMRCorreo);
 
         MaterialDialog.Builder builder = new MaterialDialog.Builder(this)
                 .title("Registrando")
@@ -82,10 +90,8 @@ import java.util.Calendar;
         botonAgregarUsuUM.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent siguiente = new Intent(signupUM.this, signupUMqr.class);//vamos a la ventana de la confirmacion
-                siguiente.putExtra("telefono",textoRTelefonoUM.getText().toString());
-                startActivity(siguiente);
-                finish();
+                validaUsuario();
+
             }
         });
 
@@ -103,38 +109,83 @@ import java.util.Calendar;
         });
     }
 
-     private void registrarUsuario(){
+     private void validaUsuario(){
 
          //Obtenemos el email y la contraseña desde las cajas de texto
          final String password  = textoRContrasenaUM.getText().toString().trim();
          final String nombre = textoRUsuarioUM.getText().toString();
          final String edad = textoREdadUM.getText().toString();
          final String telefono = textoRTelefonoUM.getText().toString();
+         final String correo = textoRCorreoUM.getText().toString();
 
          //Verificamos que las cajas de texto no esten vacías
 
 
          if(TextUtils.isEmpty(password)){
-             Toast.makeText(this,"Falta ingresar la contraseña",Toast.LENGTH_LONG).show();
+             Toast.makeText(this,"Falta ingresar la contraseña",Toast.LENGTH_SHORT).show();
              return;
          }
 
          if(TextUtils.isEmpty(nombre)){
-             Toast.makeText(this,"Falta ingresar el nombre",Toast.LENGTH_LONG).show();
+             Toast.makeText(this,"Falta ingresar el nombre",Toast.LENGTH_SHORT).show();
              return;
          }
 
          if(TextUtils.isEmpty(telefono)){
-             Toast.makeText(this,"Falta ingresar el telefono",Toast.LENGTH_LONG).show();
+             Toast.makeText(this,"Falta ingresar el telefono",Toast.LENGTH_SHORT).show();
              return;
          }
 
          if(TextUtils.isEmpty(edad)){
-             Toast.makeText(this,"Falta ingresar la fecha de nacimiento",Toast.LENGTH_LONG).show();
+             Toast.makeText(this,"Falta ingresar la fecha de nacimiento",Toast.LENGTH_SHORT).show();
+             return;
+         }
+         if(TextUtils.isEmpty(correo)){
+             Toast.makeText(this,"Falta ingresar el correo",Toast.LENGTH_SHORT).show();
              return;
          }
 
+         dialog.show();
+         //creating a new user
+         auth.createUserWithEmailAndPassword(correo, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+             @Override
+             public void onComplete(@NonNull Task<AuthResult> task) {
+                 if (task.isSuccessful()){
+                     UserProfileChangeRequest profile = new UserProfileChangeRequest.Builder()
+                             .setDisplayName(nombre)
+                             .build();
+                     FirebaseUser user = auth.getCurrentUser();
+                     if (user!=null)
+                         user.updateProfile(profile).addOnCompleteListener(new OnCompleteListener<Void>() {
+                             @Override
+                             public void onComplete(@NonNull Task<Void> task) {
+                                 if (task.isSuccessful()){
 
+                                     Intent siguiente = new Intent(signupUM.this, signupUMqr.class);//vamos a la ventana de la confirmacion
+                                     siguiente.putExtra("telefono",textoRTelefonoUM.getText().toString());
+                                     siguiente.putExtra("nombre",textoRUsuarioUM.getText().toString());
+                                     siguiente.putExtra("edad",textoREdadUM.getText().toString());
+                                     siguiente.putExtra("contrasena",textoRContrasenaUM.getText().toString());
+                                     siguiente.putExtra("correo",textoRCorreoUM.getText().toString());
+                                     siguiente.putExtra("codigo",auth.getUid());
+                                     dialog.dismiss();
+                                     startActivity(siguiente);
+                                     finish();
+
+                                 }else if (task.getException()!=null){
+                                     Toast.makeText(signupUM.this,"No se pudo registrar el usuario ",Toast.LENGTH_LONG).show();
+                                 }
+                                 dialog.dismiss();
+                             }
+                         });
+                 }else if (task.getException()!=null){
+                     Toast.makeText(signupUM.this,"Error con el correo",Toast.LENGTH_LONG).show();
+                     dialog.dismiss();
+                 }
+
+
+             }
+         });
 
 
      }

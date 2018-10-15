@@ -20,12 +20,19 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.Calendar;
 
+import esteticaapp.co.kaxan.UA.leerQR;
+import esteticaapp.co.kaxan.UA.objUA;
+
 public class signup extends AppCompatActivity {
+
+    private DatabaseReference databaseReference;
 
     private static final String CERO = "0";
     private static final String BARRA = "/";
@@ -61,6 +68,9 @@ public class signup extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
+        //FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        databaseReference= FirebaseDatabase.getInstance().getReference();
+
         auth = FirebaseAuth.getInstance();
         mStorage= FirebaseStorage.getInstance().getReference();
 
@@ -92,6 +102,7 @@ public class signup extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 registrarUsuario();
+
             }
         });
 
@@ -162,7 +173,17 @@ public class signup extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()){
+
+                                    objUA nuevoUA=new objUA(nombre,email,telefono,password,edad);
+
+                                    databaseReference.child(auth.getUid()).child("datos").setValue(nuevoUA);
+
                                     Toast.makeText(signup.this,"Se ha registrado el usuario: "+ textoRUsuario.getText(),Toast.LENGTH_LONG).show();
+
+                                    Intent siguiente = new Intent(signup.this, leerQR.class);//vamos a la ventana de la confirmacion
+                                    startActivity(siguiente);
+                                    finish();
+
                                 }else if (task.getException()!=null){
                                     Toast.makeText(signup.this,"No se pudo registrar el usuario ",Toast.LENGTH_LONG).show();
                                 }
@@ -173,6 +194,8 @@ public class signup extends AppCompatActivity {
                     Toast.makeText(signup.this,"Error con el correo",Toast.LENGTH_LONG).show();
                     dialog.dismiss();
                 }
+
+
             }
         });
 

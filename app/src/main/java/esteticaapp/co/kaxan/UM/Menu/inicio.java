@@ -30,10 +30,14 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
 
 import esteticaapp.co.kaxan.R;
 
 public class inicio extends Fragment implements OnMapReadyCallback {
+    private DatabaseReference databaseReference;
+    private FirebaseAuth firebaseAuth;
 
     public static final int NOTIF_ID = 1001;
     public static final String NOTIF_MESSAGE = "NOTIF_MESSAGE";
@@ -48,6 +52,7 @@ public class inicio extends Fragment implements OnMapReadyCallback {
     private View view;
 
     private TextView bateria;
+    private TextView umnombre;
 
     public static inicio newInstance(){
         return new inicio();
@@ -58,7 +63,16 @@ public class inicio extends Fragment implements OnMapReadyCallback {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.activity_inicio, container, false);
 
+        firebaseAuth = FirebaseAuth.getInstance();
+
+
+
         bateria = (TextView) view.findViewById(R.id.textBateriaUM);
+
+        umnombre = (TextView) view.findViewById(R.id.um_nombre);
+
+        umnombre.setText(firebaseAuth.getUid());
+
 
         BroadcastReceiver bateriaReciever = new BroadcastReceiver() {
 

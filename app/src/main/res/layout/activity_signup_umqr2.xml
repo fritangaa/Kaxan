@@ -4,10 +4,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg_principal"
+    android:padding="16dp"
     tools:context=".signupUMqr">
+
+    <TextView
+        android:id="@+id/txtqr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:text="Codigo QR"
+        android:textColor="@color/colorBlanco"
+        android:textSize="20dp" />
 
     <ImageView
         android:id="@+id/UMQR"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="400dp"
+        android:layout_margin="30dp"
+        android:layout_centerInParent="true" />
+
+    <ImageButton
+        android:id="@+id/btnCancelarqr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_cancelar" />
 </RelativeLayout>

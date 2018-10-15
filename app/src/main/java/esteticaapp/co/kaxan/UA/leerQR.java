@@ -12,32 +12,60 @@ import android.util.Log;
 import android.util.SparseArray;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
 import android.webkit.URLUtil;
+import android.widget.ImageButton;
 
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.IOException;
 
 import esteticaapp.co.kaxan.R;
+import esteticaapp.co.kaxan.login;
 
 public class leerQR extends AppCompatActivity {
+
+    private DatabaseReference databaseReference;
+    private FirebaseAuth firebaseAuth;
+
 
     private CameraSource cameraSource;
     private SurfaceView cameraView;
     private final int MY_PERMISSIONS_REQUEST_CAMERA = 1;
     private String token = "";
     private String tokenanterior = "";
+    private ImageButton cancelar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup_umqr);
 
+        //FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        databaseReference= FirebaseDatabase.getInstance().getReference();
+
+        //inicializamos el objeto firebaseAuth
+        firebaseAuth = FirebaseAuth.getInstance();
+
         cameraView = (SurfaceView) findViewById(R.id.camera_view);
+        cancelar = (ImageButton) findViewById(R.id.btnCancelar);
         initQR();
+        cancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //registrarUsuario();
+                Intent siguiente = new Intent(leerQR.this, login.class);//vamos a la ventana de la confirmacion
+                startActivity(siguiente);
+                finish();
+
+            }
+        });
 
     }
 
@@ -122,12 +150,25 @@ public class leerQR extends AppCompatActivity {
                             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(token));
                             startActivity(browserIntent);
                         } else {
-                            // comparte en otras apps
-                            Intent shareIntent = new Intent();
-                            shareIntent.setAction(Intent.ACTION_SEND);
-                            shareIntent.putExtra(Intent.EXTRA_TEXT, token);
-                            shareIntent.setType("text/plain");
-                            startActivity(shareIntent);
+
+                            String string = token;
+                            String[] parts = string.split(",");
+
+                            String nom = parts[1];
+                            String edad = parts[2];
+                            String telefono = parts[0];
+                            String contrasena = parts[3];
+                            String correo = parts[4];
+                            String id = parts[5];
+
+
+                            objUM nuevoUM =new objUM(nom,telefono,contrasena,edad,correo);
+
+                            databaseReference.child(firebaseAuth.getUid()).child("um").child(id).child("datos").setValue(nuevoUM);
+
+                            Intent intencion = new Intent(getApplication(), login.class);
+                            startActivity(intencion);
+                            finish();
                         }
 
                         new Thread(new Runnable() {
