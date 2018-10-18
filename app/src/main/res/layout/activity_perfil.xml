@@ -9,7 +9,7 @@
 
 
     <ImageView
-        android:id="@+id/imageView4"
+        android:id="@+id/imgPUM"
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_marginTop="20dp"
@@ -18,7 +18,7 @@
         android:src="@drawable/ic_persona_h" />
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/nombrePUM"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -27,7 +27,7 @@
         android:textColorHint="@color/colorBlanco"
         android:background="@drawable/bg_verde_redondo"
         android:padding="10dp"
-        android:layout_below="@+id/imageView4"
+        android:layout_below="@+id/imgPUM"
         android:layout_centerHorizontal="true"
         android:ems="10"
         android:inputType="textPersonName"
@@ -35,7 +35,7 @@
         />
 
     <EditText
-        android:id="@+id/editText5"
+        android:id="@+id/edadPUM"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -44,14 +44,14 @@
         android:textColorHint="@color/colorBlanco"
         android:background="@drawable/bg_verde_redondo"
         android:padding="10dp"
-        android:layout_below="@+id/editText"
+        android:layout_below="@+id/nombrePUM"
         android:layout_centerHorizontal="true"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:hint="Muñoz" />
+        android:inputType="date"
+        android:hint="26/05/1997" />
 
     <EditText
-        android:id="@+id/editText6"
+        android:id="@+id/contraPUM"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -60,17 +60,17 @@
         android:textColorHint="@color/colorBlanco"
         android:background="@drawable/bg_verde_redondo"
         android:padding="10dp"
-        android:layout_below="@+id/editText5"
+        android:layout_below="@+id/edadPUM"
         android:layout_centerHorizontal="true"
         android:ems="10"
-        android:hint="maximus.1626@gmail.com"
-        android:inputType="textEmailAddress" />
+        android:hint="************"
+        android:inputType="textPassword" />
 
     <Button
-        android:id="@+id/button5"
+        android:id="@+id/botonPUM"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/editText6"
+        android:layout_below="@+id/contraPUM"
         android:layout_centerHorizontal="true"
         android:background="@drawable/bg_blanco_redondo"
         android:layout_marginTop="30dp"
