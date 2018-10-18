@@ -212,7 +212,7 @@ public class evento extends AppCompatActivity implements OnMapReadyCallback, Vie
 
                             objEvento nuevoEvento=new objEvento(nom,dia,horaIn,horaFin,lugar,false);
 
-                            databaseReference.child(firebaseAuth.getUid()).child("evento").child(idusu).setValue(nuevoEvento);
+                            databaseReference.child("miTv2AU2Y2UUKDeYXiooRc71Dhi2").child("um").child(firebaseAuth.getUid()).child("evento").child(idusu).setValue(nuevoEvento);
 
                             Toast.makeText(evento.this, "Evento registrado", Toast.LENGTH_SHORT).show();
 

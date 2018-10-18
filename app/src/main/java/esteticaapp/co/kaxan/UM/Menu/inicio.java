@@ -65,13 +65,12 @@ public class inicio extends Fragment implements OnMapReadyCallback {
 
         firebaseAuth = FirebaseAuth.getInstance();
 
-
-
         bateria = (TextView) view.findViewById(R.id.textBateriaUM);
 
         umnombre = (TextView) view.findViewById(R.id.um_nombre);
 
-        umnombre.setText(firebaseAuth.getUid());
+        //umnombre.setText(databaseReference.child("miTv2AU2Y2UUKDeYXiooRc71Dhi2").child("um").child(firebaseAuth.getUid()).child("datos").equalTo("nombre").toString());
+
 
 
         BroadcastReceiver bateriaReciever = new BroadcastReceiver() {

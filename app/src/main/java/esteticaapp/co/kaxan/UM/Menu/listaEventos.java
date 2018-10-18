@@ -67,7 +67,7 @@ public class listaEventos extends Fragment{
                 objEvento.class,
                 R.layout.obj_evento,
                 objEventoViewHolder.ViewHolder.class,
-                databaseReference.child(firebaseAuth.getUid()).child("evento")
+                databaseReference.child("miTv2AU2Y2UUKDeYXiooRc71Dhi2").child("um").child(firebaseAuth.getUid()).child("evento")
         ) {
             @Override
             protected void populateViewHolder(objEventoViewHolder.ViewHolder viewHolder,
