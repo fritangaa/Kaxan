@@ -13,6 +13,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.location.LocationProvider;
+import android.media.MediaRecorder;
 import android.os.AsyncTask;
 import android.os.BatteryManager;
 import android.os.Bundle;
@@ -41,7 +42,9 @@ import esteticaapp.co.kaxan.UM.Menu.listaEventos;
 import esteticaapp.co.kaxan.UM.Menu.perfil;
 import esteticaapp.co.kaxan.UM.Menu.ubicacion;
 
-public class menu extends AppCompatActivity {
+public class menu extends AppCompatActivity{
+
+    private MediaRecorder mediaRecorder;
 
     //Declaramos un objeto firebaseAuth
     private FirebaseAuth firebaseAuth;
@@ -123,6 +126,10 @@ public class menu extends AppCompatActivity {
         //-----------------------------------------------
         navigation.getMenu().getItem(1).setChecked(true);
         loadInicio();
+
+        //-------------------------------------------------------------
+
+
 
     }
 
@@ -338,4 +345,6 @@ public class menu extends AppCompatActivity {
             }
         }
     }
+
+
 }

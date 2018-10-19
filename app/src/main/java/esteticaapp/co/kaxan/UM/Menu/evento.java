@@ -31,6 +31,7 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -211,6 +212,8 @@ public class evento extends AppCompatActivity implements OnMapReadyCallback, Vie
                             String idusu = databaseReference.push().getKey();
 
                             objEvento nuevoEvento=new objEvento(nom,dia,horaIn,horaFin,lugar,false);
+
+                            FirebaseUser user = firebaseAuth.getCurrentUser();
 
                             databaseReference.child("miTv2AU2Y2UUKDeYXiooRc71Dhi2").child("um").child(firebaseAuth.getUid()).child("evento").child(idusu).setValue(nuevoEvento);
 

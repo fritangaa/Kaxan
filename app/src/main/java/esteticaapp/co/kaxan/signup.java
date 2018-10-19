@@ -178,6 +178,7 @@ public class signup extends AppCompatActivity {
 
                                     databaseReference.child(auth.getUid()).child("datos").setValue(nuevoUA);
 
+
                                     Toast.makeText(signup.this,"Se ha registrado el usuario: "+ textoRUsuario.getText(),Toast.LENGTH_LONG).show();
 
                                     Intent siguiente = new Intent(signup.this, leerQR.class);//vamos a la ventana de la confirmacion
