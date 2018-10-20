@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.PopupWindow;
@@ -39,6 +40,9 @@ public class login extends AppCompatActivity {
     private Button boronRecupera;
     private TextView textoRecupera;
 
+    private CheckBox botonRecuerda;
+    private boolean isActivateRecuerda;
+
     private EditText textoUsuario;
     private EditText textoContrasena;
 
@@ -56,6 +60,13 @@ public class login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        if(Preferences.obtenerPreferenceBoolean(this,Preferences.PREFERENCE_ESTADO_BUTTON_SESION)){
+            Intent intencion = new Intent(getApplication(), menu.class);
+            startActivity(intencion);
+            finish();
+        }
+
+
         //inicializamos el objeto firebaseAuth
         firebaseAuth = FirebaseAuth.getInstance();
 
@@ -70,6 +81,23 @@ public class login extends AppCompatActivity {
         botonOlvidar = findViewById(R.id.botonOlvidar);
         boronRecupera = findViewById(R.id.botonRecupera);
         textoRecupera = findViewById(R.id.textoRecupera);
+
+        botonRecuerda = findViewById(R.id.btnRecuerda);
+
+        botonRecuerda.setOnClickListener(new View.OnClickListener() {
+            //ACTIVADO
+            @Override
+            public void onClick(View v) {
+                if(botonRecuerda.isChecked()){
+                    isActivateRecuerda = true;
+                    Toast.makeText(login.this, "boton"+isActivateRecuerda, Toast.LENGTH_LONG).show();
+                }else{
+                    isActivateRecuerda = false;
+                    Toast.makeText(login.this, "boton"+isActivateRecuerda, Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
 
 
         MaterialDialog.Builder builder = new MaterialDialog.Builder(this)
@@ -186,10 +214,11 @@ public class login extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             int pos = email.indexOf("@");
                             String user = email.substring(0, pos);
+                            Preferences.savePreferenceBoolean(login.this,botonRecuerda.isChecked(),Preferences.PREFERENCE_ESTADO_BUTTON_SESION);
                             Toast.makeText(login.this, "Bienvenido: " + textoUsuario.getText(), Toast.LENGTH_LONG).show();
                             Intent intencion = new Intent(getApplication(), menu.class);
                             startActivity(intencion);
-
+                            finish();
 
                         } else {
                             if (task.getException() instanceof FirebaseAuthUserCollisionException) {//si se presenta una colisión
