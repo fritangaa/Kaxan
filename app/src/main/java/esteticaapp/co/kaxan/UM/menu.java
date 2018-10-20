@@ -124,7 +124,8 @@ public class menu extends AppCompatActivity{
             locationStart();
         }
         //-----------------------------------------------
-        navigation.getMenu().getItem(1).setChecked(true);
+        navigation.getMenu
+                ().getItem(1).setChecked(true);
         loadInicio();
 
         //-------------------------------------------------------------
@@ -212,7 +213,7 @@ public class menu extends AppCompatActivity{
 
         String idcordenadas = databaseReference.push().getKey();
         String Text = (lat +"," +lon+","+bateria);
-        databaseReference.child("miTv2AU2Y2UUKDeYXiooRc71Dhi2").child("um").child(firebaseAuth.getUid()).child("ubicacion").setValue(Text);
+        databaseReference.child("2bpy1Be1DuNhmWPRuvup379JJW32").child("um").child(firebaseAuth.getUid()).child("ubicacion").setValue(Text);
 
         return  true;
     }

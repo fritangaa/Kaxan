@@ -43,6 +43,7 @@
         android:drawableLeft="@drawable/ic_telefono"
         android:drawablePadding="10dp"
         android:layout_marginTop="10dp"
+        android:maxLength="10"
         android:layout_below="@+id/textoUMRNombre"
         android:layout_centerHorizontal="true"
         android:background="@drawable/bg_verde_redondo"

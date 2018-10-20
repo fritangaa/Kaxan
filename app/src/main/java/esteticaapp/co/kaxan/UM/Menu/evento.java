@@ -86,7 +86,7 @@ public class evento extends AppCompatActivity implements OnMapReadyCallback, Vie
         setContentView(R.layout.activity_evento);
 
         //FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-        databaseReference= FirebaseDatabase.getInstance().getReference();
+        databaseReference= FirebaseDatabase.getInstance().getReference("/2bpy1Be1DuNhmWPRuvup379JJW32/um");
 
         //inicializamos el objeto firebaseAuth
         firebaseAuth = FirebaseAuth.getInstance();
@@ -215,7 +215,7 @@ public class evento extends AppCompatActivity implements OnMapReadyCallback, Vie
 
                             FirebaseUser user = firebaseAuth.getCurrentUser();
 
-                            databaseReference.child("miTv2AU2Y2UUKDeYXiooRc71Dhi2").child("um").child(firebaseAuth.getUid()).child("evento").child(idusu).setValue(nuevoEvento);
+                            databaseReference.child(firebaseAuth.getUid()).child("evento").child(idusu).setValue(nuevoEvento);
 
                             Toast.makeText(evento.this, "Evento registrado", Toast.LENGTH_SHORT).show();
 

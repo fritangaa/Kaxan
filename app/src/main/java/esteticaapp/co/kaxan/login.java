@@ -26,6 +26,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 
+import esteticaapp.co.kaxan.UA.leerQR;
 import esteticaapp.co.kaxan.UM.menu;
 
 public class login extends AppCompatActivity {
@@ -132,13 +133,6 @@ public class login extends AppCompatActivity {
             }
         });
 
-        botonOlvidar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                recuperaContra();
-            }
-        });
-
         textoContrasena.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -212,10 +206,8 @@ public class login extends AppCompatActivity {
     }
 
     private void olvidaContra(){
-        textoContrasena.setVisibility(View.INVISIBLE);
-        textoRecupera.setVisibility(View.VISIBLE);
-        botonRegistrar.setVisibility(View.INVISIBLE);
-        botonEntrar.setVisibility(View.INVISIBLE);
+        Intent intencion = new Intent(getApplication(), leerQR.class);
+        startActivity(intencion);
     }
 
     private void recuperaContra(){

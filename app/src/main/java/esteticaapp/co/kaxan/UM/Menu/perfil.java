@@ -49,7 +49,7 @@ public class perfil extends Fragment {
         //inicializamos el objeto firebaseAuth
         firebaseAuth = FirebaseAuth.getInstance();
         //FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("miTv2AU2Y2UUKDeYXiooRc71Dhi2").child("um").child(firebaseAuth.getUid()).child("datos");
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("2bpy1Be1DuNhmWPRuvup379JJW32").child("um").child(firebaseAuth.getUid()).child("datos");
 
 
         imagenPerfil = (ImageView) view.findViewById(R.id.imgPUM);

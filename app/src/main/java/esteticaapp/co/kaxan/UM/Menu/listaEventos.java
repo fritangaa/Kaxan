@@ -49,7 +49,7 @@ public class listaEventos extends Fragment{
         view = inflater.inflate(R.layout.activity_lista_eventos, container, false);
 
         //FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-        databaseReference= FirebaseDatabase.getInstance().getReference();
+        databaseReference= FirebaseDatabase.getInstance().getReference("/2bpy1Be1DuNhmWPRuvup379JJW32/um");
 
         //inicializamos el objeto firebaseAuth
         firebaseAuth = FirebaseAuth.getInstance();
@@ -67,7 +67,7 @@ public class listaEventos extends Fragment{
                 objEvento.class,
                 R.layout.obj_evento,
                 objEventoViewHolder.ViewHolder.class,
-                databaseReference.child("miTv2AU2Y2UUKDeYXiooRc71Dhi2").child("um").child(firebaseAuth.getUid()).child("evento")
+                databaseReference.child(firebaseAuth.getUid()).child("evento")
         ) {
             @Override
             protected void populateViewHolder(objEventoViewHolder.ViewHolder viewHolder,

@@ -164,7 +164,8 @@ public class leerQR extends AppCompatActivity {
 
                             objUM nuevoUM =new objUM(nom,telefono,contrasena,edad,correo);
 
-                            databaseReference.child(firebaseAuth.getUid()).child("um").child(id).child("datos").setValue(nuevoUM);
+                            //databaseReference.child(firebaseAuth.getUid()).child("um").child(id).child("datos").setValue(nuevoUM);
+                            databaseReference.child("2bpy1Be1DuNhmWPRuvup379JJW32").child("um").child(id).child("datos").setValue(nuevoUM);
 
                             Intent intencion = new Intent(getApplication(), login.class);
                             startActivity(intencion);
