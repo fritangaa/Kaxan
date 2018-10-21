@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/ver_en_mapa"
+        android:orderInCategory="100"
+        android:title="@string/ver_en_mapa"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/agrega_evento_user"
+        android:orderInCategory="100"
+        android:title="@string/agrega_evento"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/agrega_rutina_user"
+        android:orderInCategory="100"
+        android:title="@string/agrega_rutina"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/ver_historial_rutas"
+        android:orderInCategory="100"
+        android:title="@string/ver_historial_rutas"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/ver_historial_alertas"
+        android:orderInCategory="100"
+        android:title="@string/ver_historial_alertas"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/ver_historial_caja"
+        android:orderInCategory="100"
+        android:title="@string/ver_historial_caja"
+        app:showAsAction="never" />
+</menu>

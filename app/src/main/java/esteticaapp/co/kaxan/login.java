@@ -27,6 +27,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 
+import esteticaapp.co.kaxan.UA.UAPrincipalActivity;
 import esteticaapp.co.kaxan.UA.leerQR;
 import esteticaapp.co.kaxan.UM.menu;
 
@@ -82,7 +83,7 @@ public class login extends AppCompatActivity {
         boronRecupera = findViewById(R.id.botonRecupera);
         textoRecupera = findViewById(R.id.textoRecupera);
 
-        botonRecuerda = findViewById(R.id.btnRecuerda);
+/*        botonRecuerda = findViewById(R.id.btnRecuerda);
 
         botonRecuerda.setOnClickListener(new View.OnClickListener() {
             //ACTIVADO
@@ -96,7 +97,7 @@ public class login extends AppCompatActivity {
                     Toast.makeText(login.this, "boton"+isActivateRecuerda, Toast.LENGTH_LONG).show();
                 }
             }
-        });
+        });*/
 
 
 
@@ -157,7 +158,7 @@ public class login extends AppCompatActivity {
         botonOlvidar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                olvidaContra();
+                irAUsuarioAdminPruebas();
             }
         });
 
@@ -236,6 +237,11 @@ public class login extends AppCompatActivity {
 
     private void olvidaContra(){
         Intent intencion = new Intent(getApplication(), leerQR.class);
+        startActivity(intencion);
+    }
+
+    private void irAUsuarioAdminPruebas(){
+        Intent intencion = new Intent(getApplication(), UAPrincipalActivity.class);
         startActivity(intencion);
     }
 

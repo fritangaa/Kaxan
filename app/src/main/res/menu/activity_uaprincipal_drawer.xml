@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_grupo_ejemplo"
+            android:icon="@drawable/ic_baseline_group_24px"
+            android:title="@string/nav_group_example" />
+    </group>
+
+    <item android:title="@string/nav_opciones">
+        <menu>
+            <item
+                android:id="@+id/nav_premium"
+                android:icon="@drawable/ic_round_payment_24px"
+                android:title="@string/nav_premium" />
+            <item
+                android:id="@+id/nav_config"
+                android:icon="@drawable/ic_baseline_settings_20px"
+                android:title="@string/nav_config" />
+            <item
+                android:id="@+id/nav_help"
+                android:icon="@drawable/ic_baseline_help_24px"
+                android:title="@string/nav_help" />
+        </menu>
+    </item>
+
+</menu>

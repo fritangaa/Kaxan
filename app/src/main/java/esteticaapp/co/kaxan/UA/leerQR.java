@@ -60,7 +60,7 @@ public class leerQR extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //registrarUsuario();
-                Intent siguiente = new Intent(leerQR.this, login.class);//vamos a la ventana de la confirmacion
+                Intent siguiente = new Intent(leerQR.this, UAPrincipalActivity.class);//vamos a la ventana de la confirmacion
                 startActivity(siguiente);
                 finish();
 

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/agrega_miembro"
+        android:orderInCategory="100"
+        android:title="@string/agrega_miembro"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/ver_um"
+        android:orderInCategory="100"
+        android:title="@string/ver_um"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/ver_preguntas"
+        android:orderInCategory="100"
+        android:title="@string/ver_preguntas"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/agrega_evento"
+        android:orderInCategory="100"
+        android:title="@string/agrega_evento"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/agrega_rutina"
+        android:orderInCategory="100"
+        android:title="@string/agrega_rutina"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/elimina_grupo"
+        android:orderInCategory="100"
+        android:title="@string/elimina_grupo"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/salir_cuenta"
+        android:orderInCategory="100"
+        android:title="@string/salir_cuenta"
+        app:showAsAction="never" />
+</menu>

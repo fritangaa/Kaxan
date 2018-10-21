@@ -32,6 +32,123 @@
     <string name="twitter_consumer_secret" translatable="false">YOUR_CONSUMER_SECRET</string>
 
     <string name="title_activity_lista_eventos">listaEventos</string>
+    <string name="title_activity_uaprincipal">Principal</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Nombre del grupo</string>
+    <string name="nav_header_subtitle">Número de miembros</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+
+
+
+    <string name="nav_group_example">Grupo 1</string>
+    <string name="nav_opciones">Opciones</string>
+    <string name="nav_config">Configuración</string>
+    <string name="nav_help">Ayuda</string>
+    <string name="nav_premium">Premium</string>
+
+
+    <!-- TODO: Strings para pantalla de configuraciones -->
+
+    <string name="titulo_perfil_settings">Perfil</string>
+
+    <string name="titulo_modi_contra">Modificar contraseña</string>
+    <string name="key_modi_contra">key_modi_contra</string>
+    <string name="default_contrasena">**********</string>
+
+    <string name="titulo_modi_user">Modificar nombre de usuario</string>
+    <string name="key_modi_user">key_modi_user</string>
+    <string name="default_user">user12345</string>
+
+    <string name="titulo_add_mail">Añadir cuenta de correo electónico</string>
+    <string name="key_add_mail">key_add_mail</string>
+    <string name="default_mail">usuario_admin@gmail.com</string>
+
+    <string name="titulo_show_position">Mostrar mi ubicación</string>
+    <string name="key_position">key_position</string>
+
+    <string name="titulo_delete_cuenta">Eliminar cuenta</string>
+    <string name="key_cuenta_deleted">key_cuenta_deleted</string>
+
+
+    <string name="titulo_cajanegra_settings">Caja Negra</string>
+    <string name="titulo_pago_settings">Pagos</string>
+    <string name="titulo_mapa_settings">Mapa</string>
+    <string name="titulo_alertas_settings">Alertas</string>
+
+
+    <string name="TITULO_PROVISIONAL">Configuración ###</string>
+
+    <string name="About">Sobre nosotros</string>
+    <string name="summary_about">Locubip es una app aun en desarrollo.</string>
+
+
+    <string name="title_activity_settings">Settings</string>
+
+
+    <string-array name="pref_upload_quality_entries">
+        <item>360p</item>
+        <item>480p</item>
+        <item>720p</item>
+        <item>1080p</item>
+        <item>Original</item>
+    </string-array>
+    <string-array name="pref_upload_quality_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
+
+
+    <!-- TODO: Strings para opciones de acciones en grupo -->
+
+    <string name="agrega_miembro">Agrega usuario</string>
+    <string name="ver_um">Ver usuarios del grupo</string>
+    <string name="ver_preguntas">Preguntas para alertas</string>
+    <string name="agrega_evento">Agrega evento</string>
+    <string name="agrega_rutina">Asigna rutina</string>
+    <string name="elimina_grupo">Eliminar grupo</string>
+    <string name="salir_cuenta">Salir de la cuenta</string>
+
+    <!-- TODO: Strings para opciones de usuarios monitoreados -->
+
+    <string name="ver_en_mapa">Ver usuario en mapa</string>
+    <string name="ver_historial_rutas">Historial de rutas</string>
+    <string name="ver_historial_alertas">Historial de alertas</string>
+    <string name="ver_historial_caja">Historial de caja negra</string>
+
+    <!-- TODO: Strings registro, parte 1 -->
+
+    <string name="r_correo">Correo electrónico</string>
+    <string name="r_contra">Contraseña</string>
+    <string name="r_confirm_contra">Confirma contraseña</string>
+    <string name="r_telefono">Número de teléfono</string>
+    <string name="r_next">Continuar</string>
+
+    <!-- TODO: Strings registro, parte 2 -->
+
+    <string name="r_um">Usuario monitoreado</string>
+    <string name="r_ua">Usuario administrador</string>
+
+    <!-- TODO: Strings registro, parte 3 -->
+
+    <string name="r_cuenta_prueba">Prueba de 7 días</string>
+    <string name="r_cuenta_completa">Versión completa</string>
+
+    <!-- TODO: Strings registro, parte 4 -->
+
+    <string name="r_nombre">Nombre</string>
+    <string name="r_fecha_nacimiento">Fecha de nac.</string>
+    <string name="r_foto">Agrega una fotografía</string>
+    <string name="r_pickDate">Date</string>
 
 
 </resources>
