@@ -63,6 +63,7 @@ public class signupUMqr extends AppCompatActivity {
                     Toast.makeText(signupUMqr.this, "Usuario "+idum+" registrado", Toast.LENGTH_LONG).show();
                     mOrderRef.removeEventListener(this);
                     Preferences.savePreferenceBoolean(signupUMqr.this,true,Preferences.PREFERENCE_ESTADO_BUTTON_SESION);
+                    Preferences.savePreferenceString(signupUMqr.this,"UM",Preferences.PREFERENCE_USUARIO_LB);
                     Intent siguiente = new Intent(signupUMqr.this, menu.class);//vamos a la ventana de la confirmacion
                     startActivity(siguiente);
                     finish();

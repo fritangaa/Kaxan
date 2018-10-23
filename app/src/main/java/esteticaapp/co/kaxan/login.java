@@ -62,10 +62,18 @@ public class login extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         if(Preferences.obtenerPreferenceBoolean(this,Preferences.PREFERENCE_ESTADO_BUTTON_SESION)){
-            Intent intencion = new Intent(getApplication(), menu.class);
-            startActivity(intencion);
-            finish();
+            if(Preferences.obtenerPreferenceString(this,Preferences.PREFERENCE_USUARIO_LB)=="UA"){
+                Intent intencion = new Intent(getApplication(), UAPrincipalActivity.class);
+                startActivity(intencion);
+                finish();
+            }else{
+                Intent intencion = new Intent(getApplication(), menu.class);
+                startActivity(intencion);
+                finish();
+            }
         }
+
+
 
 
         //inicializamos el objeto firebaseAuth
@@ -80,10 +88,8 @@ public class login extends AppCompatActivity {
         botonEntrar = findViewById(R.id.botonEntrar);
         botonRegistrar = findViewById(R.id.botonRegistrar);
         botonOlvidar = findViewById(R.id.botonOlvidar);
-        boronRecupera = findViewById(R.id.botonRecupera);
-        textoRecupera = findViewById(R.id.textoRecupera);
 
-/*        botonRecuerda = findViewById(R.id.btnRecuerda);
+        botonRecuerda = findViewById(R.id.btnRecuerda);
 
         botonRecuerda.setOnClickListener(new View.OnClickListener() {
             //ACTIVADO
@@ -97,7 +103,7 @@ public class login extends AppCompatActivity {
                     Toast.makeText(login.this, "boton"+isActivateRecuerda, Toast.LENGTH_LONG).show();
                 }
             }
-        });*/
+        });
 
 
 
@@ -201,9 +207,6 @@ public class login extends AppCompatActivity {
             return;
         }
 
-
-
-
         dialog.show();
 
         //loguear usuario
@@ -216,8 +219,9 @@ public class login extends AppCompatActivity {
                             int pos = email.indexOf("@");
                             String user = email.substring(0, pos);
                             Preferences.savePreferenceBoolean(login.this,botonRecuerda.isChecked(),Preferences.PREFERENCE_ESTADO_BUTTON_SESION);
+                            Preferences.savePreferenceString(login.this,"UA",Preferences.PREFERENCE_USUARIO_LB);
                             Toast.makeText(login.this, "Bienvenido: " + textoUsuario.getText(), Toast.LENGTH_LONG).show();
-                            Intent intencion = new Intent(getApplication(), menu.class);
+                            Intent intencion = new Intent(getApplication(), UAPrincipalActivity.class);
                             startActivity(intencion);
                             finish();
 
@@ -243,6 +247,7 @@ public class login extends AppCompatActivity {
     private void irAUsuarioAdminPruebas(){
         Intent intencion = new Intent(getApplication(), UAPrincipalActivity.class);
         startActivity(intencion);
+        finish();
     }
 
     private void recuperaContra(){

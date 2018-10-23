@@ -32,6 +32,7 @@ import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import esteticaapp.co.kaxan.R;
 
@@ -64,12 +65,13 @@ public class inicio extends Fragment implements OnMapReadyCallback {
         view = inflater.inflate(R.layout.activity_inicio, container, false);
 
         firebaseAuth = FirebaseAuth.getInstance();
+        databaseReference= FirebaseDatabase.getInstance().getReference("/2bpy1Be1DuNhmWPRuvup379JJW32/um");
 
         bateria = (TextView) view.findViewById(R.id.textBateriaUM);
 
         umnombre = (TextView) view.findViewById(R.id.um_nombre);
 
-        //umnombre.setText(databaseReference.child("miTv2AU2Y2UUKDeYXiooRc71Dhi2").child("um").child(firebaseAuth.getUid()).child("datos").equalTo("nombre").toString());
+        //umnombre.setText(databaseReference.child(firebaseAuth.getUid()).child("datos").equalTo("nombre").toString());
 
 
 

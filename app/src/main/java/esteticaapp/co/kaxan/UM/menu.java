@@ -54,7 +54,7 @@ public class menu extends AppCompatActivity{
     private String lon;
     private String bateria;
 
-    private Integer tmpEje = 120000;
+    private Integer tmpEje = 60000;
 
     private TextView mTextMessage;
 
@@ -111,7 +111,7 @@ public class menu extends AppCompatActivity{
         //inicializamos el objeto firebaseAuth
         firebaseAuth = FirebaseAuth.getInstance();
 
-        handler.postDelayed(runnable, 10000);//empezamos a mandar datos
+        handler.postDelayed(runnable, tmpEje);//empezamos a mandar datos
 
         mTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);

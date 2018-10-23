@@ -13,6 +13,7 @@ public class Preferences {
     public static final String STRING_PREFERENCES = "michattimereal.Mensajes.Mensajeria";
     public static final String PREFERENCE_ESTADO_BUTTON_SESION = "estado.button.sesion";
     public static final String PREFERENCE_USUARIO_LOGIN = "usuario.login";
+    public static final String PREFERENCE_USUARIO_LB = "usuario.login.locubip";
 
     public static void savePreferenceBoolean(Context c, boolean b,String key){
         SharedPreferences preferences = c.getSharedPreferences(STRING_PREFERENCES,c.MODE_PRIVATE);
