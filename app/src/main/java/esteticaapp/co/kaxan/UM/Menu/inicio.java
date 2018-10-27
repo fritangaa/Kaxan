@@ -31,13 +31,20 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
+import com.google.firebase.database.ValueEventListener;
 
 import esteticaapp.co.kaxan.R;
+import esteticaapp.co.kaxan.objUbicacion;
 
 public class inicio extends Fragment implements OnMapReadyCallback {
     private DatabaseReference databaseReference;
+    private DatabaseReference ubiRef;
+    private DatabaseReference numRef;
     private FirebaseAuth firebaseAuth;
 
     public static final int NOTIF_ID = 1001;
@@ -54,6 +61,11 @@ public class inicio extends Fragment implements OnMapReadyCallback {
 
     private TextView bateria;
     private TextView umnombre;
+    private TextView umlugar;
+
+    private double latum;
+    private double lonum;
+    private String numUA;
 
     public static inicio newInstance(){
         return new inicio();
@@ -65,14 +77,42 @@ public class inicio extends Fragment implements OnMapReadyCallback {
         view = inflater.inflate(R.layout.activity_inicio, container, false);
 
         firebaseAuth = FirebaseAuth.getInstance();
-        databaseReference= FirebaseDatabase.getInstance().getReference("/2bpy1Be1DuNhmWPRuvup379JJW32/um");
+        databaseReference= FirebaseDatabase.getInstance().getReference("/2bpy1Be1DuNhmWPRuvup379JJW32/um").child(firebaseAuth.getUid()).child("datos").child("nombre");
 
         bateria = (TextView) view.findViewById(R.id.textBateriaUM);
 
         umnombre = (TextView) view.findViewById(R.id.um_nombre);
 
-        //umnombre.setText(databaseReference.child(firebaseAuth.getUid()).child("datos").equalTo("nombre").toString());
+        umlugar= (TextView)view.findViewById(R.id.um_lugar_ubicacion);
 
+        // Attach a listener to read the data at our posts reference
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                umnombre.setText(String.valueOf(dataSnapshot.getValue()));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.out.println("The read failed: " + databaseError.getCode());
+            }
+        });
+
+        //---------------------------------numero de telefono------------------------
+        numRef= FirebaseDatabase.getInstance().getReference("/2bpy1Be1DuNhmWPRuvup379JJW32/datos").child("telefono");
+
+        // Attach a listener to read the data at our posts reference
+        numRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                numUA = String.valueOf(dataSnapshot.getValue());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.out.println("The read failed: " + databaseError.getCode());
+            }
+        });
 
 
         BroadcastReceiver bateriaReciever = new BroadcastReceiver() {
@@ -115,7 +155,7 @@ public class inicio extends Fragment implements OnMapReadyCallback {
         };
         auxilio.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                enviarMensaje("+527221164007","Necesito ayuda, utiliza mi ubicación");
+                enviarMensaje("+52"+numUA,"Necesito ayuda, utiliza mi ubicación");
             }
         });
 
@@ -145,7 +185,6 @@ public class inicio extends Fragment implements OnMapReadyCallback {
         // Controles UI
         if (ContextCompat.checkSelfPermission(view.getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
-            mMap.setMyLocationEnabled(true);
         } else {
             if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
                     Manifest.permission.ACCESS_FINE_LOCATION)) {
@@ -161,11 +200,40 @@ public class inicio extends Fragment implements OnMapReadyCallback {
 
         mMap.getUiSettings().setZoomControlsEnabled(true);
 
-        // Add a marker in Sydney and move the camera
-        LatLng tec = new LatLng(19.256953, -99.577957);
-        mMap.addMarker(new MarkerOptions().position(tec).title("Administrador"));
-        float zoomLevel = 16.0f; //This goes up to 21
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(tec, zoomLevel));
+        ubiRef= FirebaseDatabase.getInstance().getReference("/2bpy1Be1DuNhmWPRuvup379JJW32/um").child(firebaseAuth.getUid()).child("ubicacion");
+
+        ubiRef.addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot){
+
+                mMap.clear();
+
+                //leeremos un objeto de tipo Estudiante
+                GenericTypeIndicator<objUbicacion> t = new GenericTypeIndicator<objUbicacion>() {};
+                objUbicacion tprubi = dataSnapshot.getValue(t);
+
+                if(tprubi.getLatitud()==null||tprubi.getLongitud()==null){
+
+                }else{
+                    latum = Double.parseDouble(tprubi.getLatitud());
+                    lonum = Double.parseDouble(tprubi.getLongitud());
+
+                    LatLng tec = new LatLng(latum, lonum);
+                    mMap.addMarker(new MarkerOptions().position(tec).title("Mi ubicacion"));
+                    float zoomLevel = 16.0f; //This goes up to 21
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(tec, zoomLevel));
+                }
+
+
+
+            }
+            @Override
+            public void onCancelled(DatabaseError error){
+                Log.e("ERROR FIREBASE",error.getMessage());
+            }
+
+        });
 
 
     }
@@ -219,6 +287,7 @@ public class inicio extends Fragment implements OnMapReadyCallback {
     public void onDetach() {
         super.onDetach();
     }
+
 
 
 

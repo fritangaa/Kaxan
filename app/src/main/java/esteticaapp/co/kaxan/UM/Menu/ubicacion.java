@@ -18,11 +18,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.PolyUtil;
 
@@ -156,6 +158,11 @@ public class ubicacion extends Fragment implements OnMapReadyCallback {
 
         mMap.getUiSettings().setZoomControlsEnabled(true);
 
+        // Add a marker in Sydney and move the camera
+        LatLng tec = new LatLng(19.256953, -99.577957);
+        mMap.addMarker(new MarkerOptions().position(tec).title("Administrador"));
+        float zoomLevel = 16.0f; //This goes up to 21
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(tec, zoomLevel));
 
     }
 

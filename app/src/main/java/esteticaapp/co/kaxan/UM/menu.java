@@ -41,6 +41,7 @@ import esteticaapp.co.kaxan.UM.Menu.inicio;
 import esteticaapp.co.kaxan.UM.Menu.listaEventos;
 import esteticaapp.co.kaxan.UM.Menu.perfil;
 import esteticaapp.co.kaxan.UM.Menu.ubicacion;
+import esteticaapp.co.kaxan.objUbicacion;
 
 public class menu extends AppCompatActivity{
 
@@ -213,7 +214,8 @@ public class menu extends AppCompatActivity{
 
         String idcordenadas = databaseReference.push().getKey();
         String Text = (lat +"," +lon+","+bateria);
-        databaseReference.child("2bpy1Be1DuNhmWPRuvup379JJW32").child("um").child(firebaseAuth.getUid()).child("ubicacion").setValue(Text);
+        objUbicacion ubicacion = new objUbicacion(lat,lon,bateria);
+        databaseReference.child("2bpy1Be1DuNhmWPRuvup379JJW32").child("um").child(firebaseAuth.getUid()).child("ubicacion").setValue(ubicacion);
 
         return  true;
     }

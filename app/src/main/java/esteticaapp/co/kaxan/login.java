@@ -164,7 +164,7 @@ public class login extends AppCompatActivity {
         botonOlvidar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                irAUsuarioAdminPruebas();
+                irAUsuarioMonPruebas();
             }
         });
 
@@ -244,10 +244,49 @@ public class login extends AppCompatActivity {
         startActivity(intencion);
     }
 
-    private void irAUsuarioAdminPruebas(){
-        Intent intencion = new Intent(getApplication(), UAPrincipalActivity.class);
-        startActivity(intencion);
-        finish();
+    private void irAUsuarioMonPruebas(){
+        //Obtenemos el email y la contraseña desde las cajas de texto
+        final String email = textoUsuario.getText().toString().trim();
+        String password = textoContrasena.getText().toString().trim();
+
+        //Verificamos que las cajas de texto no esten vacías
+        if (TextUtils.isEmpty(email)) {//(precio.equals(""))
+            Toast.makeText(this, "Se debe ingresar un email", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        if (TextUtils.isEmpty(password)) {
+            Toast.makeText(this, "Falta ingresar la contraseña", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        dialog.show();
+
+        //loguear usuario
+        firebaseAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        //checking if success
+                        if (task.isSuccessful()) {
+                            int pos = email.indexOf("@");
+                            String user = email.substring(0, pos);
+                            Toast.makeText(login.this, "Bienvenido: " + textoUsuario.getText(), Toast.LENGTH_LONG).show();
+                            Intent intencion = new Intent(getApplication(), menu.class);
+                            startActivity(intencion);
+                            finish();
+
+                        } else {
+                            if (task.getException() instanceof FirebaseAuthUserCollisionException) {//si se presenta una colisión
+                                Toast.makeText(login.this, "Ese usuario ya existe ", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(login.this, "No se pudo registrar el usuario ", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                        dialog.dismiss();
+                    }
+                });
+
     }
 
     private void recuperaContra(){
