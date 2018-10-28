@@ -49,7 +49,7 @@ public class listaEventos extends Fragment{
         view = inflater.inflate(R.layout.activity_lista_eventos, container, false);
 
         //FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-        databaseReference= FirebaseDatabase.getInstance().getReference("/2bpy1Be1DuNhmWPRuvup379JJW32/um");
+        databaseReference= FirebaseDatabase.getInstance().getReference("/ZxdtUxxfUoRrTw9dxoHA6XLAHqJ2/um");
 
         //inicializamos el objeto firebaseAuth
         firebaseAuth = FirebaseAuth.getInstance();

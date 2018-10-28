@@ -3,11 +3,8 @@ package esteticaapp.co.kaxan.UA;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
-import android.view.View;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -17,10 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
-
 import esteticaapp.co.kaxan.R;
-import esteticaapp.co.kaxan.login;
 
 public class UAPrincipalActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, MapaFragment.OnFragmentInteractionListener {
@@ -73,6 +67,7 @@ public class UAPrincipalActivity extends AppCompatActivity
         if (id == R.id.agrega_miembro) {
             Intent intencion = new Intent(getApplication(), leerQR.class);
             startActivity(intencion);
+            finish();
         }else if(id == R.id.ver_um){
             Toast.makeText(getApplicationContext(),"Ver usuarios",Toast.LENGTH_LONG).show();
         }else if(id == R.id.ver_preguntas){

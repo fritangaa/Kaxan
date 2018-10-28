@@ -40,7 +40,7 @@ public class signupUMqr extends AppCompatActivity {
         cancelar = (ImageButton) findViewById(R.id.btnCancelarqr);
 
         DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
-        final DatabaseReference mOrderRef = mRootRef.child("2bpy1Be1DuNhmWPRuvup379JJW32").child("um").child(intent.getStringExtra("codigo"));
+        final DatabaseReference mOrderRef = mRootRef.child("ZxdtUxxfUoRrTw9dxoHA6XLAHqJ2").child("um").child(intent.getStringExtra("codigo"));
 
         new GetImageToURL().execute("https://zxing.org/w/chart?cht=qr&chs=700x700&chld=L&choe=UTF-8&chl="+intent.getStringExtra("telefono")+"%2C"+intent.getStringExtra("nombre")+"%2C"+intent.getStringExtra("edad")+"%2C"+intent.getStringExtra("contrasena")+"%2C"+intent.getStringExtra("correo")+"%2C"+intent.getStringExtra("codigo"));
 
@@ -58,7 +58,9 @@ public class signupUMqr extends AppCompatActivity {
         mOrderRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+
                 String idum = dataSnapshot.child("datos").child("nombre").getValue(String.class);
+
                 if (idum!=null){
                     Toast.makeText(signupUMqr.this, "Usuario "+idum+" registrado", Toast.LENGTH_LONG).show();
                     mOrderRef.removeEventListener(this);

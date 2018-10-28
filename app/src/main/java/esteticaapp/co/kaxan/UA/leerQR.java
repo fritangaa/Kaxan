@@ -27,7 +27,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.io.IOException;
 
 import esteticaapp.co.kaxan.R;
-import esteticaapp.co.kaxan.login;
+import esteticaapp.co.kaxan.objUbicacion;
 
 public class leerQR extends AppCompatActivity {
 
@@ -165,9 +165,13 @@ public class leerQR extends AppCompatActivity {
                             objUM nuevoUM =new objUM(nom,telefono,contrasena,edad,correo);
 
                             //databaseReference.child(firebaseAuth.getUid()).child("um").child(id).child("datos").setValue(nuevoUM);
-                            databaseReference.child("2bpy1Be1DuNhmWPRuvup379JJW32").child("um").child(id).child("datos").setValue(nuevoUM);
+                            databaseReference.child("ZxdtUxxfUoRrTw9dxoHA6XLAHqJ2").child("um").child(id).child("datos").setValue(nuevoUM);
 
-                            Intent intencion = new Intent(getApplication(), login.class);
+                            objUbicacion ubicacion = new objUbicacion("0.0","0.0","0");
+
+                            databaseReference.child("ZxdtUxxfUoRrTw9dxoHA6XLAHqJ2").child("um").child(id).child("ubicacion").setValue(ubicacion);
+
+                            Intent intencion = new Intent(getApplication(), UAPrincipalActivity.class);
                             startActivity(intencion);
                             finish();
                         }

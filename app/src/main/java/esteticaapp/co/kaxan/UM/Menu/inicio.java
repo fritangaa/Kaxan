@@ -77,7 +77,10 @@ public class inicio extends Fragment implements OnMapReadyCallback {
         view = inflater.inflate(R.layout.activity_inicio, container, false);
 
         firebaseAuth = FirebaseAuth.getInstance();
-        databaseReference= FirebaseDatabase.getInstance().getReference("/2bpy1Be1DuNhmWPRuvup379JJW32/um").child(firebaseAuth.getUid()).child("datos").child("nombre");
+        databaseReference= FirebaseDatabase.getInstance().getReference("/ZxdtUxxfUoRrTw9dxoHA6XLAHqJ2/um").child(firebaseAuth.getUid()).child("datos").child("nombre");
+        ubiRef= FirebaseDatabase.getInstance().getReference("/ZxdtUxxfUoRrTw9dxoHA6XLAHqJ2/um").child(firebaseAuth.getUid()).child("ubicacion");
+        numRef= FirebaseDatabase.getInstance().getReference("/ZxdtUxxfUoRrTw9dxoHA6XLAHqJ2/datos").child("telefono");
+
 
         bateria = (TextView) view.findViewById(R.id.textBateriaUM);
 
@@ -99,7 +102,6 @@ public class inicio extends Fragment implements OnMapReadyCallback {
         });
 
         //---------------------------------numero de telefono------------------------
-        numRef= FirebaseDatabase.getInstance().getReference("/2bpy1Be1DuNhmWPRuvup379JJW32/datos").child("telefono");
 
         // Attach a listener to read the data at our posts reference
         numRef.addValueEventListener(new ValueEventListener() {
@@ -153,6 +155,7 @@ public class inicio extends Fragment implements OnMapReadyCallback {
                     { Manifest.permission.SEND_SMS,},1000);
         }else{
         };
+
         auxilio.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 enviarMensaje("+52"+numUA,"Necesito ayuda, utiliza mi ubicación");
@@ -200,7 +203,6 @@ public class inicio extends Fragment implements OnMapReadyCallback {
 
         mMap.getUiSettings().setZoomControlsEnabled(true);
 
-        ubiRef= FirebaseDatabase.getInstance().getReference("/2bpy1Be1DuNhmWPRuvup379JJW32/um").child(firebaseAuth.getUid()).child("ubicacion");
 
         ubiRef.addValueEventListener(new ValueEventListener() {
 
@@ -213,8 +215,8 @@ public class inicio extends Fragment implements OnMapReadyCallback {
                 GenericTypeIndicator<objUbicacion> t = new GenericTypeIndicator<objUbicacion>() {};
                 objUbicacion tprubi = dataSnapshot.getValue(t);
 
-                if(tprubi.getLatitud()==null||tprubi.getLongitud()==null){
-
+                if(tprubi.getLatitud().equals("")||tprubi.getLongitud().equals("")){
+                    Toast.makeText(view.getContext(), "Espere", Toast.LENGTH_SHORT).show();
                 }else{
                     latum = Double.parseDouble(tprubi.getLatitud());
                     lonum = Double.parseDouble(tprubi.getLongitud());

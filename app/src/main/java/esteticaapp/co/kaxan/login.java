@@ -56,17 +56,20 @@ public class login extends AppCompatActivity {
     private ImageButton btn_um;
     private ImageButton btn_ua;
 
+    private String usuarioAdmin = "UA";
+    private String usuarioMonitor = "UM";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
         if(Preferences.obtenerPreferenceBoolean(this,Preferences.PREFERENCE_ESTADO_BUTTON_SESION)){
-            if(Preferences.obtenerPreferenceString(this,Preferences.PREFERENCE_USUARIO_LB)=="UA"){
+            if(Preferences.obtenerPreferenceString(this,Preferences.PREFERENCE_USUARIO_LB).equals(usuarioAdmin)){
                 Intent intencion = new Intent(getApplication(), UAPrincipalActivity.class);
                 startActivity(intencion);
                 finish();
-            }else{
+            }else if(Preferences.obtenerPreferenceString(this,Preferences.PREFERENCE_USUARIO_LB).equals(usuarioMonitor)){
                 Intent intencion = new Intent(getApplication(), menu.class);
                 startActivity(intencion);
                 finish();
@@ -97,10 +100,8 @@ public class login extends AppCompatActivity {
             public void onClick(View v) {
                 if(botonRecuerda.isChecked()){
                     isActivateRecuerda = true;
-                    Toast.makeText(login.this, "boton"+isActivateRecuerda, Toast.LENGTH_LONG).show();
                 }else{
                     isActivateRecuerda = false;
-                    Toast.makeText(login.this, "boton"+isActivateRecuerda, Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -219,7 +220,7 @@ public class login extends AppCompatActivity {
                             int pos = email.indexOf("@");
                             String user = email.substring(0, pos);
                             Preferences.savePreferenceBoolean(login.this,botonRecuerda.isChecked(),Preferences.PREFERENCE_ESTADO_BUTTON_SESION);
-                            Preferences.savePreferenceString(login.this,"UA",Preferences.PREFERENCE_USUARIO_LB);
+                            Preferences.savePreferenceString(login.this,usuarioAdmin,Preferences.PREFERENCE_USUARIO_LB);
                             Toast.makeText(login.this, "Bienvenido: " + textoUsuario.getText(), Toast.LENGTH_LONG).show();
                             Intent intencion = new Intent(getApplication(), UAPrincipalActivity.class);
                             startActivity(intencion);

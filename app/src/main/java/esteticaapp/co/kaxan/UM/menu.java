@@ -55,7 +55,7 @@ public class menu extends AppCompatActivity{
     private String lon;
     private String bateria;
 
-    private Integer tmpEje = 60000;
+    private Integer tmpEje = 15000;
 
     private TextView mTextMessage;
 
@@ -106,11 +106,11 @@ public class menu extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
-        //FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-        databaseReference= FirebaseDatabase.getInstance().getReference();
-
-        //inicializamos el objeto firebaseAuth
         firebaseAuth = FirebaseAuth.getInstance();
+        //FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        databaseReference= FirebaseDatabase.getInstance().getReference("/ZxdtUxxfUoRrTw9dxoHA6XLAHqJ2/um").child(firebaseAuth.getUid()).child("ubicacion");
+       //inicializamos el objeto firebaseAuth
+
 
         handler.postDelayed(runnable, tmpEje);//empezamos a mandar datos
 
@@ -204,6 +204,9 @@ public class menu extends AppCompatActivity{
                     level= (currentLevel * 100)/scale;
                 }
                 bateria = (""+level);
+                if (bateria.equals("")){
+                    bateria="0";
+                }
 
             }
         };
@@ -212,10 +215,9 @@ public class menu extends AppCompatActivity{
 
         //--------------------------------------------------------------------------
 
-        String idcordenadas = databaseReference.push().getKey();
-        String Text = (lat +"," +lon+","+bateria);
         objUbicacion ubicacion = new objUbicacion(lat,lon,bateria);
-        databaseReference.child("2bpy1Be1DuNhmWPRuvup379JJW32").child("um").child(firebaseAuth.getUid()).child("ubicacion").setValue(ubicacion);
+
+        databaseReference.setValue(ubicacion);
 
         return  true;
     }
