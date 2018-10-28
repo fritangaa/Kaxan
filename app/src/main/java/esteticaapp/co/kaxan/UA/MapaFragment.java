@@ -238,13 +238,6 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
         googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(liberty));
     }
 
-    private List<UM> getAllMonitoredUsers(){
-        return new ArrayList<UM>(){{
-
-            add(new UM("Ricardo", R.drawable.ic_persona_h,100
-                    ,"Intensa",19.283627, -99.634821));
-        }};
-    }
 
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
