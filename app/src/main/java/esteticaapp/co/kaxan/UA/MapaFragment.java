@@ -1,6 +1,8 @@
 package esteticaapp.co.kaxan.UA;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
@@ -15,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -23,15 +26,27 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import esteticaapp.co.kaxan.R;
 import esteticaapp.co.kaxan.UA.recyclerMiembros.AdapterRecycler;
+import esteticaapp.co.kaxan.UA.recyclerMiembros.MiembroUMRecycler;
+import esteticaapp.co.kaxan.UM.Menu.ItemLongClickListener;
+import esteticaapp.co.kaxan.UM.Menu.objEvento;
+import esteticaapp.co.kaxan.UM.Menu.objEventoViewHolder;
 
 public class MapaFragment extends Fragment implements OnMapReadyCallback {
     // TODO: Rename parameter arguments, choose names that match
@@ -50,7 +65,9 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
     MapView mapView;
     View mview;
 
-    private List<UM> monitoredUsers;
+    DatabaseReference ref;
+
+    ArrayList<UM> monitoredUsers= new ArrayList<>();
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -91,6 +108,30 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
     public void onViewCreated(final View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        ref = FirebaseDatabase.getInstance().getReference("/2bpy1Be1DuNhmWPRuvup379JJW32/um");
+
+        ref.addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+                        for (DataSnapshot dsp : dataSnapshot.getChildren()) {
+
+                            monitoredUsers.add(new UM(String.valueOf(dsp.child("datos").child("nombre").getValue()), R.drawable.ic_persona_h,Integer.parseInt(String.valueOf(dsp.child("ubicacion").child("bateria").getValue()))
+                              ,"Intensa",Double.parseDouble(String.valueOf(dsp.child("ubicacion").child("latitud").getValue())), Double.parseDouble(String.valueOf(dsp.child("ubicacion").child("longitud").getValue()))));
+
+                        }
+
+                        setLocation();
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        //handle databaseError
+                    }
+                });
+
         mapView = (MapView) mview.findViewById(R.id.mapaMiembros);
         if (mapView != null) {
 
@@ -99,10 +140,6 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
             mapView.getMapAsync(this);
 
         }
-
-        monitoredUsers = this.getAllMonitoredUsers();
-
-        setLocation();
 
         mRecyclerView = mview.findViewById(R.id.recyclerMiembros);
         mLayoutManager = new LinearLayoutManager(getContext());
@@ -204,21 +241,8 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
     private List<UM> getAllMonitoredUsers(){
         return new ArrayList<UM>(){{
 
-            add(new UM("Ricardo","Zaldivar Pichardo"
-                    ,"10/10/1997","7223490089"
-                    ,"ricardozalpich@gmail.com"
-                    ,R.drawable.person,100
+            add(new UM("Ricardo", R.drawable.ic_persona_h,100
                     ,"Intensa",19.283627, -99.634821));
-            add(new UM("Karla Daniela","Robledo Munguia"
-                    ,"25/07/1997","7224176678"
-                    ,"dany_robledo@gmail.com"
-                    ,R.drawable.person,68
-                    ,"Baja",19.258626, -99.620583));
-            add(new UM("Rodrigo","Zaldivar Pichardo"
-                    ,"02/12/1999","7223490089"
-                    ,"ricardozalpich@gmail.com"
-                    ,R.drawable.person,38
-                    ,"Media",48.858800,2.294505));
         }};
     }
 

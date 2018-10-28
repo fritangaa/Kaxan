@@ -31,6 +31,11 @@ public class UsuarioGeneral {
         this.foto = foto;
     }
 
+    public UsuarioGeneral(String nombre, int foto) {
+        this.nombre = nombre;
+        this.foto = foto;
+    }
+
     public String getNombre() {
         return nombre;
     }

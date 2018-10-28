@@ -17,13 +17,12 @@ public class UM extends UsuarioGeneral{
         this.lugar = lugar;
     }
 
-    public UM(String nombre, String apellidos, String fecha_nacimiento, String telefono, String correo, int foto, int nivel_bateria, String estado_signal, double latitud, double longitud) {
-        super(nombre, apellidos, fecha_nacimiento, telefono, correo, foto);
+    public UM(String nombre, int foto, int nivel_bateria, String estado_signal, double latitud, double longitud) {
+        super(nombre, foto);
         this.nivel_bateria = nivel_bateria;
         this.estado_signal = estado_signal;
         this.latitud = latitud;
         this.longitud = longitud;
-        this.lugar = lugar;
     }
 
     public int getNivel_bateria() {
