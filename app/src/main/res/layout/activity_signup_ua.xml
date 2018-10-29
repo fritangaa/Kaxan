@@ -12,11 +12,20 @@
         android:layout_margin="20dp"
         android:background="@drawable/bg_blanco_redondo_card"
         >
+        <ImageView
+            android:id="@+id/imagen1"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_margin="50dp"
+            android:layout_above="@+id/textoUsuario"
+            android:layout_centerHorizontal="true"
+            app:srcCompat="@drawable/ic_logo_app" />
 
         <TextView
             android:id="@+id/texto1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@id/imagen1"
             android:text="Prueba Locubip por 15 dias"
             android:layout_margin="10dp"
             android:textSize="20dp"
@@ -45,7 +54,9 @@
             android:background="@drawable/bg_blanco_redondo"
             android:layout_marginBottom="30dp"
             android:textAllCaps="false"
-            android:text="Continuar" />
+            android:text="Contratar" />
+
+
 
 
     </RelativeLayout>
