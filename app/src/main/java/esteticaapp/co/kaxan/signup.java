@@ -27,7 +27,6 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.Calendar;
 
-import esteticaapp.co.kaxan.UA.leerQR;
 import esteticaapp.co.kaxan.UA.objUA;
 
 public class signup extends AppCompatActivity {
@@ -178,10 +177,7 @@ public class signup extends AppCompatActivity {
 
                                     databaseReference.child(auth.getUid()).child("datos").setValue(nuevoUA);
 
-
-                                    Toast.makeText(signup.this,"Se ha registrado el usuario: "+ textoRUsuario.getText(),Toast.LENGTH_LONG).show();
-
-                                    Intent siguiente = new Intent(signup.this, leerQR.class);//vamos a la ventana de la confirmacion
+                                    Intent siguiente = new Intent(signup.this, signupUA.class);//vamos a la ventana de la confirmacion
                                     startActivity(siguiente);
                                     finish();
 

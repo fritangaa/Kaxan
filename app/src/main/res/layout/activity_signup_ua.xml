@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:background="@drawable/bg_principal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".signupUA">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="20dp"
+        android:background="@drawable/bg_blanco_redondo_card"
+        >
+
+        <TextView
+            android:id="@+id/texto1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Prueba Locubip por 15 dias"
+            android:layout_margin="10dp"
+            android:textSize="20dp"
+            android:textColor="@color/colorBlanco"
+
+            />
+
+        <TextView
+            android:id="@+id/texto2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/texto1"
+            android:text="Disfruta de todos los beneficios que ofrece Locubip a partir"
+            android:layout_margin="10dp"
+            android:textSize="16dp"
+            android:textColor="@color/colorBlanco"
+
+            />
+
+        <Button
+            android:id="@+id/boton1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/bg_blanco_redondo"
+            android:layout_marginBottom="30dp"
+            android:textAllCaps="false"
+            android:text="Continuar" />
+
+
+    </RelativeLayout>
+
+    </RelativeLayout>
