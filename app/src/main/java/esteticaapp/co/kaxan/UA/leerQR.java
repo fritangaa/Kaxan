@@ -169,7 +169,7 @@ public class leerQR extends AppCompatActivity {
 
                             objUbicacion ubicacion = new objUbicacion("0.0","0.0","0");
 
-                            //databaseReference.child("ZxdtUxxfUoRrTw9dxoHA6XLAHqJ2").child("um").child(id).child("ubicacion").setValue(ubicacion);
+                            databaseReference.child("ZxdtUxxfUoRrTw9dxoHA6XLAHqJ2").child("um").child(id).child("ubicacion").setValue(ubicacion);
 
                             Intent intencion = new Intent(getApplication(), UAPrincipalActivity.class);
                             startActivity(intencion);

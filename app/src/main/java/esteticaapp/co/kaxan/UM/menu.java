@@ -55,7 +55,7 @@ public class menu extends AppCompatActivity{
     private String lon ="";
     private String bateria ="";
 
-    private Integer tmpEje = 15000;
+    private Integer tmpEje = 20000;
 
     private TextView mTextMessage;
 
@@ -122,10 +122,6 @@ public class menu extends AppCompatActivity{
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,}, 1000);
         } else {
-
-            objUbicacion ubicacion = new objUbicacion(lat,lon,bateria);
-            databaseReference.child("ZxdtUxxfUoRrTw9dxoHA6XLAHqJ2").child("um").child(firebaseAuth.getUid()).child("ubicacion").setValue(ubicacion);
-
             locationStart();
         }
         //-----------------------------------------------

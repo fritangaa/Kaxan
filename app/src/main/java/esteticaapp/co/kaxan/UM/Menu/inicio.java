@@ -9,9 +9,13 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.BatteryManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.telephony.SmsManager;
@@ -37,6 +41,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 
 import esteticaapp.co.kaxan.R;
 import esteticaapp.co.kaxan.objUbicacion;
@@ -206,11 +214,10 @@ public class inicio extends Fragment implements OnMapReadyCallback {
 
         ubiRef.addValueEventListener(new ValueEventListener() {
 
+            @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onDataChange(DataSnapshot dataSnapshot){
-
                 mMap.clear();
-
                 //leeremos un objeto de tipo Estudiante
                 GenericTypeIndicator<objUbicacion> t = new GenericTypeIndicator<objUbicacion>() {};
                 objUbicacion tprubi = dataSnapshot.getValue(t);
@@ -225,10 +232,10 @@ public class inicio extends Fragment implements OnMapReadyCallback {
                     mMap.addMarker(new MarkerOptions().position(tec).title("Mi ubicacion"));
                     float zoomLevel = 16.0f; //This goes up to 21
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(tec, zoomLevel));
+
+                    setLocation();
                 }
-
-
-
+                
             }
             @Override
             public void onCancelled(DatabaseError error){
@@ -290,7 +297,25 @@ public class inicio extends Fragment implements OnMapReadyCallback {
         super.onDetach();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public void setLocation() {
+        //Obtener la direccion de la calle a partir de la latitud y la longitud
 
+            if (latum != 0.0 && lonum != 0.0) {
+                try {
+                    Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
+                    List<Address> list = geocoder.getFromLocation(
+                            latum, lonum, 1);
+                    if (!list.isEmpty()) {
+                        Address DirCalle = list.get(0);
+                        umlugar.setText(DirCalle.getAddressLine(0));
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+    }
 
 
 }
