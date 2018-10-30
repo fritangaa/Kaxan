@@ -98,6 +98,15 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
     public void onViewCreated(final View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        mapView = (MapView) mview.findViewById(R.id.mapaMiembros);
+        if (mapView != null) {
+
+            mapView.onCreate(null);
+            mapView.onResume();
+            mapView.getMapAsync(this);
+
+        }
+
         ref = FirebaseDatabase.getInstance().getReference("/ZxdtUxxfUoRrTw9dxoHA6XLAHqJ2/um");
 
         ref.addListenerForSingleValueEvent(
@@ -108,7 +117,7 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
                         for (DataSnapshot dsp : dataSnapshot.getChildren()) {
 
                             monitoredUsers.add(new UM(String.valueOf(dsp.child("datos").child("nombre").getValue()), R.drawable.ic_persona_h,Integer.parseInt(String.valueOf(dsp.child("ubicacion").child("bateria").getValue()))
-                              ,"Intensa",Double.parseDouble(String.valueOf(dsp.child("ubicacion").child("latitud").getValue())), Double.parseDouble(String.valueOf(dsp.child("ubicacion").child("longitud").getValue()))));
+                                    ,"Intensa",Double.parseDouble(String.valueOf(dsp.child("ubicacion").child("latitud").getValue())), Double.parseDouble(String.valueOf(dsp.child("ubicacion").child("longitud").getValue()))));
 
                         }
 
@@ -121,15 +130,6 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
                         //handle databaseError
                     }
                 });
-
-        mapView = (MapView) mview.findViewById(R.id.mapaMiembros);
-        if (mapView != null) {
-
-            mapView.onCreate(null);
-            mapView.onResume();
-            mapView.getMapAsync(this);
-
-        }
 
         mRecyclerView = mview.findViewById(R.id.recyclerMiembros);
         mLayoutManager = new LinearLayoutManager(getContext());
@@ -226,6 +226,32 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
                 .zoom(16).bearing(0).tilt(0).build();
 
         googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(liberty));
+
+        ref = FirebaseDatabase.getInstance().getReference("/ZxdtUxxfUoRrTw9dxoHA6XLAHqJ2/um");
+
+        ref.addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+                        monitoredUsers.clear();
+
+                        for (DataSnapshot dsp : dataSnapshot.getChildren()) {
+
+                            monitoredUsers.add(new UM(String.valueOf(dsp.child("datos").child("nombre").getValue()), R.drawable.ic_persona_h,Integer.parseInt(String.valueOf(dsp.child("ubicacion").child("bateria").getValue()))
+                                    ,"Intensa",Double.parseDouble(String.valueOf(dsp.child("ubicacion").child("latitud").getValue())), Double.parseDouble(String.valueOf(dsp.child("ubicacion").child("longitud").getValue()))));
+
+                        }
+
+                        setLocation();
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        //handle databaseError
+                    }
+                });
     }
 
 
