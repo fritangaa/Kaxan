@@ -124,8 +124,8 @@ public class perfil extends Fragment {
         guardarPerfil.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                subirImagen(uri,firebaseAuth.getUid());
                 Toast.makeText(view.getContext(),"Axtualizado con exito",Toast.LENGTH_LONG);
+                subirImagen(uri,firebaseAuth.getUid());
             }
         });
 
