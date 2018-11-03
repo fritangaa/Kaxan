@@ -6,6 +6,9 @@
     <string name="titulo_perfil">Perfil</string>
     <string name="titulo_evento">Evento</string>
 
+    <string name="permission_granted">Permiso Concedido</string>
+    <string name="permission_rejected">Debes aceptar los permisos para continuar</string>
+
 
     <string name="title_activity_login">login</string>
     <string name="dummy_button">Dummy Button</string>

@@ -128,6 +128,8 @@ public class inicio extends Fragment implements OnMapReadyCallback {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 numUA = String.valueOf(dataSnapshot.getValue());
+
+
             }
 
             @Override
@@ -136,7 +138,7 @@ public class inicio extends Fragment implements OnMapReadyCallback {
             }
         });
 
-
+        //bateria
         BroadcastReceiver bateriaReciever = new BroadcastReceiver() {
 
             @Override
@@ -155,6 +157,7 @@ public class inicio extends Fragment implements OnMapReadyCallback {
         };
         IntentFilter batteryFilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
         getActivity().registerReceiver(bateriaReciever,batteryFilter);
+
 
 
         mMapView = view.findViewById(R.id.mapaUbicacionAdmin);

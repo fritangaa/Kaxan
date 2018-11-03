@@ -1,8 +1,12 @@
 package esteticaapp.co.kaxan;
 
+
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -59,6 +63,9 @@ public class login extends AppCompatActivity {
     private String usuarioAdmin = "UA";
     private String usuarioMonitor = "UM";
 
+    private static final int MULTIPLE_PERMISSIONS_REQUEST_CODE = 1;
+    private String[] permissions = new String[]{Manifest.permission.CAMERA, Manifest.permission.BODY_SENSORS, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.SEND_SMS};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,6 +83,15 @@ public class login extends AppCompatActivity {
             }
         }
 
+
+        if (ActivityCompat.checkSelfPermission(login.this, permissions[0]) != PackageManager.PERMISSION_GRANTED ||
+                ActivityCompat.checkSelfPermission(login.this, permissions[1]) != PackageManager.PERMISSION_GRANTED) {
+            //Si alguno de los permisos no esta concedido lo solicita
+            ActivityCompat.requestPermissions(login.this, permissions, MULTIPLE_PERMISSIONS_REQUEST_CODE);
+        } else {
+            //Si todos los permisos estan concedidos prosigue con el flujo normal
+            permissionGranted();
+        }
 
 
 
@@ -190,6 +206,40 @@ public class login extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        //Se obtiene el resultado de los permisos con base en la clave
+        switch (requestCode) {
+            case MULTIPLE_PERMISSIONS_REQUEST_CODE:
+                //Verifica si todos los permisos se aceptaron o no
+                if (validatePermissions(grantResults)) {
+                    //Si todos los permisos fueron aceptados continua con el flujo normal
+                    permissionGranted();
+                } else {
+                    //Si algun permiso fue rechazado no se puede continuar
+                    permissionRejected();
+                }
+                break;
+        }
+    }
+
+    private boolean validatePermissions(int[] grantResults) {
+        boolean allGranted = false;
+        //Revisa cada uno de los permisos y si estos fueron aceptados o no
+        for (int i = 0; i < permissions.length; i++) {
+            if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+                //Si todos los permisos fueron aceptados retorna true
+                allGranted = true;
+            } else {
+                //Si algun permiso no fue aceptado retorna false
+                allGranted = false;
+                break;
+            }
+        }
+        return allGranted;
+    }
+
     
 
     private void loguearUsuario() {
@@ -290,9 +340,12 @@ public class login extends AppCompatActivity {
 
     }
 
-    private void recuperaContra(){
-        String emailRecupera = textoUsuario.getText().toString().trim();
+    private void permissionGranted() {
+        Toast.makeText(login.this, getString(R.string.permission_granted), Toast.LENGTH_SHORT).show();
+    }
 
+    private void permissionRejected() {
+        Toast.makeText(login.this, getString(R.string.permission_rejected), Toast.LENGTH_SHORT).show();
     }
 
 
