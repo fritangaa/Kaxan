@@ -9,8 +9,11 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Address;
 import android.location.Geocoder;
+import android.os.AsyncTask;
 import android.os.BatteryManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -24,6 +27,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,8 +45,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.StorageReference;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.List;
 import java.util.Locale;
 
@@ -54,6 +62,7 @@ public class inicio extends Fragment implements OnMapReadyCallback {
     private DatabaseReference ubiRef;
     private DatabaseReference numRef;
     private FirebaseAuth firebaseAuth;
+    private StorageReference mStorage;
 
     public static final int NOTIF_ID = 1001;
     public static final String NOTIF_MESSAGE = "NOTIF_MESSAGE";
@@ -70,6 +79,7 @@ public class inicio extends Fragment implements OnMapReadyCallback {
     private TextView bateria;
     private TextView umnombre;
     private TextView umlugar;
+    private ImageView umimagen;
 
     private double latum;
     private double lonum;
@@ -95,6 +105,8 @@ public class inicio extends Fragment implements OnMapReadyCallback {
         umnombre = (TextView) view.findViewById(R.id.um_nombre);
 
         umlugar= (TextView)view.findViewById(R.id.um_lugar_ubicacion);
+
+        umimagen = (ImageView)view.findViewById(R.id.um_imagen);
 
         // Attach a listener to read the data at our posts reference
         databaseReference.addValueEventListener(new ValueEventListener() {
@@ -167,8 +179,17 @@ public class inicio extends Fragment implements OnMapReadyCallback {
         auxilio.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 enviarMensaje("+52"+numUA,"Necesito ayuda, utiliza mi ubicación");
+
             }
         });
+        /*mStorage.child("um/imagenes/perfil/"+firebaseAuth.getUid()+"_perfil.jpeg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                // Got the download URL for 'users/me/profile.png'
+                new inicio.GetImageToURL().execute(""+uri);
+            }
+        });*/
+
 
 
         return view;
@@ -315,6 +336,30 @@ public class inicio extends Fragment implements OnMapReadyCallback {
                 }
             }
 
+    }
+
+    private class GetImageToURL extends AsyncTask< String, Void, Bitmap > {
+
+        @Override
+        protected Bitmap doInBackground(String...params) {
+            try {
+                URL url = new URL(params[0]);
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setDoInput(true);
+                connection.connect();
+                InputStream input = connection.getInputStream();
+                Bitmap myBitmap = BitmapFactory.decodeStream(input);
+                return myBitmap;
+            } catch (IOException e) {
+                // Log exception
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap myBitMap) {
+            umimagen.setImageBitmap(myBitMap);
+        }
     }
 
 
