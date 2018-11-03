@@ -1,46 +1,46 @@
  package esteticaapp.co.kaxan;
 
  import android.app.DatePickerDialog;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.provider.MediaStore;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
-import android.view.KeyEvent;
-import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
+ import android.content.Intent;
+ import android.graphics.Bitmap;
+ import android.graphics.BitmapFactory;
+ import android.net.Uri;
+ import android.os.AsyncTask;
+ import android.os.Bundle;
+ import android.provider.MediaStore;
+ import android.support.annotation.NonNull;
+ import android.support.v7.app.AppCompatActivity;
+ import android.text.TextUtils;
+ import android.view.KeyEvent;
+ import android.view.View;
+ import android.view.inputmethod.EditorInfo;
+ import android.view.inputmethod.InputMethodManager;
+ import android.widget.Button;
+ import android.widget.DatePicker;
+ import android.widget.EditText;
+ import android.widget.TextView;
+ import android.widget.Toast;
 
-import com.afollestad.materialdialogs.MaterialDialog;
-import com.google.android.gms.tasks.OnCompleteListener;
+ import com.afollestad.materialdialogs.MaterialDialog;
+ import com.google.android.gms.tasks.OnCompleteListener;
  import com.google.android.gms.tasks.OnFailureListener;
  import com.google.android.gms.tasks.OnSuccessListener;
  import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserProfileChangeRequest;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
+ import com.google.firebase.auth.AuthResult;
+ import com.google.firebase.auth.FirebaseAuth;
+ import com.google.firebase.auth.FirebaseUser;
+ import com.google.firebase.auth.UserProfileChangeRequest;
+ import com.google.firebase.storage.FirebaseStorage;
+ import com.google.firebase.storage.StorageReference;
  import com.google.firebase.storage.UploadTask;
+ import com.mikhaellopez.circularimageview.CircularImageView;
 
  import java.io.ByteArrayOutputStream;
  import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.Calendar;
+ import java.io.InputStream;
+ import java.net.HttpURLConnection;
+ import java.net.URL;
+ import java.util.Calendar;
 
  public class signupUM extends AppCompatActivity {
 
@@ -70,7 +70,7 @@ import java.util.Calendar;
      private EditText textoRContrasenaUM;
      private EditText textoRCorreoUM;
 
-     private ImageView imagenRPerfilUM;
+     private CircularImageView imagenRPerfilUM;
 
      private FirebaseAuth auth;
      private StorageReference mStorage;
@@ -88,7 +88,7 @@ import java.util.Calendar;
         auth = FirebaseAuth.getInstance();
         mStorage= FirebaseStorage.getInstance().getReference();
 
-        imagenRPerfilUM = (ImageView) findViewById(R.id.imagenUMRPerfil);
+        imagenRPerfilUM = (CircularImageView) findViewById(R.id.imagenUMRPerfil);
         botonAgregarUsuUM = (Button) findViewById(R.id.botonUMRGuardar);
         botonAgregarEdadUM  = (Button) findViewById(R.id.botonUMREdad);
 

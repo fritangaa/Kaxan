@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -21,6 +20,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.mikhaellopez.circularimageview.CircularImageView;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -43,7 +43,7 @@ public class perfil extends Fragment {
     private FirebaseAuth firebaseAuth;
     private DatabaseReference mDatabase;
 
-    private ImageView imagenPerfil;
+    private CircularImageView imagenPerfil;
     private EditText nombrePerfil;
     private EditText edadPerfil;
     //private EditText contraPerfil;
@@ -67,7 +67,7 @@ public class perfil extends Fragment {
         mDatabase = FirebaseDatabase.getInstance().getReference().child("ZxdtUxxfUoRrTw9dxoHA6XLAHqJ2").child("um").child(firebaseAuth.getUid()).child("datos");
 
 
-        imagenPerfil = (ImageView) view.findViewById(R.id.imgPUM);
+        imagenPerfil = (CircularImageView) view.findViewById(R.id.imgPUM);
         nombrePerfil = (EditText) view.findViewById(R.id.nombrePUM);
         edadPerfil = (EditText) view.findViewById(R.id.edadPUM);
         mTextView = (TextView) view.findViewById(R.id.contraPUM);

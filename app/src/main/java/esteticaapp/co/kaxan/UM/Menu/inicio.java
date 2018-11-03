@@ -190,8 +190,6 @@ public class inicio extends Fragment implements OnMapReadyCallback {
             }
         });*/
 
-
-
         return view;
     }
 
@@ -256,7 +254,7 @@ public class inicio extends Fragment implements OnMapReadyCallback {
 
                     setLocation();
                 }
-                
+
             }
             @Override
             public void onCancelled(DatabaseError error){
