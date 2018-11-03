@@ -136,13 +136,12 @@ public class menu extends AppCompatActivity{
     }
 
     private void loadEvento() {
-
         listaEventos fragment = listaEventos.newInstance();
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.replace(R.id.fragment_frame, fragment);
         ft.commit();
-    }
 
+    }
     /*private void loadHistorial() {
 
         historial fragment = historial.newInstance();

@@ -13,10 +13,12 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Address;
 import android.location.Geocoder;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.BatteryManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
@@ -27,7 +29,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,6 +39,8 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -45,7 +48,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.mikhaellopez.circularimageview.CircularImageView;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -79,7 +84,7 @@ public class inicio extends Fragment implements OnMapReadyCallback {
     private TextView bateria;
     private TextView umnombre;
     private TextView umlugar;
-    private ImageView umimagen;
+    private CircularImageView umimagen;
 
     private double latum;
     private double lonum;
@@ -106,7 +111,23 @@ public class inicio extends Fragment implements OnMapReadyCallback {
 
         umlugar= (TextView)view.findViewById(R.id.um_lugar_ubicacion);
 
-        umimagen = (ImageView)view.findViewById(R.id.um_imagen);
+        umimagen = (CircularImageView)view.findViewById(R.id.um_imagen);
+
+        mStorage= FirebaseStorage.getInstance().getReference();
+
+        mStorage.child("um/imagenes/perfil/"+firebaseAuth.getUid()+"_perfil.jpeg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                // Got the download URL for 'photos/profile.png'
+                new inicio.GetImageToURL().execute(""+uri);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle any errors
+                new inicio.GetImageToURL().execute("https://firebasestorage.googleapis.com/v0/b/kaxan-um.appspot.com/o/um%2Fimagenes%2Fperfil%2Fic_perfil_defecto.png?alt=media&token=8d457d20-5bb2-47ef-af19-cae27dd55e72");
+            }
+        });
 
         // Attach a listener to read the data at our posts reference
         databaseReference.addValueEventListener(new ValueEventListener() {
@@ -128,7 +149,6 @@ public class inicio extends Fragment implements OnMapReadyCallback {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 numUA = String.valueOf(dataSnapshot.getValue());
-
 
             }
 
@@ -196,7 +216,6 @@ public class inicio extends Fragment implements OnMapReadyCallback {
         return view;
     }
 
-
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -236,6 +255,8 @@ public class inicio extends Fragment implements OnMapReadyCallback {
 
         ubiRef.addValueEventListener(new ValueEventListener() {
 
+
+
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onDataChange(DataSnapshot dataSnapshot){
@@ -245,10 +266,14 @@ public class inicio extends Fragment implements OnMapReadyCallback {
                 objUbicacion tprubi = dataSnapshot.getValue(t);
 
                 if(tprubi.getLatitud().equals("")||tprubi.getLongitud().equals("")){
-                    Toast.makeText(view.getContext(), "Espere", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(view.getContext(), "Un momento...", Toast.LENGTH_SHORT).show();
                 }else{
                     latum = Double.parseDouble(tprubi.getLatitud());
                     lonum = Double.parseDouble(tprubi.getLongitud());
+                    if (tprubi.getBateria().isEmpty()){
+                    }else{
+                        bateria.setText(tprubi.getBateria()+"%");
+                    }
 
                     LatLng tec = new LatLng(latum, lonum);
                     mMap.addMarker(new MarkerOptions().position(tec).title("Mi ubicacion"));
@@ -325,7 +350,7 @@ public class inicio extends Fragment implements OnMapReadyCallback {
 
             if (latum != 0.0 && lonum != 0.0) {
                 try {
-                    Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
+                    Geocoder geocoder = new Geocoder(view.getContext(), Locale.getDefault());
                     List<Address> list = geocoder.getFromLocation(
                             latum, lonum, 1);
                     if (!list.isEmpty()) {
