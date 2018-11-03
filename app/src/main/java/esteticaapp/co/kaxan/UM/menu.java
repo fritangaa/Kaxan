@@ -55,7 +55,7 @@ public class menu extends AppCompatActivity{
     private String lon ="";
     private String bateria ="";
 
-    private Integer tmpEje = 20000;
+    private Integer tmpEje = 5000;
 
     private TextView mTextMessage;
 

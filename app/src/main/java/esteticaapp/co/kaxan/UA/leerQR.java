@@ -23,6 +23,8 @@ import com.google.android.gms.vision.barcode.BarcodeDetector;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.io.IOException;
 
@@ -33,6 +35,7 @@ public class leerQR extends AppCompatActivity {
 
     private DatabaseReference databaseReference;
     private FirebaseAuth firebaseAuth;
+    private StorageReference mStorage;
 
 
     private CameraSource cameraSource;
@@ -46,6 +49,8 @@ public class leerQR extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup_umqr);
+
+        mStorage= FirebaseStorage.getInstance().getReference();
 
         //FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         databaseReference= FirebaseDatabase.getInstance().getReference();
@@ -198,4 +203,5 @@ public class leerQR extends AppCompatActivity {
         });
 
     }
+
 }
