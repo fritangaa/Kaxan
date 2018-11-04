@@ -116,9 +116,14 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
 
                         for (DataSnapshot dsp : dataSnapshot.getChildren()) {
 
-                            monitoredUsers.add(new UM(String.valueOf(dsp.child("datos").child("nombre").getValue()), R.drawable.ic_persona_h,Integer.parseInt(String.valueOf(dsp.child("ubicacion").child("bateria").getValue()))
-                                    ,"Intensa",Double.parseDouble(String.valueOf(dsp.child("ubicacion").child("latitud").getValue())), Double.parseDouble(String.valueOf(dsp.child("ubicacion").child("longitud").getValue()))));
+                            if(dsp.child("ubicacion").child("latitud").getValue() == null || dsp.child("ubicacion").child("longitud").getValue() == null || dsp.child("ubicacion").child("bateria").getValue() == null){
+                                monitoredUsers.add(new UM(String.valueOf(dsp.child("datos").child("nombre").getValue()), R.drawable.ic_persona_h,0
+                                        ,"Intensa",0, 0));
 
+                            }else{
+                                monitoredUsers.add(new UM(String.valueOf(dsp.child("datos").child("nombre").getValue()), R.drawable.ic_persona_h,Integer.parseInt(String.valueOf(dsp.child("ubicacion").child("bateria").getValue()))
+                                        ,"Intensa",Double.parseDouble(String.valueOf(dsp.child("ubicacion").child("latitud").getValue())), Double.parseDouble(String.valueOf(dsp.child("ubicacion").child("longitud").getValue()))));
+                            }
                         }
 
                         setLocation();
@@ -218,8 +223,6 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
         mgoogleMap = googleMap;
 
         googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-        googleMap.addMarker(new MarkerOptions().position(new LatLng(19.257385, -99.577600))
-                .title("NOWHERE").snippet("HOLA"));
 
 
         CameraPosition liberty = CameraPosition.builder().target(new LatLng(19.257385, -99.577600))
@@ -238,9 +241,15 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
 
                         for (DataSnapshot dsp : dataSnapshot.getChildren()) {
 
-                            monitoredUsers.add(new UM(String.valueOf(dsp.child("datos").child("nombre").getValue()), R.drawable.ic_persona_h,Integer.parseInt(String.valueOf(dsp.child("ubicacion").child("bateria").getValue()))
-                                    ,"Intensa",Double.parseDouble(String.valueOf(dsp.child("ubicacion").child("latitud").getValue())), Double.parseDouble(String.valueOf(dsp.child("ubicacion").child("longitud").getValue()))));
 
+                            if(dsp.child("ubicacion").child("latitud").getValue() == null || dsp.child("ubicacion").child("longitud").getValue() == null || dsp.child("ubicacion").child("bateria").getValue() == null){
+                                monitoredUsers.add(new UM(String.valueOf(dsp.child("datos").child("nombre").getValue()), R.drawable.ic_persona_h,0
+                                        ,"Intensa",0, 0));
+
+                            }else{
+                                monitoredUsers.add(new UM(String.valueOf(dsp.child("datos").child("nombre").getValue()), R.drawable.ic_persona_h,Integer.parseInt(String.valueOf(dsp.child("ubicacion").child("bateria").getValue()))
+                                        ,"Intensa",Double.parseDouble(String.valueOf(dsp.child("ubicacion").child("latitud").getValue())), Double.parseDouble(String.valueOf(dsp.child("ubicacion").child("longitud").getValue()))));
+                            }
                         }
 
                         setLocation();
