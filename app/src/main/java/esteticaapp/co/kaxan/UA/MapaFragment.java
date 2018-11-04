@@ -116,7 +116,7 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
 
                         for (DataSnapshot dsp : dataSnapshot.getChildren()) {
 
-                            if(dsp.child("ubicacion").child("latitud").getValue() == null || dsp.child("ubicacion").child("longitud").getValue() == null || dsp.child("ubicacion").child("bateria").getValue() == null){
+                            if(dsp.child("ubicacion").child("latitud").getValue().equals("") || dsp.child("ubicacion").child("longitud").getValue().equals("") || dsp.child("ubicacion").child("bateria").getValue().equals("")){
                                 monitoredUsers.add(new UM(String.valueOf(dsp.child("datos").child("nombre").getValue()), R.drawable.ic_persona_h,0
                                         ,"Intensa",0, 0));
 
@@ -242,7 +242,7 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
                         for (DataSnapshot dsp : dataSnapshot.getChildren()) {
 
 
-                            if(dsp.child("ubicacion").child("latitud").getValue() == null || dsp.child("ubicacion").child("longitud").getValue() == null || dsp.child("ubicacion").child("bateria").getValue() == null){
+                            if(dsp.child("ubicacion").child("latitud").getValue().equals("") || dsp.child("ubicacion").child("longitud").getValue().equals("") || dsp.child("ubicacion").child("bateria").getValue().equals("")){
                                 monitoredUsers.add(new UM(String.valueOf(dsp.child("datos").child("nombre").getValue()), R.drawable.ic_persona_h,0
                                         ,"Intensa",0, 0));
 
