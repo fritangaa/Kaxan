@@ -1,9 +1,11 @@
 package esteticaapp.co.kaxan.UA;
 
+import android.app.Activity;
 import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -62,6 +64,7 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    public Activity mActivity;
 
     public MapaFragment() {
         // Required empty public constructor
@@ -84,30 +87,8 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-    }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-
-        mview = inflater.inflate(R.layout.fragment_mapa, container, false);
-        return mview;
-    }
-
-    @Override
-    public void onViewCreated(final View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        mapView = (MapView) mview.findViewById(R.id.mapaMiembros);
-        if (mapView != null) {
-
-            mapView.onCreate(null);
-            mapView.onResume();
-            mapView.getMapAsync(this);
-
-        }
-
-        ref = FirebaseDatabase.getInstance().getReference("/ZxdtUxxfUoRrTw9dxoHA6XLAHqJ2/um");
+/*        ref = FirebaseDatabase.getInstance().getReference("/ZxdtUxxfUoRrTw9dxoHA6XLAHqJ2/um");
 
         ref.addListenerForSingleValueEvent(
                 new ValueEventListener() {
@@ -134,7 +115,32 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
                     public void onCancelled(DatabaseError databaseError) {
                         //handle databaseError
                     }
-                });
+                });*/
+
+        time time = new time();
+        time.execute();
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+
+        mview = inflater.inflate(R.layout.fragment_mapa, container, false);
+        return mview;
+    }
+
+    @Override
+    public void onViewCreated(final View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        mapView = (MapView) mview.findViewById(R.id.mapaMiembros);
+        if (mapView != null) {
+
+            mapView.onCreate(null);
+            mapView.onResume();
+            mapView.getMapAsync(this);
+
+        }
 
         mRecyclerView = mview.findViewById(R.id.recyclerMiembros);
         mLayoutManager = new LinearLayoutManager(getContext());
@@ -210,6 +216,12 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
     }
 
     @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        this.mActivity = activity;
+    }
+
+    @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
@@ -230,7 +242,7 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
 
         googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(liberty));
 
-        ref = FirebaseDatabase.getInstance().getReference("/ZxdtUxxfUoRrTw9dxoHA6XLAHqJ2/um");
+/*        ref = FirebaseDatabase.getInstance().getReference("/ZxdtUxxfUoRrTw9dxoHA6XLAHqJ2/um");
 
         ref.addListenerForSingleValueEvent(
                 new ValueEventListener() {
@@ -260,7 +272,7 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
                     public void onCancelled(DatabaseError databaseError) {
                         //handle databaseError
                     }
-                });
+                });*/
     }
 
 
@@ -274,7 +286,7 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
         for (int cont = 0; cont<monitoredUsers.size();cont++){
             if (monitoredUsers.get(cont).getLatitud() != 0.0 && monitoredUsers.get(cont).getLongitud() != 0.0) {
                 try {
-                    Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
+                    Geocoder geocoder = new Geocoder(mActivity, Locale.getDefault());
                     List<Address> list = geocoder.getFromLocation(
                             monitoredUsers.get(cont).getLatitud(), monitoredUsers.get(cont).getLongitud(), 1);
                     if (!list.isEmpty()) {
@@ -287,6 +299,131 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
             }
         }
     }
+
+    public void hilo(){
+
+        try{
+            Thread.sleep(1000);
+        }catch (InterruptedException e){
+            e.printStackTrace();
+        }
+
+    }
+
+    public class time extends AsyncTask<Void,Integer,Boolean>{
+
+
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+
+            for(int i=1;i<=5;i++){
+                hilo();
+            }
+
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            ejectutar();
+        }
+    }
+
+    public void ejectutar(){
+        time time = new time();
+        time.execute();
+
+        ref = FirebaseDatabase.getInstance().getReference("/ZxdtUxxfUoRrTw9dxoHA6XLAHqJ2/um");
+
+        ref.addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+                        monitoredUsers.clear();
+
+                        for (DataSnapshot dsp : dataSnapshot.getChildren()) {
+
+
+                            if(dsp.child("ubicacion").child("latitud").getValue().equals("") || dsp.child("ubicacion").child("longitud").getValue().equals("") || dsp.child("ubicacion").child("bateria").getValue().equals("")){
+                                monitoredUsers.add(new UM(String.valueOf(dsp.child("datos").child("nombre").getValue()), R.drawable.ic_persona_h,0
+                                        ,"Intensa",0, 0));
+
+                            }else{
+                                monitoredUsers.add(new UM(String.valueOf(dsp.child("datos").child("nombre").getValue()), R.drawable.ic_persona_h,Integer.parseInt(String.valueOf(dsp.child("ubicacion").child("bateria").getValue()))
+                                        ,"Intensa",Double.parseDouble(String.valueOf(dsp.child("ubicacion").child("latitud").getValue())), Double.parseDouble(String.valueOf(dsp.child("ubicacion").child("longitud").getValue()))));
+                            }
+                        }
+
+                        setLocation();
+
+                    }
+
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        //handle databaseError
+                    }
+                });
+
+        mRecyclerView = mview.findViewById(R.id.recyclerMiembros);
+        mLayoutManager = new LinearLayoutManager(getContext());
+        mAdapter = new AdapterRecycler(monitoredUsers, R.layout.recycler_view_item, new AdapterRecycler.OnItemClickListener() {
+            @Override
+            public void onItemClick(UM monitoredUser, final int position) {
+
+                //creating a popup menu
+                PopupMenu popup = new PopupMenu(getContext(), mRecyclerView);
+                //inflating menu from xml resource
+                popup.inflate(R.menu.opciones_miembros);
+                //adding click listener
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.ver_en_mapa:
+                                mgoogleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+                                mgoogleMap.addMarker(new MarkerOptions().position(new LatLng(monitoredUsers.get(position).getLatitud(),monitoredUsers.get(position).getLongitud()))
+                                        .title("NOWHERE").snippet("HOLA"));
+
+                                CameraPosition liberty = CameraPosition.builder().target(new LatLng(monitoredUsers.get(position).getLatitud(),monitoredUsers.get(position).getLongitud()))
+                                        .zoom(16).bearing(0).tilt(0).build();
+
+                                mgoogleMap.moveCamera(CameraUpdateFactory.newCameraPosition(liberty));
+
+                                break;
+                            case R.id.agrega_evento_user:
+                                Toast.makeText(mActivity,"Agrega evento",Toast.LENGTH_LONG).show();
+                                break;
+                            case R.id.agrega_rutina_user:
+                                Toast.makeText(mActivity,"Agrega rutina",Toast.LENGTH_LONG).show();
+                                break;
+                            case R.id.ver_historial_rutas:
+                                Toast.makeText(mActivity,"Ver historial de rutas",Toast.LENGTH_LONG).show();
+                                break;
+                            case R.id.ver_historial_alertas:
+                                Toast.makeText(mActivity,"Ver historial de alertas",Toast.LENGTH_LONG).show();
+                                break;
+                            case R.id.ver_historial_caja:
+                                Toast.makeText(mActivity,"Ver historial de caja negra",Toast.LENGTH_LONG).show();
+                                break;
+                        }
+                        return false;
+                    }
+                });
+                //displaying the popup
+                popup.show();
+
+            }
+        });
+
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setAdapter(mAdapter);
+
+
+
+    }
+
 
 
 }
