@@ -11,6 +11,7 @@ import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
@@ -32,13 +33,21 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -50,7 +59,12 @@ import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.maps.android.PolyUtil;
 import com.mikhaellopez.circularimageview.CircularImageView;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -216,6 +230,9 @@ public class inicio extends Fragment implements OnMapReadyCallback {
         return view;
     }
 
+
+    JSONObject jso;
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -276,11 +293,50 @@ public class inicio extends Fragment implements OnMapReadyCallback {
                     }
 
                     LatLng tec = new LatLng(latum, lonum);
-                    mMap.addMarker(new MarkerOptions().position(tec).title("Mi ubicacion"));
-                    float zoomLevel = 16.0f; //This goes up to 21
-                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(tec, zoomLevel));
+                    mMap.addMarker(new MarkerOptions()
+                            .position(tec)
+                            .title("Mi ubicacion")
+                            .snippet(latum+","+lonum)
+                    );
+
+                    //----------------------------------------------------------------------
+
+                    CameraPosition cameraPosition = new CameraPosition.Builder()
+                            .target(new LatLng(latum,lonum))      // Sets the center of the map to Mountain View
+                            .zoom(17)
+                            .bearing(90)// Sets the zoom
+                            .build();                   // Creates a CameraPosition from the builder
+                    mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
                     setLocation();
+
+                    //"https://maps.googleapis.com/maps/api/distancematrix/json?origins="+latitudOrigen+","+longitudOrigen+"&destinations=2.9435667,-75.2458577&key=AIzaSyDWgFl93THQ8OUHNfZzvmkN16cH03u3GVI"
+                    //viejo---https://maps.googleapis.com/maps/api/directions/json?origin="+latitudOrigen+","+longitudOrigen+"&destination=2.9435667,-75.2458577
+                    String url ="https://maps.googleapis.com/maps/api/distancematrix/json?origins="+latum+","+lonum+"&destinations=19.258083,%20-99.580768&key=AIzaSyDWgFl93THQ8OUHNfZzvmkN16cH03u3GVI";
+                    RequestQueue queue = Volley.newRequestQueue(view.getContext());
+                    StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            try {
+                                jso = new JSONObject(response);
+                                trazarRuta(jso);
+                                Log.i("jsonRuta: ",""+response);
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+
+                        }
+                    });
+
+                    queue.add(stringRequest);
+
+
                 }
 
             }
@@ -291,6 +347,47 @@ public class inicio extends Fragment implements OnMapReadyCallback {
 
         });
 
+    }
+
+    private void trazarRuta(JSONObject jso) {
+
+        JSONArray jRoutes;
+        JSONArray jLegs;
+        JSONArray jSteps;
+
+        try {
+            jRoutes = jso.getJSONArray("routes");
+            for (int i=0; i<jRoutes.length();i++){
+
+                jLegs = ((JSONObject)(jRoutes.get(i))).getJSONArray("legs");
+
+                for (int j=0; j<jLegs.length();j++){
+
+                    jSteps = ((JSONObject)jLegs.get(j)).getJSONArray("steps");
+
+                    for (int k = 0; k<jSteps.length();k++){
+
+
+                        String polyline = ""+((JSONObject)((JSONObject)jSteps.get(k)).get("polyline")).get("points");
+                        Log.i("end",""+polyline);
+                        List<LatLng> list = PolyUtil.decode(polyline);
+                        mMap.addPolyline(new PolylineOptions().addAll(list).color(Color.GRAY).width(5));
+
+
+
+                    }
+
+
+
+                }
+
+
+
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
     }
 
