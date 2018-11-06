@@ -1,7 +1,9 @@
 package esteticaapp.co.kaxan.UA;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
@@ -17,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -25,6 +28,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -39,6 +43,9 @@ import java.util.Locale;
 
 import esteticaapp.co.kaxan.R;
 import esteticaapp.co.kaxan.UA.recyclerMiembros.AdapterRecycler;
+import esteticaapp.co.kaxan.UM.Menu.ItemLongClickListener;
+import esteticaapp.co.kaxan.UM.Menu.objEvento;
+import esteticaapp.co.kaxan.UM.Menu.objEventoViewHolder;
 
 public class MapaFragment extends Fragment implements OnMapReadyCallback {
     // TODO: Rename parameter arguments, choose names that match
@@ -62,7 +69,7 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
     ArrayList<UM> monitoredUsers= new ArrayList<>();
 
     private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
+    private AdapterRecycler mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     public Activity mActivity;
 
@@ -87,6 +94,9 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        time time = new time();
+        time.execute();
 
 /*        ref = FirebaseDatabase.getInstance().getReference("/ZxdtUxxfUoRrTw9dxoHA6XLAHqJ2/um");
 
@@ -117,8 +127,7 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
                     }
                 });*/
 
-        time time = new time();
-        time.execute();
+
     }
 
     @Override
@@ -141,6 +150,35 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
             mapView.getMapAsync(this);
 
         }
+
+/*        ref = FirebaseDatabase.getInstance().getReference("/ZxdtUxxfUoRrTw9dxoHA6XLAHqJ2/um");
+
+        ref.addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+                        for (DataSnapshot dsp : dataSnapshot.getChildren()) {
+
+                            if(dsp.child("ubicacion").child("latitud").getValue().equals("") || dsp.child("ubicacion").child("longitud").getValue().equals("") || dsp.child("ubicacion").child("bateria").getValue().equals("")){
+                                monitoredUsers.add(new UM(String.valueOf(dsp.child("datos").child("nombre").getValue()), R.drawable.ic_persona_h,0
+                                        ,"Intensa",0, 0));
+
+                            }else{
+                                monitoredUsers.add(new UM(String.valueOf(dsp.child("datos").child("nombre").getValue()), R.drawable.ic_persona_h,Integer.parseInt(String.valueOf(dsp.child("ubicacion").child("bateria").getValue()))
+                                        ,"Intensa",Double.parseDouble(String.valueOf(dsp.child("ubicacion").child("latitud").getValue())), Double.parseDouble(String.valueOf(dsp.child("ubicacion").child("longitud").getValue()))));
+                            }
+                        }
+
+                        setLocation();
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        //handle databaseError
+                    }
+                });
 
         mRecyclerView = mview.findViewById(R.id.recyclerMiembros);
         mLayoutManager = new LinearLayoutManager(getContext());
@@ -194,7 +232,7 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
         });
 
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.setAdapter(mAdapter);*/
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -316,7 +354,7 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
         @Override
         protected Boolean doInBackground(Void... voids) {
 
-            for(int i=1;i<=5;i++){
+            for(int i=1;i<=2;i++){
                 hilo();
             }
 
@@ -356,9 +394,53 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
                         }
 
                         setLocation();
+                        //Toast.makeText(getContext(),"Agrega evento",Toast.LENGTH_LONG).show();
+
+                        mAdapter.updateList(monitoredUsers,getContext());
+
 
                     }
 
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        //handle databaseError
+                    }
+                });
+
+
+
+
+
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        ref = FirebaseDatabase.getInstance().getReference("/ZxdtUxxfUoRrTw9dxoHA6XLAHqJ2/um");
+
+        ref.addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+                        for (DataSnapshot dsp : dataSnapshot.getChildren()) {
+
+                            if(dsp.child("ubicacion").child("latitud").getValue().equals("") || dsp.child("ubicacion").child("longitud").getValue().equals("") || dsp.child("ubicacion").child("bateria").getValue().equals("")){
+                                monitoredUsers.add(new UM(String.valueOf(dsp.child("datos").child("nombre").getValue()), R.drawable.ic_persona_h,0
+                                        ,"Intensa",0, 0));
+
+                            }else{
+                                monitoredUsers.add(new UM(String.valueOf(dsp.child("datos").child("nombre").getValue()), R.drawable.ic_persona_h,Integer.parseInt(String.valueOf(dsp.child("ubicacion").child("bateria").getValue()))
+                                        ,"Intensa",Double.parseDouble(String.valueOf(dsp.child("ubicacion").child("latitud").getValue())), Double.parseDouble(String.valueOf(dsp.child("ubicacion").child("longitud").getValue()))));
+                            }
+                        }
+
+                        setLocation();
+
+                    }
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
@@ -393,19 +475,19 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
 
                                 break;
                             case R.id.agrega_evento_user:
-                                Toast.makeText(mActivity,"Agrega evento",Toast.LENGTH_LONG).show();
+                                Toast.makeText(getContext(),"Agrega evento",Toast.LENGTH_LONG).show();
                                 break;
                             case R.id.agrega_rutina_user:
-                                Toast.makeText(mActivity,"Agrega rutina",Toast.LENGTH_LONG).show();
+                                Toast.makeText(getContext(),"Agrega rutina",Toast.LENGTH_LONG).show();
                                 break;
                             case R.id.ver_historial_rutas:
-                                Toast.makeText(mActivity,"Ver historial de rutas",Toast.LENGTH_LONG).show();
+                                Toast.makeText(getContext(),"Ver historial de rutas",Toast.LENGTH_LONG).show();
                                 break;
                             case R.id.ver_historial_alertas:
-                                Toast.makeText(mActivity,"Ver historial de alertas",Toast.LENGTH_LONG).show();
+                                Toast.makeText(getContext(),"Ver historial de alertas",Toast.LENGTH_LONG).show();
                                 break;
                             case R.id.ver_historial_caja:
-                                Toast.makeText(mActivity,"Ver historial de caja negra",Toast.LENGTH_LONG).show();
+                                Toast.makeText(getContext(),"Ver historial de caja negra",Toast.LENGTH_LONG).show();
                                 break;
                         }
                         return false;
@@ -420,10 +502,5 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
 
-
-
     }
-
-
-
 }

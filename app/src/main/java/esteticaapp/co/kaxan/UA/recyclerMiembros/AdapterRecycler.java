@@ -1,5 +1,6 @@
 package esteticaapp.co.kaxan.UA.recyclerMiembros;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -7,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -25,6 +27,32 @@ public class AdapterRecycler extends RecyclerView.Adapter<AdapterRecycler.ViewHo
         this.layout = layout;
         this.itemClickListener = listener;
 
+    }
+
+    public AdapterRecycler(List<UM> monitoredUsers, int layout){
+
+        this.monitoredUsers = monitoredUsers;
+        this.layout = layout;
+
+
+    }
+
+    public AdapterRecycler(){
+
+
+
+    }
+
+    public void updateList (List<UM> items, Context context) {
+
+
+        if (items != null && items.size() > 0) {
+
+            Toast.makeText(context,String.valueOf(items.size()),Toast.LENGTH_LONG).show();
+            monitoredUsers.clear();
+            monitoredUsers.addAll(items);
+            notifyDataSetChanged();
+        }
     }
 
     @NonNull
