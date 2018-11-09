@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -165,30 +166,31 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
 
         listaUM = view.findViewById(R.id.recyclerMiembros);
 
-        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getContext());
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         listaUM.setLayoutManager(linearLayoutManager);
 
         //final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        databaseReference= FirebaseDatabase.getInstance().getReference();
+        databaseReference = FirebaseDatabase.getInstance().getReference();
         final DatabaseReference ref = databaseReference.child("ZxdtUxxfUoRrTw9dxoHA6XLAHqJ2").child("um");
 
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 usuariosMonitoreados = new UM[Integer.parseInt(String.valueOf(dataSnapshot.getChildrenCount()))];
+                
 
-                    for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
 
-                        ubicacionUM = snapshot.child("ubicacion").getValue(UM.class);
-                        nombreUM = snapshot.child("datos").getValue(UM.class);
+                    ubicacionUM = snapshot.child("ubicacion").getValue(UM.class);
+                    nombreUM = snapshot.child("datos").getValue(UM.class);
 
-                        monitoredUsers.add(ubicacionUM);
-                        monitoredUsers2.add(nombreUM);
+                    monitoredUsers.add(ubicacionUM);
+                    monitoredUsers2.add(nombreUM);
 
 
                 }
-
+                adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -197,6 +199,7 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
                 Log.w("Hello", "Failed to read value.", error.toException());
             }
         });
+
 
         adapter=new FirebaseRecyclerAdapter<UM, UMViewHolder.ViewHolder>(
                 UM.class,
@@ -207,11 +210,11 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
             @Override
             protected void populateViewHolder(final UMViewHolder.ViewHolder viewHolder,
                                               UM model, final int position) {
-
+                Toast.makeText(getContext(), monitoredUsers.get(0).getBateria(), Toast.LENGTH_SHORT).show();
                 viewHolder.nombre.setText(monitoredUsers2.get(position).getNombre());
                 viewHolder.bateria.setText(monitoredUsers.get(position).getBateria());
                 viewHolder.senial.setText("Intensa");
-                viewHolder.direccion.setText(monitoredUsers.get(position).getLugar());
+                viewHolder.direccion.setText(setLocation(Double.parseDouble(monitoredUsers.get(position).getLatitud()),Double.parseDouble(monitoredUsers.get(position).getLongitud())));
                 viewHolder.imgFoto.setImageResource(R.drawable.ic_persona);
                 viewHolder.imgBateria.setImageResource(R.drawable.batteryfull);
                 viewHolder.imgSenial.setImageResource(R.drawable.signal4);
