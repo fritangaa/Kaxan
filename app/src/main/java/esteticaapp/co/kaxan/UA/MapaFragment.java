@@ -14,7 +14,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -74,14 +73,6 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
     private AdapterRecycler mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     public Activity mActivity;
-
-    private int aux = 0;
-
-    String nombre = "";
-    String latitud = "";
-    String longitud = "";
-    String direccion = "";
-    String bateria = "";
 
     UM[] usuariosMonitoreados;
 
@@ -177,8 +168,9 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                monitoredUsers.clear();
+                monitoredUsers2.clear();
                 usuariosMonitoreados = new UM[Integer.parseInt(String.valueOf(dataSnapshot.getChildrenCount()))];
-                
 
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
 
@@ -188,8 +180,8 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
                     monitoredUsers.add(ubicacionUM);
                     monitoredUsers2.add(nombreUM);
 
-
                 }
+
                 adapter.notifyDataSetChanged();
             }
 
@@ -210,7 +202,6 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
             @Override
             protected void populateViewHolder(final UMViewHolder.ViewHolder viewHolder,
                                               UM model, final int position) {
-                Toast.makeText(getContext(), monitoredUsers.get(0).getBateria(), Toast.LENGTH_SHORT).show();
                 viewHolder.nombre.setText(monitoredUsers2.get(position).getNombre());
                 viewHolder.bateria.setText(monitoredUsers.get(position).getBateria());
                 viewHolder.senial.setText("Intensa");
