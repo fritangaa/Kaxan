@@ -1,9 +1,7 @@
 package esteticaapp.co.kaxan.UA;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
@@ -12,12 +10,10 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.PopupMenu;
-import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -27,15 +23,11 @@ import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -45,9 +37,6 @@ import java.util.Locale;
 import esteticaapp.co.kaxan.R;
 import esteticaapp.co.kaxan.UA.recyclerMiembros.AdapterRecycler;
 import esteticaapp.co.kaxan.UA.recyclerMiembros.UMViewHolder;
-import esteticaapp.co.kaxan.UM.Menu.ItemLongClickListener;
-import esteticaapp.co.kaxan.UM.Menu.objEvento;
-import esteticaapp.co.kaxan.UM.Menu.objEventoViewHolder;
 
 public class MapaFragment extends Fragment implements OnMapReadyCallback {
     // TODO: Rename parameter arguments, choose names that match
@@ -85,6 +74,7 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
     private RecyclerView.LayoutManager mLayoutManager;
     public Activity mActivity;
 
+    private int aux = 0;
 
     String nombre = "";
     String latitud = "";
@@ -183,6 +173,31 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
         databaseReference= FirebaseDatabase.getInstance().getReference();
         final DatabaseReference ref = databaseReference.child("ZxdtUxxfUoRrTw9dxoHA6XLAHqJ2").child("um");
 
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                usuariosMonitoreados = new UM[Integer.parseInt(String.valueOf(dataSnapshot.getChildrenCount()))];
+
+                    for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+
+                        ubicacionUM = snapshot.child("ubicacion").getValue(UM.class);
+                        nombreUM = snapshot.child("datos").getValue(UM.class);
+
+                        monitoredUsers.add(ubicacionUM);
+                        monitoredUsers2.add(nombreUM);
+
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w("Hello", "Failed to read value.", error.toException());
+            }
+        });
+
         adapter=new FirebaseRecyclerAdapter<UM, UMViewHolder.ViewHolder>(
                 UM.class,
                 R.layout.recycler_view_item,
@@ -193,52 +208,13 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
             protected void populateViewHolder(final UMViewHolder.ViewHolder viewHolder,
                                               UM model, final int position) {
 
-                ref.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-
-                        usuariosMonitoreados = new UM[Integer.parseInt(String.valueOf(dataSnapshot.getChildrenCount()))];
-
-                        for(DataSnapshot snapshot : dataSnapshot.getChildren()){
-
-                            ubicacionUM = snapshot.child("ubicacion").getValue(UM.class);
-                            nombreUM = snapshot.child("datos").getValue(UM.class);
-
-/*                            nombre = usuario1.getNombre();
-                            Toast.makeText(getContext(),nombre,Toast.LENGTH_LONG).show();
-                            latitud = String.valueOf(usuario.getLatitud());
-                            longitud = String.valueOf(usuario.getLongitud());
-                            direccion = setLocation(Double.parseDouble(usuario.getLatitud()),Double.parseDouble(usuario.getLongitud()));
-                            bateria = usuario.getBateria();*/
-
-                            monitoredUsers.add(ubicacionUM);
-                            monitoredUsers2.add(nombreUM);
-
-                            nombres.add(nombreUM.getNombre());
-
-                            Toast.makeText(getContext(),String.valueOf(nombreUM.getNombre()),Toast.LENGTH_LONG).show();
-
-                        }
-
-                        //Toast.makeText(getContext(),String.valueOf(monitoredUsers.size()),Toast.LENGTH_LONG).show();
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
-
-
-
-                viewHolder.nombre.setText("");
-                viewHolder.bateria.setText("");
+                viewHolder.nombre.setText(monitoredUsers2.get(position).getNombre());
+                viewHolder.bateria.setText(monitoredUsers.get(position).getBateria());
                 viewHolder.senial.setText("Intensa");
-                viewHolder.direccion.setText("");
+                viewHolder.direccion.setText(monitoredUsers.get(position).getLugar());
                 viewHolder.imgFoto.setImageResource(R.drawable.ic_persona);
                 viewHolder.imgBateria.setImageResource(R.drawable.batteryfull);
                 viewHolder.imgSenial.setImageResource(R.drawable.signal4);
-
             }
 
         };
