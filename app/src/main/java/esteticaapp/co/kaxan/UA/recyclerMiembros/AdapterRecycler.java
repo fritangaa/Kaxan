@@ -105,28 +105,28 @@ public class AdapterRecycler extends RecyclerView.Adapter<AdapterRecycler.ViewHo
             imageViewUserPhoto.setImageResource(monitoredUser.getFoto());
             textViewNombre.setText(monitoredUser.getNombre());
 
-            if(monitoredUser.getNivel_bateria() == 100){
+/*            if(monitoredUser.getBateria() == 100){
                 imgBattery.setImageResource(R.drawable.batteryfull);
             }else{
-                if(monitoredUser.getNivel_bateria()>=90 && monitoredUser.getNivel_bateria()<100){
+                if(monitoredUser.getBateria()>=90 && monitoredUser.getBateria()<100){
                     imgBattery.setImageResource(R.drawable.battery90);
                 }else{
-                    if(monitoredUser.getNivel_bateria()>=80 && monitoredUser.getNivel_bateria()<90){
+                    if(monitoredUser.getBateria()>=80 && monitoredUser.getBateria()<90){
                         imgBattery.setImageResource(R.drawable.battery80);
                     }else{
-                        if (monitoredUser.getNivel_bateria()>=60 && monitoredUser.getNivel_bateria()<80){
+                        if (monitoredUser.getBateria()>=60 && monitoredUser.getBateria()<80){
                             imgBattery.setImageResource(R.drawable.battery60);
                         }else{
-                            if (monitoredUser.getNivel_bateria()>=50 && monitoredUser.getNivel_bateria()<60){
+                            if (monitoredUser.getBateria()>=50 && monitoredUser.getBateria()<60){
                                 imgBattery.setImageResource(R.drawable.battery50);
                             }else{
-                                if (monitoredUser.getNivel_bateria()>=30 && monitoredUser.getNivel_bateria()<50){
+                                if (monitoredUser.getBateria()>=30 && monitoredUser.getBateria()<50){
                                     imgBattery.setImageResource(R.drawable.battery30);
                                 }else{
-                                    if (monitoredUser.getNivel_bateria()>=20 && monitoredUser.getNivel_bateria()<30){
+                                    if (monitoredUser.getBateria()>=20 && monitoredUser.getBateria()<30){
                                         imgBattery.setImageResource(R.drawable.battery20);
                                     }else{
-                                        if (monitoredUser.getNivel_bateria()>=1 && monitoredUser.getNivel_bateria()<20){
+                                        if (monitoredUser.getBateria()>=1 && monitoredUser.getBateria()<20){
                                             imgBattery.setImageResource(R.drawable.batteryalert);
                                         }
                                     }
@@ -135,8 +135,8 @@ public class AdapterRecycler extends RecyclerView.Adapter<AdapterRecycler.ViewHo
                         }
                     }
                 }
-            }
-            textViewEstadoBateria.setText(String.valueOf(monitoredUser.getNivel_bateria()) + "%");
+            }*/
+            textViewEstadoBateria.setText(String.valueOf(monitoredUser.getBateria()) + "%");
 
             if(monitoredUser.getEstado_signal().equals("Intensa")){
                 imgSignal.setImageResource(R.drawable.signal4);

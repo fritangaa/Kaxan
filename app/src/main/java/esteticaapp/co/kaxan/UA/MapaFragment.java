@@ -29,6 +29,7 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -43,6 +44,7 @@ import java.util.Locale;
 
 import esteticaapp.co.kaxan.R;
 import esteticaapp.co.kaxan.UA.recyclerMiembros.AdapterRecycler;
+import esteticaapp.co.kaxan.UA.recyclerMiembros.UMViewHolder;
 import esteticaapp.co.kaxan.UM.Menu.ItemLongClickListener;
 import esteticaapp.co.kaxan.UM.Menu.objEvento;
 import esteticaapp.co.kaxan.UM.Menu.objEventoViewHolder;
@@ -59,6 +61,11 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
 
     private OnFragmentInteractionListener mListener;
 
+    RecyclerView listaUM;
+
+    FirebaseRecyclerAdapter<UM,UMViewHolder.ViewHolder> adapter;
+    private DatabaseReference databaseReference;
+
 
     GoogleMap mgoogleMap;
     MapView mapView;
@@ -66,12 +73,27 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
 
     DatabaseReference ref;
 
+    UM ubicacionUM, nombreUM;
+
     ArrayList<UM> monitoredUsers= new ArrayList<>();
+    ArrayList<UM> monitoredUsers2= new ArrayList<>();
+
+    ArrayList<String> nombres= new ArrayList<>();
 
     private RecyclerView mRecyclerView;
     private AdapterRecycler mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     public Activity mActivity;
+
+
+    String nombre = "";
+    String latitud = "";
+    String longitud = "";
+    String direccion = "";
+    String bateria = "";
+
+    UM[] usuariosMonitoreados;
+
 
     public MapaFragment() {
         // Required empty public constructor
@@ -95,8 +117,8 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
-        time time = new time();
-        time.execute();
+/*        time time = new time();
+        time.execute();*/
 
 /*        ref = FirebaseDatabase.getInstance().getReference("/ZxdtUxxfUoRrTw9dxoHA6XLAHqJ2/um");
 
@@ -150,6 +172,78 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
             mapView.getMapAsync(this);
 
         }
+
+        listaUM = view.findViewById(R.id.recyclerMiembros);
+
+        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getContext());
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        listaUM.setLayoutManager(linearLayoutManager);
+
+        //final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        databaseReference= FirebaseDatabase.getInstance().getReference();
+        final DatabaseReference ref = databaseReference.child("ZxdtUxxfUoRrTw9dxoHA6XLAHqJ2").child("um");
+
+        adapter=new FirebaseRecyclerAdapter<UM, UMViewHolder.ViewHolder>(
+                UM.class,
+                R.layout.recycler_view_item,
+                UMViewHolder.ViewHolder.class,
+                ref
+        ) {
+            @Override
+            protected void populateViewHolder(final UMViewHolder.ViewHolder viewHolder,
+                                              UM model, final int position) {
+
+                ref.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+                        usuariosMonitoreados = new UM[Integer.parseInt(String.valueOf(dataSnapshot.getChildrenCount()))];
+
+                        for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+
+                            ubicacionUM = snapshot.child("ubicacion").getValue(UM.class);
+                            nombreUM = snapshot.child("datos").getValue(UM.class);
+
+/*                            nombre = usuario1.getNombre();
+                            Toast.makeText(getContext(),nombre,Toast.LENGTH_LONG).show();
+                            latitud = String.valueOf(usuario.getLatitud());
+                            longitud = String.valueOf(usuario.getLongitud());
+                            direccion = setLocation(Double.parseDouble(usuario.getLatitud()),Double.parseDouble(usuario.getLongitud()));
+                            bateria = usuario.getBateria();*/
+
+                            monitoredUsers.add(ubicacionUM);
+                            monitoredUsers2.add(nombreUM);
+
+                            nombres.add(nombreUM.getNombre());
+
+                            Toast.makeText(getContext(),String.valueOf(nombreUM.getNombre()),Toast.LENGTH_LONG).show();
+
+                        }
+
+                        //Toast.makeText(getContext(),String.valueOf(monitoredUsers.size()),Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+
+
+                viewHolder.nombre.setText("");
+                viewHolder.bateria.setText("");
+                viewHolder.senial.setText("Intensa");
+                viewHolder.direccion.setText("");
+                viewHolder.imgFoto.setImageResource(R.drawable.ic_persona);
+                viewHolder.imgBateria.setImageResource(R.drawable.batteryfull);
+                viewHolder.imgSenial.setImageResource(R.drawable.signal4);
+
+            }
+
+        };
+
+        listaUM.setAdapter(adapter);
 
 /*        ref = FirebaseDatabase.getInstance().getReference("/ZxdtUxxfUoRrTw9dxoHA6XLAHqJ2/um");
 
@@ -319,7 +413,7 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
         void onFragmentInteraction(Uri uri);
     }
 
-    public void setLocation() {
+/*    public void setLocation() {
         //Obtener la direccion de la calle a partir de la latitud y la longitud
         for (int cont = 0; cont<monitoredUsers.size();cont++){
             if (monitoredUsers.get(cont).getLatitud() != 0.0 && monitoredUsers.get(cont).getLongitud() != 0.0) {
@@ -336,6 +430,27 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
                 }
             }
         }
+    }*/
+
+    public String setLocation(double latitud, double longitud) {
+        //Obtener la direccion de la calle a partir de la latitud y la longitud
+
+        String direccion="";
+
+                try {
+                    Geocoder geocoder = new Geocoder(mActivity, Locale.getDefault());
+                    List<Address> list = geocoder.getFromLocation(
+                            latitud, longitud, 1);
+                    if (!list.isEmpty()) {
+                        Address DirCalle = list.get(0);
+                        direccion=DirCalle.getAddressLine(0);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+              return direccion;
+
     }
 
     public void hilo(){
@@ -383,17 +498,17 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
                         for (DataSnapshot dsp : dataSnapshot.getChildren()) {
 
 
-                            if(dsp.child("ubicacion").child("latitud").getValue().equals("") || dsp.child("ubicacion").child("longitud").getValue().equals("") || dsp.child("ubicacion").child("bateria").getValue().equals("")){
+/*                            if(dsp.child("ubicacion").child("latitud").getValue().equals("") || dsp.child("ubicacion").child("longitud").getValue().equals("") || dsp.child("ubicacion").child("bateria").getValue().equals("")){
                                 monitoredUsers.add(new UM(String.valueOf(dsp.child("datos").child("nombre").getValue()), R.drawable.ic_persona_h,0
                                         ,"Intensa",0, 0));
 
                             }else{
                                 monitoredUsers.add(new UM(String.valueOf(dsp.child("datos").child("nombre").getValue()), R.drawable.ic_persona_h,Integer.parseInt(String.valueOf(dsp.child("ubicacion").child("bateria").getValue()))
                                         ,"Intensa",Double.parseDouble(String.valueOf(dsp.child("ubicacion").child("latitud").getValue())), Double.parseDouble(String.valueOf(dsp.child("ubicacion").child("longitud").getValue()))));
-                            }
+                            }*/
                         }
 
-                        setLocation();
+                        //setLocation();
                         //Toast.makeText(getContext(),"Agrega evento",Toast.LENGTH_LONG).show();
 
                         mAdapter.updateList(monitoredUsers,getContext());
@@ -415,7 +530,7 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
 
     }
 
-    @Override
+    /*@Override
     public void onStart() {
         super.onStart();
 
@@ -502,5 +617,5 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
 
-    }
+    }*/
 }

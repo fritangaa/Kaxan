@@ -5,13 +5,13 @@ public class UsuarioGeneral {
     private String nombre;
     private String apellidos;
     private String fecha_nacimiento;
-    private int edad;
+    private String edad;
     private String telefono;
     private String correo;
     private String contrasena;
     private int foto;
 
-    public UsuarioGeneral(String nombre, String apellidos, String fecha_nacimiento, int edad, String telefono, String correo, String contrasena, int foto) {
+    public UsuarioGeneral(String nombre, String apellidos, String fecha_nacimiento, String edad, String telefono, String correo, String contrasena, int foto) {
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.fecha_nacimiento = fecha_nacimiento;
@@ -34,6 +34,14 @@ public class UsuarioGeneral {
     public UsuarioGeneral(String nombre, int foto) {
         this.nombre = nombre;
         this.foto = foto;
+    }
+
+    public UsuarioGeneral(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public UsuarioGeneral() {
+
     }
 
     public String getNombre() {
@@ -60,11 +68,11 @@ public class UsuarioGeneral {
         this.fecha_nacimiento = fecha_nacimiento;
     }
 
-    public int getEdad() {
+    public String getEdad() {
         return edad;
     }
 
-    public void setEdad(int edad) {
+    public void setEdad(String edad) {
         this.edad = edad;
     }
 
