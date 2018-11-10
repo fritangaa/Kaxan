@@ -78,6 +78,7 @@ public class AgregarEvento extends AppCompatActivity implements OnMapReadyCallba
 
 
     ImageButton agregarEvento, btnLugar;
+    String uid = "";
 
 
     @Override
@@ -90,6 +91,11 @@ public class AgregarEvento extends AppCompatActivity implements OnMapReadyCallba
 
         //inicializamos el objeto firebaseAuth
         firebaseAuth = FirebaseAuth.getInstance();
+
+        Intent intent = getIntent();
+        uid = intent.getStringExtra("uid");
+        Toast.makeText(getApplicationContext(),uid,Toast.LENGTH_LONG);
+        System.out.println(uid);
 
 
         opcionesC = (RadioGroup) findViewById(R.id.radioOpUA);//Grupo de opciones para armar cita
@@ -215,7 +221,7 @@ public class AgregarEvento extends AppCompatActivity implements OnMapReadyCallba
 
                             FirebaseUser user = firebaseAuth.getCurrentUser();
 
-                            databaseReference.child(firebaseAuth.getUid()).child("evento").child(idusu).setValue(nuevoEvento);
+                            databaseReference.child(uid).child("evento").child(idusu).setValue(nuevoEvento);
 
                             Toast.makeText(esteticaapp.co.kaxan.UA.AgregarEvento.this, "Evento registrado", Toast.LENGTH_SHORT).show();
 

@@ -1,19 +1,28 @@
 package esteticaapp.co.kaxan.UA;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationProvider;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.BatteryManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.PopupMenu;
+import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -23,6 +32,7 @@ import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -37,6 +47,8 @@ import java.util.Locale;
 import esteticaapp.co.kaxan.R;
 import esteticaapp.co.kaxan.UA.recyclerMiembros.AdapterRecycler;
 import esteticaapp.co.kaxan.UA.recyclerMiembros.UMViewHolder;
+import esteticaapp.co.kaxan.UM.menu;
+import esteticaapp.co.kaxan.objUbicacion;
 
 public class MapaFragment extends Fragment implements OnMapReadyCallback {
     // TODO: Rename parameter arguments, choose names that match
@@ -66,6 +78,7 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
 
     ArrayList<UM> monitoredUsers= new ArrayList<>();
     ArrayList<UM> monitoredUsers2= new ArrayList<>();
+    ArrayList<String> ids= new ArrayList<>();
 
     ArrayList<String> nombres= new ArrayList<>();
 
@@ -98,38 +111,10 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+//
+//        time time = new time();
+//        time.execute();
 
-/*        time time = new time();
-        time.execute();*/
-
-/*        ref = FirebaseDatabase.getInstance().getReference("/ZxdtUxxfUoRrTw9dxoHA6XLAHqJ2/um");
-
-        ref.addListenerForSingleValueEvent(
-                new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-
-                        for (DataSnapshot dsp : dataSnapshot.getChildren()) {
-
-                            if(dsp.child("ubicacion").child("latitud").getValue().equals("") || dsp.child("ubicacion").child("longitud").getValue().equals("") || dsp.child("ubicacion").child("bateria").getValue().equals("")){
-                                monitoredUsers.add(new UM(String.valueOf(dsp.child("datos").child("nombre").getValue()), R.drawable.ic_persona_h,0
-                                        ,"Intensa",0, 0));
-
-                            }else{
-                                monitoredUsers.add(new UM(String.valueOf(dsp.child("datos").child("nombre").getValue()), R.drawable.ic_persona_h,Integer.parseInt(String.valueOf(dsp.child("ubicacion").child("bateria").getValue()))
-                                        ,"Intensa",Double.parseDouble(String.valueOf(dsp.child("ubicacion").child("latitud").getValue())), Double.parseDouble(String.valueOf(dsp.child("ubicacion").child("longitud").getValue()))));
-                            }
-                        }
-
-                        setLocation();
-
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        //handle databaseError
-                    }
-                });*/
 
 
     }
@@ -170,6 +155,7 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 monitoredUsers.clear();
                 monitoredUsers2.clear();
+                ids.clear();
                 usuariosMonitoreados = new UM[Integer.parseInt(String.valueOf(dataSnapshot.getChildrenCount()))];
 
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
@@ -179,6 +165,7 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
 
                     monitoredUsers.add(ubicacionUM);
                     monitoredUsers2.add(nombreUM);
+                    ids.add(snapshot.getKey());
 
                 }
 
@@ -209,94 +196,64 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
                 viewHolder.imgFoto.setImageResource(R.drawable.ic_persona);
                 viewHolder.imgBateria.setImageResource(R.drawable.batteryfull);
                 viewHolder.imgSenial.setImageResource(R.drawable.signal4);
+
+                viewHolder.mview.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        //creating a popup menu
+                        PopupMenu popup = new PopupMenu(getContext(), viewHolder.mview);
+                        //inflating menu from xml resource
+                        popup.inflate(R.menu.opciones_miembros);
+                        //adding click listener
+                        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                            @Override
+                            public boolean onMenuItemClick(MenuItem item) {
+                                switch (item.getItemId()) {
+                                    case R.id.ver_en_mapa:
+                                        mgoogleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+                                        mgoogleMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(monitoredUsers.get(position).getLatitud()),Double.parseDouble(monitoredUsers.get(position).getLongitud())))
+                                                .title("NOWHERE").snippet("HOLA"));
+
+                                        CameraPosition liberty = CameraPosition.builder().target(new LatLng(Double.parseDouble(monitoredUsers.get(position).getLatitud()),Double.parseDouble(monitoredUsers.get(position).getLongitud())))
+                                                .zoom(16).bearing(0).tilt(0).build();
+
+                                        mgoogleMap.moveCamera(CameraUpdateFactory.newCameraPosition(liberty));
+
+                                        break;
+                                    case R.id.agrega_evento_user:
+                                        //Toast.makeText(getContext(),"Agrega evento",Toast.LENGTH_LONG).show();
+                                        Intent agregarEve = new Intent(getContext(),AgregarEvento.class);
+                                        agregarEve.putExtra("uid",ids.get(position));
+                                        startActivity(agregarEve);
+                                        break;
+                                    case R.id.agrega_rutina_user:
+                                        Toast.makeText(getContext(),"Agrega rutina",Toast.LENGTH_LONG).show();
+                                        break;
+                                    case R.id.ver_historial_rutas:
+                                        Toast.makeText(getContext(),"Ver historial de rutas",Toast.LENGTH_LONG).show();
+                                        break;
+                                    case R.id.ver_historial_alertas:
+                                        Toast.makeText(getContext(),"Ver historial de alertas",Toast.LENGTH_LONG).show();
+                                        break;
+                                    case R.id.ver_historial_caja:
+                                        Toast.makeText(getContext(),"Ver historial de caja negra",Toast.LENGTH_LONG).show();
+                                        break;
+                                }
+                                return false;
+                            }
+                        });
+                        //displaying the popup
+                        popup.show();
+
+                    }
+                });
             }
 
         };
 
         listaUM.setAdapter(adapter);
 
-/*        ref = FirebaseDatabase.getInstance().getReference("/ZxdtUxxfUoRrTw9dxoHA6XLAHqJ2/um");
-
-        ref.addListenerForSingleValueEvent(
-                new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-
-                        for (DataSnapshot dsp : dataSnapshot.getChildren()) {
-
-                            if(dsp.child("ubicacion").child("latitud").getValue().equals("") || dsp.child("ubicacion").child("longitud").getValue().equals("") || dsp.child("ubicacion").child("bateria").getValue().equals("")){
-                                monitoredUsers.add(new UM(String.valueOf(dsp.child("datos").child("nombre").getValue()), R.drawable.ic_persona_h,0
-                                        ,"Intensa",0, 0));
-
-                            }else{
-                                monitoredUsers.add(new UM(String.valueOf(dsp.child("datos").child("nombre").getValue()), R.drawable.ic_persona_h,Integer.parseInt(String.valueOf(dsp.child("ubicacion").child("bateria").getValue()))
-                                        ,"Intensa",Double.parseDouble(String.valueOf(dsp.child("ubicacion").child("latitud").getValue())), Double.parseDouble(String.valueOf(dsp.child("ubicacion").child("longitud").getValue()))));
-                            }
-                        }
-
-                        setLocation();
-
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        //handle databaseError
-                    }
-                });
-
-        mRecyclerView = mview.findViewById(R.id.recyclerMiembros);
-        mLayoutManager = new LinearLayoutManager(getContext());
-        mAdapter = new AdapterRecycler(monitoredUsers, R.layout.recycler_view_item, new AdapterRecycler.OnItemClickListener() {
-            @Override
-            public void onItemClick(UM monitoredUser, final int position) {
-
-                //creating a popup menu
-                PopupMenu popup = new PopupMenu(getContext(), mRecyclerView);
-                //inflating menu from xml resource
-                popup.inflate(R.menu.opciones_miembros);
-                //adding click listener
-                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        switch (item.getItemId()) {
-                            case R.id.ver_en_mapa:
-                                mgoogleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-                                mgoogleMap.addMarker(new MarkerOptions().position(new LatLng(monitoredUsers.get(position).getLatitud(),monitoredUsers.get(position).getLongitud()))
-                                        .title("NOWHERE").snippet("HOLA"));
-
-                                CameraPosition liberty = CameraPosition.builder().target(new LatLng(monitoredUsers.get(position).getLatitud(),monitoredUsers.get(position).getLongitud()))
-                                        .zoom(16).bearing(0).tilt(0).build();
-
-                                mgoogleMap.moveCamera(CameraUpdateFactory.newCameraPosition(liberty));
-
-                                break;
-                            case R.id.agrega_evento_user:
-                                Toast.makeText(getContext(),"Agrega evento",Toast.LENGTH_LONG).show();
-                                break;
-                            case R.id.agrega_rutina_user:
-                                Toast.makeText(getContext(),"Agrega rutina",Toast.LENGTH_LONG).show();
-                                break;
-                            case R.id.ver_historial_rutas:
-                                Toast.makeText(getContext(),"Ver historial de rutas",Toast.LENGTH_LONG).show();
-                                break;
-                            case R.id.ver_historial_alertas:
-                                Toast.makeText(getContext(),"Ver historial de alertas",Toast.LENGTH_LONG).show();
-                                break;
-                            case R.id.ver_historial_caja:
-                                Toast.makeText(getContext(),"Ver historial de caja negra",Toast.LENGTH_LONG).show();
-                                break;
-                        }
-                        return false;
-                    }
-                });
-                //displaying the popup
-                popup.show();
-
-            }
-        });
-
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.setAdapter(mAdapter);*/
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -344,37 +301,6 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
 
         googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(liberty));
 
-/*        ref = FirebaseDatabase.getInstance().getReference("/ZxdtUxxfUoRrTw9dxoHA6XLAHqJ2/um");
-
-        ref.addListenerForSingleValueEvent(
-                new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-
-                        monitoredUsers.clear();
-
-                        for (DataSnapshot dsp : dataSnapshot.getChildren()) {
-
-
-                            if(dsp.child("ubicacion").child("latitud").getValue().equals("") || dsp.child("ubicacion").child("longitud").getValue().equals("") || dsp.child("ubicacion").child("bateria").getValue().equals("")){
-                                monitoredUsers.add(new UM(String.valueOf(dsp.child("datos").child("nombre").getValue()), R.drawable.ic_persona_h,0
-                                        ,"Intensa",0, 0));
-
-                            }else{
-                                monitoredUsers.add(new UM(String.valueOf(dsp.child("datos").child("nombre").getValue()), R.drawable.ic_persona_h,Integer.parseInt(String.valueOf(dsp.child("ubicacion").child("bateria").getValue()))
-                                        ,"Intensa",Double.parseDouble(String.valueOf(dsp.child("ubicacion").child("latitud").getValue())), Double.parseDouble(String.valueOf(dsp.child("ubicacion").child("longitud").getValue()))));
-                            }
-                        }
-
-                        setLocation();
-
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        //handle databaseError
-                    }
-                });*/
     }
 
 
@@ -383,24 +309,6 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
         void onFragmentInteraction(Uri uri);
     }
 
-/*    public void setLocation() {
-        //Obtener la direccion de la calle a partir de la latitud y la longitud
-        for (int cont = 0; cont<monitoredUsers.size();cont++){
-            if (monitoredUsers.get(cont).getLatitud() != 0.0 && monitoredUsers.get(cont).getLongitud() != 0.0) {
-                try {
-                    Geocoder geocoder = new Geocoder(mActivity, Locale.getDefault());
-                    List<Address> list = geocoder.getFromLocation(
-                            monitoredUsers.get(cont).getLatitud(), monitoredUsers.get(cont).getLongitud(), 1);
-                    if (!list.isEmpty()) {
-                        Address DirCalle = list.get(0);
-                        monitoredUsers.get(cont).setLugar(DirCalle.getAddressLine(0));
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }*/
 
     public String setLocation(double latitud, double longitud) {
         //Obtener la direccion de la calle a partir de la latitud y la longitud
@@ -423,7 +331,7 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
 
     }
 
-    public void hilo(){
+    /*public void hilo(){
 
         try{
             Thread.sleep(1000);
@@ -439,7 +347,7 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
         @Override
         protected Boolean doInBackground(Void... voids) {
 
-            for(int i=1;i<=2;i++){
+            for(int i=1;i<=4;i++){
                 hilo();
             }
 
@@ -456,136 +364,8 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
         time time = new time();
         time.execute();
 
-        ref = FirebaseDatabase.getInstance().getReference("/ZxdtUxxfUoRrTw9dxoHA6XLAHqJ2/um");
-
-        ref.addListenerForSingleValueEvent(
-                new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-
-                        monitoredUsers.clear();
-
-                        for (DataSnapshot dsp : dataSnapshot.getChildren()) {
-
-
-/*                            if(dsp.child("ubicacion").child("latitud").getValue().equals("") || dsp.child("ubicacion").child("longitud").getValue().equals("") || dsp.child("ubicacion").child("bateria").getValue().equals("")){
-                                monitoredUsers.add(new UM(String.valueOf(dsp.child("datos").child("nombre").getValue()), R.drawable.ic_persona_h,0
-                                        ,"Intensa",0, 0));
-
-                            }else{
-                                monitoredUsers.add(new UM(String.valueOf(dsp.child("datos").child("nombre").getValue()), R.drawable.ic_persona_h,Integer.parseInt(String.valueOf(dsp.child("ubicacion").child("bateria").getValue()))
-                                        ,"Intensa",Double.parseDouble(String.valueOf(dsp.child("ubicacion").child("latitud").getValue())), Double.parseDouble(String.valueOf(dsp.child("ubicacion").child("longitud").getValue()))));
-                            }*/
-                        }
-
-                        //setLocation();
-                        //Toast.makeText(getContext(),"Agrega evento",Toast.LENGTH_LONG).show();
-
-                        mAdapter.updateList(monitoredUsers,getContext());
-
-
-                    }
-
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        //handle databaseError
-                    }
-                });
-
-
-
-
-
-
-    }
-
-    /*@Override
-    public void onStart() {
-        super.onStart();
-
-        ref = FirebaseDatabase.getInstance().getReference("/ZxdtUxxfUoRrTw9dxoHA6XLAHqJ2/um");
-
-        ref.addListenerForSingleValueEvent(
-                new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-
-                        for (DataSnapshot dsp : dataSnapshot.getChildren()) {
-
-                            if(dsp.child("ubicacion").child("latitud").getValue().equals("") || dsp.child("ubicacion").child("longitud").getValue().equals("") || dsp.child("ubicacion").child("bateria").getValue().equals("")){
-                                monitoredUsers.add(new UM(String.valueOf(dsp.child("datos").child("nombre").getValue()), R.drawable.ic_persona_h,0
-                                        ,"Intensa",0, 0));
-
-                            }else{
-                                monitoredUsers.add(new UM(String.valueOf(dsp.child("datos").child("nombre").getValue()), R.drawable.ic_persona_h,Integer.parseInt(String.valueOf(dsp.child("ubicacion").child("bateria").getValue()))
-                                        ,"Intensa",Double.parseDouble(String.valueOf(dsp.child("ubicacion").child("latitud").getValue())), Double.parseDouble(String.valueOf(dsp.child("ubicacion").child("longitud").getValue()))));
-                            }
-                        }
-
-                        setLocation();
-
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        //handle databaseError
-                    }
-                });
-
-        mRecyclerView = mview.findViewById(R.id.recyclerMiembros);
-        mLayoutManager = new LinearLayoutManager(getContext());
-        mAdapter = new AdapterRecycler(monitoredUsers, R.layout.recycler_view_item, new AdapterRecycler.OnItemClickListener() {
-            @Override
-            public void onItemClick(UM monitoredUser, final int position) {
-
-                //creating a popup menu
-                PopupMenu popup = new PopupMenu(getContext(), mRecyclerView);
-                //inflating menu from xml resource
-                popup.inflate(R.menu.opciones_miembros);
-                //adding click listener
-                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        switch (item.getItemId()) {
-                            case R.id.ver_en_mapa:
-                                mgoogleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-                                mgoogleMap.addMarker(new MarkerOptions().position(new LatLng(monitoredUsers.get(position).getLatitud(),monitoredUsers.get(position).getLongitud()))
-                                        .title("NOWHERE").snippet("HOLA"));
-
-                                CameraPosition liberty = CameraPosition.builder().target(new LatLng(monitoredUsers.get(position).getLatitud(),monitoredUsers.get(position).getLongitud()))
-                                        .zoom(16).bearing(0).tilt(0).build();
-
-                                mgoogleMap.moveCamera(CameraUpdateFactory.newCameraPosition(liberty));
-
-                                break;
-                            case R.id.agrega_evento_user:
-                                Toast.makeText(getContext(),"Agrega evento",Toast.LENGTH_LONG).show();
-                                break;
-                            case R.id.agrega_rutina_user:
-                                Toast.makeText(getContext(),"Agrega rutina",Toast.LENGTH_LONG).show();
-                                break;
-                            case R.id.ver_historial_rutas:
-                                Toast.makeText(getContext(),"Ver historial de rutas",Toast.LENGTH_LONG).show();
-                                break;
-                            case R.id.ver_historial_alertas:
-                                Toast.makeText(getContext(),"Ver historial de alertas",Toast.LENGTH_LONG).show();
-                                break;
-                            case R.id.ver_historial_caja:
-                                Toast.makeText(getContext(),"Ver historial de caja negra",Toast.LENGTH_LONG).show();
-                                break;
-                        }
-                        return false;
-                    }
-                });
-                //displaying the popup
-                popup.show();
-
-            }
-        });
-
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.setAdapter(mAdapter);
+Toast.makeText(getContext(),"Prueba",Toast.LENGTH_LONG).show();
 
     }*/
+
 }

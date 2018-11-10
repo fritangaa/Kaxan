@@ -12,6 +12,8 @@ public class UMViewHolder {
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
+        public View mview;
+
         CardView cardView;
         public TextView nombre,bateria,senial,direccion;
         public ImageView imgBateria, imgSenial, imgFoto;
@@ -26,6 +28,8 @@ public class UMViewHolder {
             imgSenial=itemView.findViewById(R.id.vecSignal);
             senial=itemView.findViewById(R.id.textViewSignal);
             direccion=itemView.findViewById(R.id.textViewPlace);
+
+            mview=itemView;
 
         }
 

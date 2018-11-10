@@ -123,7 +123,7 @@
         android:id="@+id/relativeLugarUA"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/radioOp"
+        android:layout_below="@id/radioOpUA"
         android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginBottom="40dp"
@@ -171,7 +171,7 @@
             android:id="@+id/mapaUbicacionEventoUA"
             android:layout_width="match_parent"
             android:layout_marginTop="25dp"
-            android:layout_height="match_parent"
+            android:layout_height="350dp"
             android:layout_below="@+id/boton_lugarUA"
             android:layout_centerHorizontal="true" />
 
@@ -218,7 +218,7 @@
         android:id="@+id/relativeHoraUA"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/radioOp"
+        android:layout_below="@id/radioOpUA"
         android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginBottom="40dp"
@@ -299,7 +299,7 @@
         android:id="@+id/relativeConfirmacionUA"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/radioOp"
+        android:layout_below="@id/radioOpUA"
         android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginBottom="40dp"
@@ -334,15 +334,15 @@
             android:id="@+id/textView96UA"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/textView95UA"
-            android:text="Lugar:"
-            android:textSize="18dp"
-            android:textColor="@color/colorBlanco"
-            android:layout_marginTop="10dp"
-            android:layout_alignRight="@+id/textView95UA"
             android:layout_alignEnd="@+id/textView95UA"
             android:layout_alignLeft="@+id/textView95UA"
-            android:layout_alignStart="@+id/textView95UA" />
+            android:layout_alignRight="@+id/textView95UA"
+            android:layout_alignStart="@+id/textView95UA"
+            android:layout_below="@+id/textView95UA"
+            android:layout_marginTop="10dp"
+            android:text="Lugar:"
+            android:textColor="@color/colorBlanco"
+            android:textSize="18dp" />
 
         <TextView
             android:id="@+id/textView97UA"
