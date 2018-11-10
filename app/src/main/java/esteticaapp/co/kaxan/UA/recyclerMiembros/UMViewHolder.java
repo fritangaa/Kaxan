@@ -6,6 +6,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.mikhaellopez.circularimageview.CircularImageView;
+
 import esteticaapp.co.kaxan.R;
 
 public class UMViewHolder {
@@ -16,7 +18,8 @@ public class UMViewHolder {
 
         CardView cardView;
         public TextView nombre,bateria,senial,direccion;
-        public ImageView imgBateria, imgSenial, imgFoto;
+        public ImageView imgBateria, imgSenial;
+        public CircularImageView imgFoto;
 
         public ViewHolder(View itemView) {
             super(itemView);

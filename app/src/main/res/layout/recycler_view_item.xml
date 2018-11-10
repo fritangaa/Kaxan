@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/tools"
     android:id="@+id/cardviewMiembro"
     android:layout_width="match_parent"
     android:layout_height="110dp"
@@ -10,18 +10,24 @@
     card_view:cardCornerRadius="4dp"
     android:clickable="true"
     android:focusable="true"
-    android:foreground="?android:attr/selectableItemBackground">
+    android:foreground="?android:attr/selectableItemBackground"
+    app:ignore="NamespaceTypo">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal">
 
-        <ImageView
+        <com.mikhaellopez.circularimageview.CircularImageView
             android:id="@+id/imageViewUserPhoto"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.30" />
+            android:layout_weight="0.30"
+            app:civ_shadow="true"
+            app:civ_shadow_radius="1"
+            app:civ_shadow_color="#8BC34A"
+            />
+
 
         <LinearLayout
             android:layout_width="0dp"

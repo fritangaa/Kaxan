@@ -5,6 +5,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -13,6 +15,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.BatteryManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -33,20 +36,29 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import esteticaapp.co.kaxan.R;
 import esteticaapp.co.kaxan.UA.recyclerMiembros.AdapterRecycler;
 import esteticaapp.co.kaxan.UA.recyclerMiembros.UMViewHolder;
+import esteticaapp.co.kaxan.UM.Menu.inicio;
 import esteticaapp.co.kaxan.UM.menu;
 import esteticaapp.co.kaxan.objUbicacion;
 
@@ -76,6 +88,8 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
 
     UM ubicacionUM, nombreUM;
 
+    UMViewHolder.ViewHolder viewIm;
+
     ArrayList<UM> monitoredUsers= new ArrayList<>();
     ArrayList<UM> monitoredUsers2= new ArrayList<>();
     ArrayList<String> ids= new ArrayList<>();
@@ -88,6 +102,8 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
     public Activity mActivity;
 
     UM[] usuariosMonitoreados;
+
+    private StorageReference mStorage;
 
 
     public MapaFragment() {
@@ -111,9 +127,6 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-//
-//        time time = new time();
-//        time.execute();
 
 
 
@@ -139,6 +152,8 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
             mapView.getMapAsync(this);
 
         }
+
+        mStorage= FirebaseStorage.getInstance().getReference();
 
         listaUM = view.findViewById(R.id.recyclerMiembros);
 
@@ -193,9 +208,50 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
                 viewHolder.bateria.setText(monitoredUsers.get(position).getBateria());
                 viewHolder.senial.setText("Intensa");
                 viewHolder.direccion.setText(setLocation(Double.parseDouble(monitoredUsers.get(position).getLatitud()),Double.parseDouble(monitoredUsers.get(position).getLongitud())));
-                viewHolder.imgFoto.setImageResource(R.drawable.ic_persona);
+                //viewHolder.imgFoto.setImageResource(R.drawable.ic_persona);
                 viewHolder.imgBateria.setImageResource(R.drawable.batteryfull);
                 viewHolder.imgSenial.setImageResource(R.drawable.signal4);
+
+
+                 class GetImageToURL extends AsyncTask< String, Void, Bitmap> {
+
+
+
+                    @Override
+                    protected Bitmap doInBackground(String...params) {
+                        try {
+                            URL url = new URL(params[0]);
+                            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                            connection.setDoInput(true);
+                            connection.connect();
+                            InputStream input = connection.getInputStream();
+                            Bitmap myBitmap = BitmapFactory.decodeStream(input);
+                            return myBitmap;
+                        } catch (IOException e) {
+                            // Log exception
+                            return null;
+                        }
+                    }
+
+                    @Override
+                    protected void onPostExecute(Bitmap myBitMap) {
+                        viewHolder.imgFoto.setImageBitmap(myBitMap);
+                    }
+                }
+
+                mStorage.child("um/imagenes/perfil/"+ids.get(position)+"_perfil.jpeg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        // Got the download URL for 'photos/profile.png'
+                        new GetImageToURL().execute(""+uri);
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        // Handle any errors
+                        new GetImageToURL().execute("https://firebasestorage.googleapis.com/v0/b/kaxan-um.appspot.com/o/um%2Fimagenes%2Fperfil%2Fic_perfil_defecto.png?alt=media&token=8d457d20-5bb2-47ef-af19-cae27dd55e72");
+                    }
+                });
 
                 viewHolder.mview.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -331,41 +387,8 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
 
     }
 
-    /*public void hilo(){
-
-        try{
-            Thread.sleep(1000);
-        }catch (InterruptedException e){
-            e.printStackTrace();
-        }
-
-    }
-
-    public class time extends AsyncTask<Void,Integer,Boolean>{
 
 
-        @Override
-        protected Boolean doInBackground(Void... voids) {
 
-            for(int i=1;i<=4;i++){
-                hilo();
-            }
-
-            return true;
-        }
-
-        @Override
-        protected void onPostExecute(Boolean aBoolean) {
-            ejectutar();
-        }
-    }
-
-    public void ejectutar(){
-        time time = new time();
-        time.execute();
-
-Toast.makeText(getContext(),"Prueba",Toast.LENGTH_LONG).show();
-
-    }*/
 
 }
