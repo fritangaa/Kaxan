@@ -22,7 +22,7 @@
             android:id="@+id/imageViewUserPhoto"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.30"
+            android:layout_weight="0.20"
             app:civ_shadow="true"
             app:civ_shadow_radius="1"
             app:civ_shadow_color="#8BC34A"
@@ -32,7 +32,7 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.70"
+            android:layout_weight="0.80"
             android:orientation="vertical">
 
             <TextView

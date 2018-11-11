@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="@string/titulo_perfil_settings">
+        <EditTextPreference
+            android:defaultValue="@string/default_contrasena"
+            android:key="@string/key_modi_contra"
+            android:summary="@string/default_contrasena"
+            android:title="@string/titulo_modi_contra" />
+
+        <EditTextPreference
+            android:defaultValue="@string/default_user"
+            android:key="@string/key_modi_user"
+            android:summary="@string/default_user"
+            android:title="@string/titulo_modi_user" />
+
+        <EditTextPreference
+            android:defaultValue="@string/default_mail"
+            android:key="@string/key_add_mail"
+            android:summary="@string/default_mail"
+            android:title="@string/titulo_add_mail" />
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="@string/key_position"
+            android:title="@string/titulo_show_position" />
+
+        <Preference
+            android:summary="@string/titulo_delete_cuenta"
+            android:title="@string/titulo_delete_cuenta" />
+
+
+        <!-- <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="@string/key_upload_over_wifi"
+            android:summary="@string/summary_upload_over_wifi"
+            android:title="@string/title_auto_upload" />
+
+        <ListPreference
+            android:defaultValue="3"
+            android:dialogTitle="@string/title_upload_quality"
+            android:entries="@array/pref_upload_quality_entries"
+            android:entryValues="@array/pref_upload_quality_values"
+            android:key="@string/key_upload_quality"
+            android:summary="@string/summary_upload_video_quality"
+            android:title="@string/title_upload_quality" /> -->
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/titulo_cajanegra_settings">
+
+        <Preference
+            android:summary="@string/TITULO_PROVISIONAL"
+            android:title="@string/TITULO_PROVISIONAL" />
+
+        <Preference
+            android:summary="@string/TITULO_PROVISIONAL"
+            android:title="@string/TITULO_PROVISIONAL" />
+
+        <Preference
+            android:summary="@string/TITULO_PROVISIONAL"
+            android:title="@string/TITULO_PROVISIONAL" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/titulo_pago_settings">
+
+        <Preference
+            android:summary="@string/TITULO_PROVISIONAL"
+            android:title="@string/TITULO_PROVISIONAL" />
+
+        <Preference
+            android:summary="@string/TITULO_PROVISIONAL"
+            android:title="@string/TITULO_PROVISIONAL" />
+
+        <Preference
+            android:summary="@string/TITULO_PROVISIONAL"
+            android:title="@string/TITULO_PROVISIONAL" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/titulo_mapa_settings">
+
+        <Preference
+            android:summary="@string/TITULO_PROVISIONAL"
+            android:title="@string/TITULO_PROVISIONAL" />
+
+        <Preference
+            android:summary="@string/TITULO_PROVISIONAL"
+            android:title="@string/TITULO_PROVISIONAL" />
+
+        <Preference
+            android:summary="@string/TITULO_PROVISIONAL"
+            android:title="@string/TITULO_PROVISIONAL" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/titulo_alertas_settings">
+
+        <Preference
+            android:summary="@string/TITULO_PROVISIONAL"
+            android:title="@string/TITULO_PROVISIONAL" />
+
+        <Preference
+            android:summary="@string/TITULO_PROVISIONAL"
+            android:title="@string/TITULO_PROVISIONAL" />
+
+        <Preference
+            android:summary="@string/TITULO_PROVISIONAL"
+            android:title="@string/TITULO_PROVISIONAL" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/About">
+
+        <Preference
+            android:selectable="false"
+            android:summary="@string/summary_about" />
+
+        <!--<Preference
+            android:summary="@string/app_version"
+            android:title="@string/title_version" />
+
+        <Preference
+            android:key="@string/key_send_feedback"
+            android:summary="@string/summary_support"
+            android:title="@string/title_send_feedback" />
+
+        &lt;!&ndash; preference opens url in browser &ndash;&gt;
+        <Preference
+            android:summary="@string/summary_faq"
+            android:title="@string/title_faq">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="@string/url_faq" />
+        </Preference>
+
+        <Preference android:title="@string/privacy_policy">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="@string/url_privacy" />
+        </Preference>
+
+        <Preference android:title="@string/title_terms">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="@string/url_terms" />
+        </Preference>-->
+    </PreferenceCategory>
+</PreferenceScreen>
