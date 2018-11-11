@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -59,9 +60,12 @@ public class login extends AppCompatActivity {
     private PopupWindow popupWindow;
     private ImageButton btn_um;
     private ImageButton btn_ua;
+    private ImageButton btn_can;
 
     private String usuarioAdmin = "UA";
     private String usuarioMonitor = "UM";
+
+    private LinearLayout layout;
 
     private static final int MULTIPLE_PERMISSIONS_REQUEST_CODE = 1;
     private String[] permissions = new String[]{Manifest.permission.CAMERA, Manifest.permission.BODY_SENSORS, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.SEND_SMS};
@@ -70,6 +74,8 @@ public class login extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        layout = new LinearLayout(this);
 
         if(Preferences.obtenerPreferenceBoolean(this,Preferences.PREFERENCE_ESTADO_BUTTON_SESION)){
             if(Preferences.obtenerPreferenceString(this,Preferences.PREFERENCE_USUARIO_LB).equals(usuarioAdmin)){
@@ -146,11 +152,15 @@ public class login extends AppCompatActivity {
 
                 layoutInflater =(LayoutInflater)getBaseContext().getSystemService(LAYOUT_INFLATER_SERVICE);
                 popupView = layoutInflater.inflate(R.layout.dialog_login, null);
-                popupWindow = new PopupWindow(popupView, RadioGroup.LayoutParams.WRAP_CONTENT,
-                        RadioGroup.LayoutParams.WRAP_CONTENT);
+                popupWindow  = new PopupWindow(popupView, RadioGroup.LayoutParams.MATCH_PARENT,
+                        RadioGroup.LayoutParams.MATCH_PARENT);
+                popupWindow.setAnimationStyle(R.style.popup_window_animation_phone);
+                popupWindow.setOutsideTouchable(true);
+                popupWindow.setFocusable(true);
 
                 btn_ua= (ImageButton)popupView.findViewById(R.id.img_ua);
                 btn_um= (ImageButton)popupView.findViewById(R.id.img_um);
+                btn_can= (ImageButton)popupView.findViewById(R.id.cancel_pop);
 
                 btn_ua.setOnClickListener(new Button.OnClickListener(){
 
@@ -172,7 +182,15 @@ public class login extends AppCompatActivity {
                         finish();
                     }});
 
-                popupWindow.showAtLocation(textoUsuario, Gravity.CENTER,0, 0);
+                btn_can.setOnClickListener(new Button.OnClickListener(){
+
+                    @Override
+                    public void onClick(View v) {
+                        popupWindow.dismiss();
+
+                    }});
+
+                popupWindow.showAtLocation(layout, Gravity.CENTER,0, 0);
 
 
             }
@@ -341,11 +359,11 @@ public class login extends AppCompatActivity {
     }
 
     private void permissionGranted() {
-        Toast.makeText(login.this, getString(R.string.permission_granted), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(login.this, getString(R.string.permission_granted), Toast.LENGTH_SHORT).show();
     }
 
     private void permissionRejected() {
-        Toast.makeText(login.this, getString(R.string.permission_rejected), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(login.this, getString(R.string.permission_rejected), Toast.LENGTH_SHORT).show();
     }
 
 

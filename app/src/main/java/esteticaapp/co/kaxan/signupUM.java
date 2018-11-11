@@ -125,11 +125,10 @@
         imagenRPerfilUM.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Intent intent = new Intent();
-                // Show only images, no videos or anything else
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
-                // Always show the chooser (if there are multiple options available)
                 startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
             }
         });
@@ -203,6 +202,11 @@
              return;
          }
 
+         if (uri==null){
+             Toast.makeText(this,"Falta seleccionar imagen de perfil",Toast.LENGTH_SHORT).show();
+             return;
+         }
+
          dialog.show();
          //creating a new user
          auth.createUserWithEmailAndPassword(correo, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -226,7 +230,6 @@
                                      siguiente.putExtra("contrasena",textoRContrasenaUM.getText().toString());
                                      siguiente.putExtra("correo",textoRCorreoUM.getText().toString());
                                      siguiente.putExtra("codigo",auth.getUid());
-
                                      subirImagen(uri, auth.getUid());
 
                                      dialog.dismiss();

@@ -110,16 +110,22 @@
         <activity
             android:name=".UA.UAPrincipalActivity"
             android:label="@string/title_activity_uaprincipal"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             >
         </activity>
         <activity
             android:name=".signupUA"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".registroTarjeta"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".UA.AgregarEvento"></activity>
+        <activity android:name=".UA.AgregarEvento"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            ></activity>
     </application>
 
 </manifest>

@@ -4,10 +4,10 @@
     android:layout_height="wrap_content">
 
     <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="200dp"
-        android:background="@drawable/bg_verde_redondo"
-        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_blanco_redondo"
+        android:layout_margin="15dp"
         >
 
         <TextView
@@ -17,16 +17,16 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:text="Tipo de cuenta"
-            android:textColor="@color/colorBlanco"
-            android:textSize="25dp" />
+            android:textColor="@color/colorNegro"
+            android:textSize="30dp" />
 
         <ImageButton
             android:id="@+id/img_ua"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="40dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/textolog"
+            android:layout_centerHorizontal="true"
             android:background="@android:color/transparent"
             android:src="@drawable/ic_ua_login" />
 
@@ -34,34 +34,43 @@
         <TextView
             android:id="@+id/textoua"
             android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_alignParentStart="true"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:layout_below="@+id/img_ua"
-            android:layout_marginLeft="5dp"
+            android:layout_centerHorizontal="true"
             android:text="Administrador"
-            android:textColor="@color/colorBlanco"
-            android:textSize="20dp" />
+            android:textColor="@color/colorNegro"
+            android:textSize="25dp" />
 
         <TextView
             android:id="@+id/textoum"
             android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_alignParentEnd="true"
-            android:layout_below="@+id/img_ua"
-            android:layout_marginRight="5dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/img_um"
+            android:layout_centerHorizontal="true"
             android:text="Monitoreado"
-            android:textColor="@color/colorBlanco"
-            android:textSize="20dp" />
+            android:textColor="@color/colorNegro"
+            android:textSize="25dp" />
 
         <ImageButton
             android:id="@+id/img_um"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginRight="40dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignTop="@+id/img_ua"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/textoua"
+            android:layout_centerHorizontal="true"
             android:background="@android:color/transparent"
             android:src="@drawable/ic_um_login" />
+
+        <ImageButton
+            android:id="@+id/cancel_pop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:background="@android:color/transparent"
+            android:src="@drawable/cancelar_pop" />
 
 
     </RelativeLayout>
