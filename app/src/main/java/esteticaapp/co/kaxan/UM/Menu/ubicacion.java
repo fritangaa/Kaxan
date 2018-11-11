@@ -23,6 +23,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -72,7 +73,7 @@ public class ubicacion extends Fragment implements OnMapReadyCallback {
     private TextView uanombre;
     private TextView bateria;
     private TextView ualugar;
-
+    private RelativeLayout ubica;
 
 
     private double latum;
@@ -105,7 +106,7 @@ public class ubicacion extends Fragment implements OnMapReadyCallback {
         uanombre = (TextView) view.findViewById(R.id.ua_nombre);
         bateria = (TextView) view.findViewById(R.id.ua_bateria);
         ualugar = (TextView) view.findViewById(R.id.ua_lugar_ubicacion);
-
+        ubica = (RelativeLayout) view.findViewById(R.id.relative_no_disponible);
 
 
 
@@ -250,7 +251,25 @@ public class ubicacion extends Fragment implements OnMapReadyCallback {
 
                 if(tprubi.getLatitud().equals("0")||tprubi.getLongitud().equals("0")){
                     Toast.makeText(view.getContext(), "No esta permitido", Toast.LENGTH_SHORT).show();
+
+                    mMapView.setVisibility(View.INVISIBLE);
+                    uaimagen.setVisibility(View.INVISIBLE);
+                    uanombre.setVisibility(View.INVISIBLE);
+                    ualugar.setVisibility(View.INVISIBLE);
+                    bateria.setVisibility(View.INVISIBLE);
+
+                    ubica.setVisibility(View.VISIBLE);
+
                 }else{
+
+                    ubica.setVisibility(View.INVISIBLE);
+
+                    mMapView.setVisibility(View.VISIBLE);
+                    uaimagen.setVisibility(View.VISIBLE);
+                    uanombre.setVisibility(View.VISIBLE);
+                    ualugar.setVisibility(View.VISIBLE);
+                    bateria.setVisibility(View.VISIBLE);
+
                     latum = Double.parseDouble(tprubi.getLatitud());
                     lonum = Double.parseDouble(tprubi.getLongitud());
                     if (tprubi.getBateria().isEmpty()){
