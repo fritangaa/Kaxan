@@ -13,13 +13,16 @@
         android:layout_margin="20dp"
         android:layout_height="380dp" />
 
-    <ImageView
+    <com.mikhaellopez.circularimageview.CircularImageView
         android:id="@+id/ua_imagen"
         android:layout_width="60dp"
         android:layout_height="60dp"
+        app:civ_shadow="true"
+        app:civ_shadow_radius="1"
+        app:civ_shadow_color="#8BC34A"
         android:layout_alignStart="@+id/mapaUbicacion"
         android:layout_below="@+id/mapaUbicacion"
-        app:srcCompat="@drawable/ic_persona_ua" />
+        app:srcCompat="@drawable/ic_perfil_defecto" />
 
     <TextView
         android:id="@+id/ua_nombre"

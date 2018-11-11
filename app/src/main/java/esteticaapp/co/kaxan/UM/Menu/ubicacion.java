@@ -5,38 +5,78 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.location.Address;
+import android.location.Geocoder;
 import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.StorageReference;
 import com.google.maps.android.PolyUtil;
+import com.mikhaellopez.circularimageview.CircularImageView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.List;
+import java.util.Locale;
 
 import esteticaapp.co.kaxan.R;
+import esteticaapp.co.kaxan.objUbicacion;
 
 public class ubicacion extends Fragment implements OnMapReadyCallback {
+
+    private DatabaseReference databaseReference;
+    private DatabaseReference ubiRef;
+    private DatabaseReference nomRef;
+    private FirebaseAuth firebaseAuth;
+    private StorageReference mStorage;
+
+    private CircularImageView uaimagen;
+    private TextView uanombre;
+    private TextView bateria;
+    private TextView ualugar;
+
+
+
+    private double latum;
+    private double lonum;
 
     Boolean actualPosition = true;
     JSONObject jso;
@@ -56,6 +96,91 @@ public class ubicacion extends Fragment implements OnMapReadyCallback {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.activity_ubicacion, container, false);
+
+        ubiRef= FirebaseDatabase.getInstance().getReference("/ZxdtUxxfUoRrTw9dxoHA6XLAHqJ2/ubicacion");
+        nomRef= FirebaseDatabase.getInstance().getReference("/ZxdtUxxfUoRrTw9dxoHA6XLAHqJ2/datos").child("nombre");
+
+        uaimagen = (CircularImageView)view.findViewById(R.id.ua_imagen);
+        uanombre = (TextView) view.findViewById(R.id.ua_nombre);
+        bateria = (TextView) view.findViewById(R.id.ua_bateria);
+        ualugar = (TextView) view.findViewById(R.id.ua_lugar_ubicacion);
+
+
+
+       /* mStorage.child("ua/imagenes/perfil/"+firebaseAuth.getUid()+"_perfil.jpeg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                // Got the download URL for 'photos/profile.png'
+                new ubicacion.GetImageToURL().execute(""+uri);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle any errors
+                new ubicacion.GetImageToURL().execute("https://firebasestorage.googleapis.com/v0/b/kaxan-um.appspot.com/o/um%2Fimagenes%2Fperfil%2Fic_perfil_defecto.png?alt=media&token=8d457d20-5bb2-47ef-af19-cae27dd55e72");
+            }
+        });*/
+
+        nomRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                uanombre.setText(String.valueOf(dataSnapshot.getValue()));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.out.println("The read failed: " + databaseError.getCode());
+            }
+        });
+
+        ubiRef.addValueEventListener(new ValueEventListener() {
+
+            @RequiresApi(api = Build.VERSION_CODES.M)
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot){
+                mMap.clear();
+                //leeremos un objeto de tipo Estudiante
+                GenericTypeIndicator<objUbicacion> t = new GenericTypeIndicator<objUbicacion>() {};
+                objUbicacion tprubi = dataSnapshot.getValue(t);
+
+                if(tprubi.getLatitud().equals("")||tprubi.getLongitud().equals("")){
+                    Toast.makeText(view.getContext(), "No esta permitido", Toast.LENGTH_SHORT).show();
+                }else{
+                    latum = Double.parseDouble(tprubi.getLatitud());
+                    lonum = Double.parseDouble(tprubi.getLongitud());
+                    if (tprubi.getBateria().isEmpty()){
+                    }else{
+                        bateria.setText(tprubi.getBateria()+"%");
+                    }
+
+                    LatLng tec = new LatLng(latum, lonum);
+                    mMap.addMarker(new MarkerOptions()
+                            .position(tec)
+                            .title("Mi ubicacion")
+                            .snippet(latum+","+lonum)
+                    );
+
+                    //----------------------------------------------------------------------
+
+                    CameraPosition cameraPosition = new CameraPosition.Builder()
+                            .target(new LatLng(latum,lonum))      // Sets the center of the map to Mountain View
+                            .zoom(17)
+                            .bearing(90)// Sets the zoom
+                            .build();                   // Creates a CameraPosition from the builder
+                    mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
+                    setLocation();
+                }
+
+            }
+            @Override
+            public void onCancelled(DatabaseError error){
+                Log.e("ERROR FIREBASE",error.getMessage());
+            }
+
+        });
+
+
         return view;
     }
 
@@ -261,5 +386,49 @@ public class ubicacion extends Fragment implements OnMapReadyCallback {
     @Override
     public void onDetach() {
         super.onDetach();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public void setLocation() {
+        //Obtener la direccion de la calle a partir de la latitud y la longitud
+
+        if (latum != 0.0 && lonum != 0.0) {
+            try {
+                Geocoder geocoder = new Geocoder(view.getContext(), Locale.getDefault());
+                List<Address> list = geocoder.getFromLocation(
+                        latum, lonum, 1);
+                if (!list.isEmpty()) {
+                    Address DirCalle = list.get(0);
+                    ualugar.setText(DirCalle.getAddressLine(0));
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    private class GetImageToURL extends AsyncTask< String, Void, Bitmap > {
+
+        @Override
+        protected Bitmap doInBackground(String...params) {
+            try {
+                URL url = new URL(params[0]);
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setDoInput(true);
+                connection.connect();
+                InputStream input = connection.getInputStream();
+                Bitmap myBitmap = BitmapFactory.decodeStream(input);
+                return myBitmap;
+            } catch (IOException e) {
+                // Log exception
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap myBitMap) {
+            uaimagen.setImageBitmap(myBitMap);
+        }
     }
 }

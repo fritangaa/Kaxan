@@ -20,7 +20,7 @@
 
     <RadioGroup
         android:id="@+id/radioOp"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/textomiseventos"
         android:layout_centerHorizontal="true"
