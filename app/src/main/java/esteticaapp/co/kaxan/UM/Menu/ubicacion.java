@@ -138,14 +138,14 @@ public class ubicacion extends Fragment implements OnMapReadyCallback {
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onDataChange(DataSnapshot dataSnapshot){
-                mMap.clear();
                 //leeremos un objeto de tipo Estudiante
                 GenericTypeIndicator<objUbicacion> t = new GenericTypeIndicator<objUbicacion>() {};
                 objUbicacion tprubi = dataSnapshot.getValue(t);
 
-                if(tprubi.getLatitud().equals("")||tprubi.getLongitud().equals("")){
+                if(tprubi.getLatitud().equals("")||tprubi.getLongitud().equals("")||tprubi.getLatitud().equals("0")||tprubi.getLongitud().equals("0")){
                     Toast.makeText(view.getContext(), "No esta permitido", Toast.LENGTH_SHORT).show();
                 }else{
+                    mMap.clear();
                     latum = Double.parseDouble(tprubi.getLatitud());
                     lonum = Double.parseDouble(tprubi.getLongitud());
                     if (tprubi.getBateria().isEmpty()){
