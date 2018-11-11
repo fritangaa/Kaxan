@@ -86,6 +86,7 @@ public class ubicacion extends Fragment implements OnMapReadyCallback {
     private MapView mMapView;
     private View view;
 
+
     private static final int LOCATION_REQUEST_CODE = 1;
 
     public static ubicacion newInstance() {
@@ -104,6 +105,8 @@ public class ubicacion extends Fragment implements OnMapReadyCallback {
         uanombre = (TextView) view.findViewById(R.id.ua_nombre);
         bateria = (TextView) view.findViewById(R.id.ua_bateria);
         ualugar = (TextView) view.findViewById(R.id.ua_lugar_ubicacion);
+
+
 
 
 
@@ -133,53 +136,13 @@ public class ubicacion extends Fragment implements OnMapReadyCallback {
             }
         });
 
-        ubiRef.addValueEventListener(new ValueEventListener() {
 
-            @RequiresApi(api = Build.VERSION_CODES.M)
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot){
-                //leeremos un objeto de tipo Estudiante
-                GenericTypeIndicator<objUbicacion> t = new GenericTypeIndicator<objUbicacion>() {};
-                objUbicacion tprubi = dataSnapshot.getValue(t);
-
-                if(tprubi.getLatitud().equals("")||tprubi.getLongitud().equals("")||tprubi.getLatitud().equals("0")||tprubi.getLongitud().equals("0")){
-                    Toast.makeText(view.getContext(), "No esta permitido", Toast.LENGTH_SHORT).show();
-                }else{
-                    mMap.clear();
-                    latum = Double.parseDouble(tprubi.getLatitud());
-                    lonum = Double.parseDouble(tprubi.getLongitud());
-                    if (tprubi.getBateria().isEmpty()){
-                    }else{
-                        bateria.setText(tprubi.getBateria()+"%");
-                    }
-
-                    LatLng tec = new LatLng(latum, lonum);
-                    mMap.addMarker(new MarkerOptions()
-                            .position(tec)
-                            .title("Mi ubicacion")
-                            .snippet(latum+","+lonum)
-                    );
-
-                    //----------------------------------------------------------------------
-
-                    CameraPosition cameraPosition = new CameraPosition.Builder()
-                            .target(new LatLng(latum,lonum))      // Sets the center of the map to Mountain View
-                            .zoom(17)
-                            .bearing(90)// Sets the zoom
-                            .build();                   // Creates a CameraPosition from the builder
-                    mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-
-                    setLocation();
-                }
-
-            }
-            @Override
-            public void onCancelled(DatabaseError error){
-                Log.e("ERROR FIREBASE",error.getMessage());
-            }
-
-        });
-
+        mMapView = (MapView) view.findViewById(R.id.mapaUbicacion);
+        if (mMapView != null) {
+            mMapView.onCreate(null);
+            mMapView.onResume();
+            mMapView.getMapAsync(this);
+        }
 
         return view;
     }
@@ -188,14 +151,6 @@ public class ubicacion extends Fragment implements OnMapReadyCallback {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-
-        mMapView = (MapView) view.findViewById(R.id.mapaUbicacion);
-        if (mMapView != null) {
-            mMapView.onCreate(null);
-            mMapView.onResume();
-            mMapView.getMapAsync(this);
-        }
 
 
     }
@@ -283,11 +238,52 @@ public class ubicacion extends Fragment implements OnMapReadyCallback {
 
         mMap.getUiSettings().setZoomControlsEnabled(true);
 
-        // Add a marker in Sydney and move the camera
-        LatLng tec = new LatLng(19.256953, -99.577957);
-        mMap.addMarker(new MarkerOptions().position(tec).title("Administrador"));
-        float zoomLevel = 16.0f; //This goes up to 21
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(tec, zoomLevel));
+        ubiRef.addValueEventListener(new ValueEventListener() {
+
+            @RequiresApi(api = Build.VERSION_CODES.M)
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot){
+                mMap.clear();
+                //leeremos un objeto de tipo Estudiante
+                GenericTypeIndicator<objUbicacion> t = new GenericTypeIndicator<objUbicacion>() {};
+                objUbicacion tprubi = dataSnapshot.getValue(t);
+
+                if(tprubi.getLatitud().equals("0")||tprubi.getLongitud().equals("0")){
+                    Toast.makeText(view.getContext(), "No esta permitido", Toast.LENGTH_SHORT).show();
+                }else{
+                    latum = Double.parseDouble(tprubi.getLatitud());
+                    lonum = Double.parseDouble(tprubi.getLongitud());
+                    if (tprubi.getBateria().isEmpty()){
+                    }else{
+                        bateria.setText(tprubi.getBateria()+"%");
+                    }
+
+                    LatLng tec = new LatLng(latum, lonum);
+                    mMap.addMarker(new MarkerOptions()
+                            .position(tec)
+                            .title("Mi ubicacion")
+                            .snippet(latum+","+lonum)
+                    );
+
+                    //----------------------------------------------------------------------
+
+                    CameraPosition cameraPosition = new CameraPosition.Builder()
+                            .target(new LatLng(latum,lonum))      // Sets the center of the map to Mountain View
+                            .zoom(17)
+                            .bearing(90)// Sets the zoom
+                            .build();                   // Creates a CameraPosition from the builder
+                    mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
+                    setLocation();
+                }
+
+            }
+            @Override
+            public void onCancelled(DatabaseError error){
+                Log.e("ERROR FIREBASE",error.getMessage());
+            }
+
+        });
 
     }
 
