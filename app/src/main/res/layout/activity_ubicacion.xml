@@ -51,7 +51,7 @@
     <TextView
         android:id="@+id/ua_lugar_ubicacion"
         android:layout_width="wrap_content"
-        android:layout_height="30dp"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="20sp"
         android:layout_alignBottom="@+id/ua_imagen"
         android:layout_toEndOf="@+id/ua_imagen"
