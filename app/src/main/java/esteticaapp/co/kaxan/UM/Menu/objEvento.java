@@ -7,17 +7,19 @@ public class objEvento {
     private String lugar;
     private String nombre;
     private Boolean estado;
+    private String ubicacion;
 
     public objEvento() {
     }
 
-    public objEvento(String nombre, String dia, String horaInicio, String horaFin, String lugar, Boolean estado) {
+    public objEvento(String nombre, String dia, String horaInicio, String horaFin, String lugar, Boolean estado, String ubicacion) {
         this.nombre = nombre;
         this.dia = dia;
         this.horaInicio = horaInicio;
         this.horaFin = horaFin;
         this.lugar = lugar;
         this.estado = estado;
+        this.ubicacion = ubicacion;
     }
 
     public String getNombre() {
@@ -66,5 +68,13 @@ public class objEvento {
 
     public void setEstado(Boolean estado) {
         this.estado = estado;
+    }
+
+    public String getUbicacion() {
+        return ubicacion;
+    }
+
+    public void setUbicacion(String ubicacion) {
+        this.ubicacion = ubicacion;
     }
 }

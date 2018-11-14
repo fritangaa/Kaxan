@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -26,15 +27,20 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.io.IOException;
 import java.util.List;
 
 import esteticaapp.co.kaxan.R;
@@ -75,6 +81,8 @@ public class evento extends AppCompatActivity implements OnMapReadyCallback, Vie
 
     //Declaramos un objeto firebaseAuth
     private FirebaseAuth firebaseAuth;
+
+    private String ubi;
 
 
     ImageButton agregarEvento, btnLugar;
@@ -130,6 +138,7 @@ public class evento extends AppCompatActivity implements OnMapReadyCallback, Vie
         opcionI1.setChecked(true);
 
 
+
         textoNombre.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -165,6 +174,25 @@ public class evento extends AppCompatActivity implements OnMapReadyCallback, Vie
                     toast("No hay dirección para buscar : (");
                 }else{
                     toast("Buscando \""+direccion+"\"");
+                    Geocoder geo = new Geocoder(getApplicationContext());
+                    int maxResultados = 1;
+                    List<Address> adress = null;
+                    try {
+                        adress = geo.getFromLocationName(direccion, maxResultados);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    LatLng buscar = new LatLng(adress.get(0).getLatitude(), adress.get(0).getLongitude());
+                    ubi="";
+                    ubi=(""+adress.get(0).getLatitude()+","+adress.get(0).getLongitude());
+                    mMap.addMarker(new MarkerOptions().position(buscar).title("Marker UPV"));
+                    mMap.moveCamera(CameraUpdateFactory.newLatLng(buscar));
+                    CameraPosition cameraPosition = new CameraPosition.Builder()
+                            .target(buscar)      // Sets the center of the map to Mountain View
+                            .zoom(17)
+                            .bearing(90)// Sets the zoom
+                            .build();                   // Creates a CameraPosition from the builder
+                    mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
                 }
 
                 InputMethodManager imm =
@@ -183,6 +211,25 @@ public class evento extends AppCompatActivity implements OnMapReadyCallback, Vie
                     toast("No hay dirección para buscar : (");
                 }else{
                     toast("Buscando \""+direccion+"\"");
+                    Geocoder geo = new Geocoder(getApplicationContext());
+                    int maxResultados = 1;
+                    List<Address> adress = null;
+                    try {
+                        adress = geo.getFromLocationName(direccion, maxResultados);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    LatLng buscar = new LatLng(adress.get(0).getLatitude(), adress.get(0).getLongitude());
+                    ubi="";
+                    ubi=(""+adress.get(0).getLatitude()+","+adress.get(0).getLongitude());
+                    mMap.addMarker(new MarkerOptions().position(buscar).title("Marker UPV"));
+                    mMap.moveCamera(CameraUpdateFactory.newLatLng(buscar));
+                    CameraPosition cameraPosition = new CameraPosition.Builder()
+                            .target(buscar)      // Sets the center of the map to Mountain View
+                            .zoom(17)
+                            .bearing(90)// Sets the zoom
+                            .build();                   // Creates a CameraPosition from the builder
+                    mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
                 }
                 // Ocultar el teclado
@@ -211,7 +258,7 @@ public class evento extends AppCompatActivity implements OnMapReadyCallback, Vie
                             String lugar = textoLugar.getText().toString();
                             String idusu = databaseReference.push().getKey();
 
-                            objEvento nuevoEvento=new objEvento(nom,dia,horaIn,horaFin,lugar,false);
+                            objEvento nuevoEvento=new objEvento(nom,dia,horaIn,horaFin,lugar,false,ubi);
 
                             FirebaseUser user = firebaseAuth.getCurrentUser();
 
@@ -287,7 +334,6 @@ public class evento extends AppCompatActivity implements OnMapReadyCallback, Vie
         // Controles UI
         if (ContextCompat.checkSelfPermission(evento.this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
-            mMap.setMyLocationEnabled(true);
         } else {
             if (ActivityCompat.shouldShowRequestPermissionRationale(evento.this,
                     Manifest.permission.ACCESS_FINE_LOCATION)) {

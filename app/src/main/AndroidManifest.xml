@@ -128,7 +128,10 @@
             ></activity>
         <activity
             android:name=".UA.ConfigActivity"
-            android:label="@string/title_activity_config"></activity>
+            android:label="@string/title_activity_config"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            ></activity>
     </application>
 
 </manifest>

@@ -26,6 +26,7 @@ public class objEventoViewHolder {
             horaIni=(TextView) itemView.findViewById(R.id.obj_hora);
             mapa=(Button) itemView.findViewById(R.id.obj_lugar);
 
+
             itemView.setOnLongClickListener(this);
         }
 

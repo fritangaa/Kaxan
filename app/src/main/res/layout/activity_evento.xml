@@ -101,10 +101,21 @@
             android:textSize="25dp"
             android:text="Nombre del evento" />
 
+        <ImageView
+            android:id="@+id/ic_nombre_evento"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_below="@id/txtnombreEvento"
+            android:src="@drawable/ic_nombre_evento"
+            />
+
         <EditText
             android:id="@+id/textoNombreEvento"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/ic_nombre_evento"
             android:textSize="20dp"
             android:textColor="@color/colorBlanco"
             android:textColorHint="@color/colorBlanco"

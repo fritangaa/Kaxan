@@ -18,6 +18,7 @@
         app:civ_shadow="true"
         app:civ_shadow_radius="1"
         app:civ_shadow_color="#8BC34A"
+        android:src="@drawable/ic_perfil_defecto"
         />
 
     <TextView
