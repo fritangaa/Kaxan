@@ -214,7 +214,7 @@ public class menu extends AppCompatActivity{
 
         //--------------------------------------------------------------------------
 
-        objUbicacion ubicacion = new objUbicacion(lat,lon,bateria);
+        objUbicacion ubicacion = new objUbicacion(lat,lon,bateria,"Baja");
 
         databaseReference.setValue(ubicacion);
 

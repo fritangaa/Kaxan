@@ -205,12 +205,80 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
             protected void populateViewHolder(final UMViewHolder.ViewHolder viewHolder,
                                               UM model, final int position) {
                 viewHolder.nombre.setText(monitoredUsers2.get(position).getNombre());
-                viewHolder.bateria.setText(monitoredUsers.get(position).getBateria());
-                viewHolder.senial.setText("Intensa");
-                viewHolder.direccion.setText(setLocation(Double.parseDouble(monitoredUsers.get(position).getLatitud()),Double.parseDouble(monitoredUsers.get(position).getLongitud())));
-                //viewHolder.imgFoto.setImageResource(R.drawable.ic_persona);
-                viewHolder.imgBateria.setImageResource(R.drawable.batteryfull);
-                viewHolder.imgSenial.setImageResource(R.drawable.signal4);
+                viewHolder.bateria.setText(monitoredUsers.get(position).getBateria() + "%");
+
+
+                if(monitoredUsers.get(position).getLatitud().equals("") || monitoredUsers.get(position).getLongitud().equals("")){
+                    Toast.makeText(getContext(),"Cargando...",Toast.LENGTH_LONG).show();
+                }else {
+                    viewHolder.direccion.setText(setLocation(Double.parseDouble(monitoredUsers.get(position).getLatitud()),Double.parseDouble(monitoredUsers.get(position).getLongitud())));
+
+                }
+
+                if(monitoredUsers.get(position).getBateria().equals("")){
+                    Toast.makeText(getContext(),"Cargando...",Toast.LENGTH_LONG).show();
+                }else {
+                    if(Integer.parseInt(monitoredUsers.get(position).getBateria()) == 100){
+                        viewHolder.imgBateria.setImageResource(R.drawable.batteryfull);
+                    }else{
+                        if(Integer.parseInt(monitoredUsers.get(position).getBateria())>=90 && Integer.parseInt(monitoredUsers.get(position).getBateria())<100){
+                            viewHolder.imgBateria.setImageResource(R.drawable.battery90);
+                        }else{
+                            if(Integer.parseInt(monitoredUsers.get(position).getBateria())>=80 && Integer.parseInt(monitoredUsers.get(position).getBateria())<90){
+                                viewHolder.imgBateria.setImageResource(R.drawable.battery80);
+                            }else{
+                                if (Integer.parseInt(monitoredUsers.get(position).getBateria())>=60 && Integer.parseInt(monitoredUsers.get(position).getBateria())<80){
+                                    viewHolder.imgBateria.setImageResource(R.drawable.battery60);
+                                }else{
+                                    if (Integer.parseInt(monitoredUsers.get(position).getBateria())>=50 && Integer.parseInt(monitoredUsers.get(position).getBateria())<60){
+                                        viewHolder.imgBateria.setImageResource(R.drawable.battery50);
+                                    }else{
+                                        if (Integer.parseInt(monitoredUsers.get(position).getBateria())>=30 && Integer.parseInt(monitoredUsers.get(position).getBateria())<50){
+                                            viewHolder.imgBateria.setImageResource(R.drawable.battery30);
+                                        }else{
+                                            if (Integer.parseInt(monitoredUsers.get(position).getBateria())>=20 && Integer.parseInt(monitoredUsers.get(position).getBateria())<30){
+                                                viewHolder.imgBateria.setImageResource(R.drawable.battery20);
+                                            }else{
+                                                if (Integer.parseInt(monitoredUsers.get(position).getBateria())>=1 && Integer.parseInt(monitoredUsers.get(position).getBateria())<20){
+                                                    viewHolder.imgBateria.setImageResource(R.drawable.batteryalert);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+
+
+                if(monitoredUsers.get(position).getSenial().equals("Intensa")){
+                    viewHolder.imgSenial.setImageResource(R.drawable.signal4);
+                    viewHolder.senial.setText(monitoredUsers.get(position).getSenial());
+                }else{
+                    if (monitoredUsers.get(position).getSenial().equals("Alta")){
+                        viewHolder.imgSenial.setImageResource(R.drawable.signal3);
+                        viewHolder.senial.setText(monitoredUsers.get(position).getSenial());
+                    }else{
+                        if (monitoredUsers.get(position).getSenial().equals("Media")){
+                            viewHolder.imgSenial.setImageResource(R.drawable.signal2);
+                            viewHolder.senial.setText(monitoredUsers.get(position).getSenial());
+                        }else{
+                            if (monitoredUsers.get(position).getSenial().equals("Baja")){
+                                viewHolder.imgSenial.setImageResource(R.drawable.signal1);
+                                viewHolder.senial.setText(monitoredUsers.get(position).getSenial());
+                            }else{
+                                if (monitoredUsers.get(position).getSenial().equals("Sin senial")){
+                                    viewHolder.imgSenial.setImageResource(R.drawable.signal0);
+                                    viewHolder.senial.setText(monitoredUsers.get(position).getSenial());
+
+                                }
+                            }
+                        }
+                    }
+                }
+                //viewHolder.imgSenial.setImageResource(R.drawable.signal4);
 
 
                  class GetImageToURL extends AsyncTask< String, Void, Bitmap> {
@@ -352,7 +420,7 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
         googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
 
-        CameraPosition liberty = CameraPosition.builder().target(new LatLng(19.257385, -99.577600))
+        CameraPosition liberty = CameraPosition.builder().target(new LatLng(28.6598353, -106.0851442))
                 .zoom(16).bearing(0).tilt(0).build();
 
         googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(liberty));
