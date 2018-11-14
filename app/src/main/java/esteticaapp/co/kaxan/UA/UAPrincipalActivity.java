@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationManager;
 import android.location.LocationProvider;
@@ -16,6 +18,7 @@ import android.os.BatteryManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -27,14 +30,25 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 import esteticaapp.co.kaxan.R;
 import esteticaapp.co.kaxan.UM.menu;
@@ -45,11 +59,17 @@ public class UAPrincipalActivity extends AppCompatActivity
 
     DatabaseReference databaseReference;
     DatabaseReference ref;
+    DatabaseReference ref2;
+
+    private ImageView profile_admin;
+    private TextView no_miembros;
 
     private String lat ="";
     private String lon ="";
     private String bateria ="";
     private String visible="";
+
+    private StorageReference mStorage;
 
     private Integer tmpEje = 5000;
 
@@ -78,8 +98,13 @@ public class UAPrincipalActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        mStorage= FirebaseStorage.getInstance().getReference();
+
+
+
         databaseReference= FirebaseDatabase.getInstance().getReference("/ZxdtUxxfUoRrTw9dxoHA6XLAHqJ2").child("ubicacion");
         ref = FirebaseDatabase.getInstance().getReference("/ZxdtUxxfUoRrTw9dxoHA6XLAHqJ2").child("configuracion").child("visible");
+        ref2 = FirebaseDatabase.getInstance().getReference("/ZxdtUxxfUoRrTw9dxoHA6XLAHqJ2").child("um");
 
         handler.postDelayed(runnable, tmpEje);//empezamos a mandar datos
 
@@ -89,11 +114,49 @@ public class UAPrincipalActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+//        NavigationView navigationView = findViewById(R.id.nav_header_ua);
+
+
+        mStorage.child("um/imagenes/perfil/ic_perfil_defecto.png").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                // Got the download URL for 'photos/profile.png'
+                new GetImageToURL().execute(""+uri);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle any errors
+                new GetImageToURL().execute("https://firebasestorage.googleapis.com/v0/b/kaxan-um.appspot.com/o/um%2Fimagenes%2Fperfil%2Fic_perfil_defecto.png?alt=media&token=8d457d20-5bb2-47ef-af19-cae27dd55e72");
+            }
+        });
+
         Fragment fragment = new MapaFragment();
         getSupportFragmentManager().beginTransaction().add(R.id.content_main,fragment).commit();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        View hView =  navigationView.getHeaderView(0);
+        profile_admin = hView.findViewById(R.id.imagen_admin_perfil);
+        no_miembros = hView.findViewById(R.id.txtNoMiembros);
+
+        ref2.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+
+
+                    no_miembros.setText("Número de miembros: "+String.valueOf(dataSnapshot.getChildrenCount()));
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         //--------------------segundoplano---------------------------
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -214,8 +277,8 @@ public class UAPrincipalActivity extends AppCompatActivity
 
         //--------------------------------------------------------------------------
 
-        objUbicacion ubicacion = new objUbicacion(lat,lon,bateria);
-        objUbicacion no_visible = new objUbicacion("0","0","0");
+        objUbicacion ubicacion = new objUbicacion(lat,lon,bateria,"Baja");
+        objUbicacion no_visible = new objUbicacion("0","0","0","Baja");
 
 
 
@@ -343,4 +406,31 @@ public class UAPrincipalActivity extends AppCompatActivity
             }
         }
     }
+
+    class GetImageToURL extends AsyncTask< String, Void, Bitmap> {
+
+
+
+        @Override
+        protected Bitmap doInBackground(String...params) {
+            try {
+                URL url = new URL(params[0]);
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setDoInput(true);
+                connection.connect();
+                InputStream input = connection.getInputStream();
+                Bitmap myBitmap = BitmapFactory.decodeStream(input);
+                return myBitmap;
+            } catch (IOException e) {
+                // Log exception
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap myBitMap) {
+            profile_admin.setImageBitmap(myBitMap);
+        }
+    }
+
 }

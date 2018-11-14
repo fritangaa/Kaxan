@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/tools"
     android:id="@+id/cardviewMiembro"
     android:layout_width="match_parent"
-    android:layout_height="110dp"
+    android:layout_height="120dp"
     android:layout_margin="@dimen/activity_horizontal_margin"
     card_view:cardBackgroundColor="#fff"
     card_view:cardCornerRadius="4dp"
@@ -26,6 +26,7 @@
             app:civ_shadow="true"
             app:civ_shadow_radius="1"
             app:civ_shadow_color="#8BC34A"
+            android:src="@drawable/ic_perfil_defecto"
             />
 
 
@@ -40,6 +41,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_gravity="center"
+                android:textColor="@color/colorNegro"
+                android:textSize="20sp"
                 android:layout_weight="0.3"
                 android:gravity="center" />
 
@@ -60,7 +63,9 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="0.2"
-                    android:gravity="left" />
+                    android:gravity="left"
+                    android:textColor="@color/colorNegro"
+                    android:textSize="15sp" />
 
                 <ImageView
                     android:id="@+id/vecSignal"
@@ -74,7 +79,9 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="0.2"
-                    android:gravity="left" />
+                    android:gravity="left"
+                    android:textColor="@color/colorNegro"
+                    android:textSize="15sp" />
 
             </LinearLayout>
 
@@ -84,7 +91,9 @@
                 android:layout_height="0dp"
                 android:layout_gravity="center"
                 android:layout_weight="0.3"
-                android:gravity="center" />
+                android:gravity="center"
+                android:textColor="@color/colorNegro"
+                android:textSize="15sp" />
 
         </LinearLayout>
 

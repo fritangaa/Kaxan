@@ -172,7 +172,7 @@ public class leerQR extends AppCompatActivity {
                             //databaseReference.child(firebaseAuth.getUid()).child("um").child(id).child("datos").setValue(nuevoUM);
                             databaseReference.child("ZxdtUxxfUoRrTw9dxoHA6XLAHqJ2").child("um").child(id).child("datos").setValue(nuevoUM);
 
-                            objUbicacion ubicacion = new objUbicacion("0.0","0.0","0");
+                            objUbicacion ubicacion = new objUbicacion("0.0","0.0","0","Baja");
 
                             databaseReference.child("ZxdtUxxfUoRrTw9dxoHA6XLAHqJ2").child("um").child(id).child("ubicacion").setValue(ubicacion);
 

@@ -138,7 +138,7 @@ public class AdapterRecycler extends RecyclerView.Adapter<AdapterRecycler.ViewHo
             }*/
             textViewEstadoBateria.setText(String.valueOf(monitoredUser.getBateria()) + "%");
 
-            if(monitoredUser.getEstado_signal().equals("Intensa")){
+/*            if(monitoredUser.getEstado_signal().equals("Intensa")){
                 imgSignal.setImageResource(R.drawable.signal4);
             }else{
                 if (monitoredUser.getEstado_signal().equals("Alta")){
@@ -165,7 +165,7 @@ public class AdapterRecycler extends RecyclerView.Adapter<AdapterRecycler.ViewHo
                 public void onClick(View v) {
                     listener.onItemClick(monitoredUser,getAdapterPosition());
                 }
-            });
+            });*/
         }
     }
 
