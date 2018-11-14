@@ -92,11 +92,7 @@ public class listaEventos extends Fragment implements OnMapReadyCallback {
         listadeEventos = view.findViewById(R.id.lista_eventos);
 
         mMapView = view.findViewById(R.id.mapaEveUM);
-        if (mMapView != null) {
-            mMapView.onCreate(null);
-            mMapView.onResume();
-            mMapView.getMapAsync(this);
-        }
+
 
 
         LinearLayoutManager linearLayoutManager=new LinearLayoutManager(view.getContext());
@@ -171,6 +167,12 @@ public class listaEventos extends Fragment implements OnMapReadyCallback {
 
         layoutInflater =(LayoutInflater)getActivity().getBaseContext().getSystemService(LAYOUT_INFLATER_SERVICE);
         popupView = layoutInflater.inflate(R.layout.dialog_mapa, null);
+
+        if (mMapView != null) {
+            mMapView.onCreate(null);
+            mMapView.onResume();
+            mMapView.getMapAsync(this);
+        }
 
         popupWindow  = new PopupWindow(popupView, RadioGroup.LayoutParams.MATCH_PARENT,
                 RadioGroup.LayoutParams.MATCH_PARENT);
