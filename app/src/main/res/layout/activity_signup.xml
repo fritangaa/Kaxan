@@ -15,7 +15,7 @@
         android:layout_marginTop="20dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:src="@drawable/ic_persona_h" />
+        android:src="@drawable/ic_perfil_defecto" />
 
     <EditText
         android:id="@+id/textoRNombre"
@@ -33,7 +33,7 @@
         android:layout_centerHorizontal="true"
         android:ems="10"
         android:inputType="textPersonName"
-        android:hint="Maximiliano"
+        android:hint="Nombre"
         />
 
     <EditText
@@ -48,7 +48,7 @@
         android:layout_centerHorizontal="true"
         android:background="@drawable/bg_verde_redondo"
         android:ems="10"
-        android:hint="722 397 7435"
+        android:hint="Teléfono"
         android:inputType="number"
         android:padding="10dp"
         android:textColor="@color/colorBlanco"
@@ -66,7 +66,7 @@
         android:layout_below="@+id/textoRTelefono"
         android:background="@drawable/bg_verde_redondo"
         android:ems="10"
-        android:hint="26/05/1997"
+        android:hint="Fecha"
         android:inputType="date"
         android:padding="10dp"
         android:textColor="@color/colorBlanco"
@@ -97,7 +97,7 @@
         android:layout_centerHorizontal="true"
         android:background="@drawable/bg_verde_redondo"
         android:ems="10"
-        android:hint="locubip@gmail.com"
+        android:hint="Correo"
         android:inputType="textWebEmailAddress"
         android:padding="10dp"
         android:textColor="@color/colorBlanco"

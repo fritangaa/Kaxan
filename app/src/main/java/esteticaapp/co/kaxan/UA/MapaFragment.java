@@ -1,19 +1,15 @@
 package esteticaapp.co.kaxan.UA;
 
 import android.app.Activity;
-import android.content.BroadcastReceiver;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Address;
 import android.location.Geocoder;
-import android.location.Location;
-import android.location.LocationProvider;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.BatteryManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -53,14 +49,10 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import esteticaapp.co.kaxan.R;
 import esteticaapp.co.kaxan.UA.recyclerMiembros.AdapterRecycler;
 import esteticaapp.co.kaxan.UA.recyclerMiembros.UMViewHolder;
-import esteticaapp.co.kaxan.UM.Menu.inicio;
-import esteticaapp.co.kaxan.UM.menu;
-import esteticaapp.co.kaxan.objUbicacion;
 
 public class MapaFragment extends Fragment implements OnMapReadyCallback {
     // TODO: Rename parameter arguments, choose names that match
@@ -78,6 +70,9 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
 
     FirebaseRecyclerAdapter<UM,UMViewHolder.ViewHolder> adapter;
     private DatabaseReference databaseReference;
+
+    private ProgressDialog progressBar;
+    private int progressBarStatus = 0;
 
 
     GoogleMap mgoogleMap;
@@ -144,6 +139,17 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
     public void onViewCreated(final View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+
+        progressBar = new ProgressDialog(view.getContext());
+        progressBar.setCancelable(true);
+        progressBar.setMessage("Cargando ...");
+        progressBar.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressBar.setProgress(0);
+        progressBar.setMax(100);
+        progressBar.show();
+        progressBarStatus = 0;
+
+
         mapView = (MapView) mview.findViewById(R.id.mapaMiembros);
         if (mapView != null) {
 
@@ -168,6 +174,10 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+
+                progressBar.dismiss();
+
+
                 monitoredUsers.clear();
                 monitoredUsers2.clear();
                 ids.clear();

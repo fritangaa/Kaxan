@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/bg_principal"
     tools:context=".UA.MapaFragment">
 
@@ -10,6 +11,19 @@
         android:id="@+id/mapaMiembros"
         android:layout_width="match_parent"
         android:layout_height="350dp" />
+
+    <com.mikhaellopez.circularprogressbar.CircularProgressBar
+        android:id="@+id/progressBarMiembros"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:layout_below="@+id/mapaMiembros"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        app:cpb_background_progressbar_color="#FFCDD2"
+        app:cpb_background_progressbar_width="5dp"
+        app:cpb_progressbar_color="#0e7fb4"
+        app:cpb_progressbar_width="10dp" />
 
 
     <android.support.v7.widget.RecyclerView
