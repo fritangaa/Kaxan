@@ -219,16 +219,13 @@ public class inicio extends Fragment implements OnMapReadyCallback {
 
             }
         });
-        /*mStorage.child("um/imagenes/perfil/"+firebaseAuth.getUid()+"_perfil.jpeg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                // Got the download URL for 'users/me/profile.png'
-                new inicio.GetImageToURL().execute(""+uri);
-            }
-        });*/
+
+
 
         return view;
     }
+
+ 
 
 
     JSONObject jso;
